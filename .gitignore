@@ -1,0 +1,13 @@
+# Google Drive writes one of these into every synced folder
+desktop.ini
+
+# macOS archive/extraction junk
+__MACOSX/
+.DS_Store
+._*
+
+# Editor / OS
+Thumbs.db
+*.swp
+.vscode/
+.idea/
