@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --water: #47a6b2;
+            --ink: #2c221e;
+            --paper-hi: #fdf6e3;
+            --gold-text: #f7c948;
+            --hp-red: #c0392b;
+            --quest-green: #27ae60;
+        }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background-color: var(--water);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' shape-rendering='crispEdges'%3E%3Crect width='128' height='128' fill='%2347a6b2'/%3E%3Cg fill='%2354b1bc'%3E%3Cpath d='M10 18h22v4H10zM26 14h10v4H26zM78 40h26v4H78zM98 36h10v4H98zM20 78h18v4H20zM56 100h28v4H56zM74 96h10v4H74zM6 116h14v4H6zM108 80h14v4h-14zM40 52h12v4H40z'/%3E%3C/g%3E%3Cg fill='%233e97a3'%3E%3Cpath d='M60 24h16v4H60zM14 52h10v4H14zM88 62h16v4H88zM30 106h12v4H30z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 128px;
+            image-rendering: pixelated;
+            color: var(--ink);
+            font-family: 'VT323', monospace;
+            font-size: 1.35em;
+            margin: 0;
+            padding: 16px 12px 60px 12px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .cloud {
+            position: fixed; left: -40%;
+            width: 288px; height: 128px;
+            background-repeat: no-repeat; background-size: contain;
+            image-rendering: pixelated;
+            pointer-events: none; z-index: 0; opacity: 0.95;
+            animation: drift linear infinite;
+        }
+        @keyframes drift { from { transform: translateX(-320px); } to { transform: translateX(120vw); } }
+
+        /* ------- game chrome (embedded sprites, cannot 404) ------- */
+        .paper {
+            border-style: solid; border-width: 26px;
+            border-image: url("data:image/png;base64,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") 64 fill round;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 10px 6px rgba(0,0,0,0.35));
+        }
+        .ribbon-title {
+            display: inline-block;
+            border-style: solid; border-width: 0 58px;
+            border-image: url("data:image/png;base64,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") 0 97 fill repeat;
+            image-rendering: pixelated;
+            min-height: 66px; line-height: 52px; padding: 0 4px;
+            color: #eaf6f3; text-shadow: 2px 2px 0 rgba(20,40,50,0.55);
+            text-transform: uppercase; letter-spacing: 2px; font-size: 1.15em;
+            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.3));
+            position: relative; z-index: 2;
+        }
+        button.game-btn {
+            display: block; width: 100%;
+            border-style: solid; border-width: 18px 20px;
+            border-image: url("data:image/png;base64,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") 64 fill stretch;
+            image-rendering: pixelated;
+            background: none; color: #f2fbf9;
+            text-shadow: 2px 2px 0 rgba(20,40,50,0.6);
+            font-family: 'VT323', monospace; font-size: 1.15em;
+            letter-spacing: 1px; text-transform: uppercase;
+            cursor: pointer; padding: 2px 6px; margin: 4px 0 2px 0;
+        }
+        button.game-btn:active, button.game-btn.pressed { border-image-source: url("data:image/png;base64,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"); transform: translateY(3px); }
+        button.game-btn.red { border-image-source: url("data:image/png;base64,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"); }
+        button.game-btn.red:active, button.game-btn.red.pressed { border-image-source: url("data:image/png;base64,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"); }
+        button.game-btn:disabled { filter: saturate(0.3) brightness(0.85); cursor: wait; transform: none; }
+        button.game-btn:focus-visible { outline: 3px solid var(--gold-text); outline-offset: 2px; }
+
+        .gbar {
+            position: relative; height: 30px;
+            border-style: solid; border-width: 0 13px;
+            border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHAAAAA0CAYAAABSKbwxAAAEVUlEQVR42u2cv2sbMRTHdcfhJUsI1HTwEMhiCjHBS03mboWO3Tx3yX9Q6FDwf9DFc7Z2K2TLXOqhJTgQvAQK9RAcCF26ZHEmGVn39KSne7o7k/cFQ8jd6aT30Vc/7k5SSrTTymIu+vz+3Tp1xj59/Z7Vda8m7oflgQVgtzdYK6XU2emhVPMG9eXHH6WUUqvlPAsCqMFR4B0fHXjPOel3gjN9fnG3+Xv89uXm76vFIzltfQ10jj52ffuAloOSdyyfpj6c/1ZKKTUdD7fygEGEQGZUeBgsLEixEDGAIeCw86BAU2HFgNT3eP3x5xZEDRWKvQti5oNnBpAaxBAXpJAvj7HgfM7yVWDoHA3R1GwyAlsjCGLm6vO008wbxrqpCWgUhTq5alou2RBNgDZIu0/MIPeZzaTOEDc8DlemglY17VQV/PziruTCEsDZZERuKlI0SZR+q03gUkM03bpazrMiVdN1tXj0FuCk30Gv51Sd4CgxqFKZlVIqs93nSkyPkET1SI9MIYjahavlPMtDiAu8+mXHHDJVtzdY5z7bCrz2QIRUuDrI2WRE7oRt24viwYQqN4NfBYDAayZWBVeCbWlqfWXZ1S7Bfvy2NY2wCwU9CWiL3rx6gR7/9utvpesvb+53CmxpHhgCzxeEXVaTZXNVHnMsMh0PN4br9gbr3Hyy/dzhtb3yQFOJwpzIc8Hr7+8JDUCLf/9LMTL/p2NsOhF7WrU1CqWov7+3+Qk8Wtyo8fI94svtk/UvJlMCLw1EV3+IOhCDaNte4NEhQjGkwisBpDx5icmAqBxD/YuBB04jzE7T5UJXByxKO4lnG8RIs9kcPNtUeaz1RfULnAdyzGlEzSnnSkiApo2VazxSUCeOArHFDkzxYY8orQoJQfsFfb2tFPJRU8zEXlSv9FuknAJv11527qKgGGOv+XKq8wRivfBMiCbIbm+wBj8rDGk2L2/uBSQzuNB42m4sfPBmk5GzExWIaWV+Ke8yVh4y2pFPBpuDZ0/xbEYFNvPX1E/6HTJEypo7roUnHIs0mxh9Q3mCXAedV1pepunb6/cok3xsaZh+XZVq+VlswJoE6VuKrY/bn3+C6wOhZpMC0VdrqriNK6AxT5xSwgwpM9S9oQBtkD6IIQsyqyxl5loGHbLiuEozy71oFfuSPAggZVKJZa7KituYAHM4rK77YM2k72kMuEsF18iJux9K7dK6IHKsz3DuUqF1dnq4taA+hSi7QB0fHZQ2w9GbMWCb5IQopJzT8RDdECh0o57YONlpaIBFyIU60BxAYzYQur59QAPk2ynKvJZaBmj6RKkwMTEz4+2r5IVJ1NeMcm69FSqX6ygyr5k6XFslz9i1U+NY1ZbCdt9WE+rrB6nNHQWM6/yQczgqhp2265jZd9nxoJa5inOdACkQzRtAcCnNmq9f4YYXky974EHtClLAAwFyjUhF/IK2nMxDTxS1D57TgaGO1Ik+B8c2UdYQIz0BIxLA9RPcKIYAAAAASUVORK5CYII=") 0 24 fill repeat;
+            image-rendering: pixelated;
+            margin: 6px 0 10px 0;
+        }
+        .gbar-fill {
+            position: absolute; top: 7px; bottom: 7px; left: -3px;
+            max-width: calc(100% + 6px);
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAAYUlEQVR42u3WMQ3AMAxEUTvKVgoZQ6AEzCB7KRRfAZRMCURVZgfI/WPgpz/Y3/NKE17951S+34qJr462KEC6ALs7BQAgPM+IpAAAAAAAANVH6PkOCgAAAAAAAAAAAABQ3AaTUAta7K3fEQAAAABJRU5ErkJggg==");
+            background-size: auto 100%; background-repeat: repeat-x;
+            image-rendering: pixelated; border-radius: 3px;
+            transition: width 0.4s;
+        }
+        .gbar-fill.green { filter: hue-rotate(125deg) saturate(0.9); }
+        .gbar-fill.gold  { filter: hue-rotate(45deg) saturate(1.4) brightness(1.15); }
+
+        /* ------- full-page screens (title / choose player / creator) ------- */
+        .screen { position: fixed; inset: 0; z-index: 60; overflow-y: auto; display: none; padding: 24px 12px 60px 12px; text-align: center; }
+        .screen.on { display: block; }
+
+        .title-castle { width: 210px; image-rendering: pixelated; animation: floaty 3.5s ease-in-out infinite; margin-top: 10px; }
+        @keyframes floaty { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px);} }
+        .subtitle { color: #eaf6f3; text-shadow: 2px 2px 0 rgba(20,40,50,0.55); margin: 4px 0 14px 0; letter-spacing: 1px; }
+        .title-box { max-width: 360px; margin: 0 auto; padding: 10px 8px; }
+        #titleStatus { font-size: 0.9em; min-height: 28px; margin-bottom: 6px; }
+        #titleWelcome { font-size: 0.9em; margin-top: 8px; color: #6b4f2a; }
+
+        .player-card {
+            display: inline-block; width: 190px; margin: 10px; padding: 14px 10px;
+            cursor: pointer; border: none; background: none; font-family: 'VT323', monospace; font-size: 1em;
+            color: var(--ink); vertical-align: top;
+        }
+        .player-card:hover { transform: translateY(-4px); }
+        .player-card .hero-frame { width: 96px; height: 96px; margin-bottom: 8px; }
+        .player-card h3 { margin: 4px 0; letter-spacing: 2px; }
+
+        .creator-box { max-width: 460px; margin: 0 auto; padding: 8px; text-align: center; }
+        .creator-preview {
+            width: 132px; height: 132px; margin: 10px auto;
+            background: rgba(90,60,30,0.12);
+            border: 3px dashed rgba(90,60,30,0.45); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .creator-preview img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+        .creator-preview img.sprite-crop { object-fit: cover; object-position: left center; }
+        .chip-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 8px 0; }
+        .chip {
+            border: 3px solid #8a6b43; border-radius: 6px;
+            background: var(--paper-hi); color: var(--ink);
+            font-family: 'VT323', monospace; font-size: 0.9em;
+            padding: 6px 12px; cursor: pointer; letter-spacing: 1px;
+        }
+        .chip.sel { border-color: var(--quest-green); background: #eaf7ef; box-shadow: 0 0 0 2px var(--quest-green); }
+        .chip .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 5px; border: 2px solid rgba(0,0,0,0.35); }
+
+        /* ------- hub ------- */
+        #app-container { display: none; max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+        .badge-row { color: #eaf6f3; text-shadow: 1px 1px 0 rgba(20,40,50,0.6); font-size: 0.8em; margin: 4px 0 10px 0; }
+        .mini-link {
+            background: rgba(20,50,60,0.55); color: #ffe9a8; border: 2px solid rgba(234,246,243,0.6);
+            border-radius: 4px; font-family: 'VT323', monospace; font-size: 0.95em;
+            padding: 1px 10px; margin-left: 6px; cursor: pointer;
+        }
+
+        .stats-panel { padding: 14px 6px 4px 6px; margin: 0 auto 28px auto; }
+        .stats-row { display: flex; justify-content: space-around; align-items: flex-start; gap: 8px; }
+        .hero-slot { width: 32%; min-width: 0; }
+        .hero-frame {
+            width: 84px; height: 84px; margin: 0 auto;
+            background: rgba(90,60,30,0.12);
+            border: 3px dashed rgba(90,60,30,0.45); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .hero-frame img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; display: none; }
+        .hero-frame img.sprite-crop { object-fit: cover; object-position: left center; }
+        .hero-frame .qmark { color: rgba(90,60,30,0.55); font-size: 2em; }
+        .hero-name { margin-top: 4px; font-size: 0.95em; letter-spacing: 1px; }
+        .vault-num { font-size: 0.85em; color: #7a5b1e; }
+        .stamina-num { font-size: 0.75em; opacity: 0.85; }
+        .stamina-num.broke { color: var(--hp-red); font-weight: bold; }
+
+        .gold-slot { padding-top: 4px; }
+        .gold-slot .coin { width: 32px; height: 32px; vertical-align: middle; image-rendering: pixelated; animation: coinbob 2.2s ease-in-out infinite; }
+        @keyframes coinbob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-5px);} }
+        .gold-amount { font-size: 1.2em; color: #7a5b1e; text-shadow: 1px 1px 0 #fff3; white-space: nowrap; margin-top: 4px; }
+        .unified-banner { color: var(--quest-green); font-size: 0.75em; letter-spacing: 1px; animation: pulse 1.6s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1;} 50% { opacity: 0.55;} }
+
+        .village { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 6px 18px; margin-top: 8px; }
+        .building { cursor: pointer; border: none; background: none; padding: 0; font-family: 'VT323', monospace; }
+        .building img { display: block; margin: 0 auto; image-rendering: pixelated; transition: transform 0.15s; }
+        .building:hover img { transform: translateY(-6px) scale(1.04); }
+        .building:active img { transform: translateY(2px) scale(0.98); }
+        .building .blabel {
+            display: inline-block;
+            border-style: solid; border-width: 0 34px;
+            border-image: url("data:image/png;base64,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") 0 97 fill repeat;
+            image-rendering: pixelated;
+            min-height: 40px; line-height: 30px; margin-top: -14px;
+            color: #eaf6f3; text-shadow: 1px 1px 0 rgba(20,40,50,0.6);
+            font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;
+            position: relative; z-index: 2;
+        }
+        .building:focus-visible { outline: 3px solid var(--gold-text); outline-offset: 4px; border-radius: 8px; }
+
+        /* ------- modals ------- */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(15,35,45,0.75); z-index: 100; overflow-y: auto; }
+        .modal-content { max-width: 470px; margin: 40px auto; padding: 6px 8px 14px 8px; text-align: left; position: relative; animation: pop 0.18s ease-out; }
+        @keyframes pop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-head { text-align: center; margin-top: -40px; margin-bottom: 10px; }
+        .close-btn {
+            position: absolute; top: -20px; right: -14px; width: 52px; height: 52px;
+            border-style: solid; border-width: 14px;
+            border-image: url("data:image/png;base64,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") 64 fill stretch;
+            image-rendering: pixelated;
+            background: none; color: #fff; font-family: 'VT323', monospace; font-size: 1em;
+            cursor: pointer; text-shadow: 1px 1px 0 rgba(0,0,0,0.4); z-index: 5;
+        }
+        .close-btn:active { border-image-source: url("data:image/png;base64,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"); }
+
+        input, select {
+            background: var(--paper-hi); color: var(--ink);
+            border: 3px solid #8a6b43; border-radius: 4px;
+            padding: 9px 10px; width: 100%; margin-bottom: 10px;
+            font-family: 'VT323', monospace; font-size: 1.05em;
+        }
+        input:focus, select:focus { outline: 3px solid var(--gold-text); outline-offset: 1px; }
+        label { font-size: 0.95em; }
+
+        .card {
+            background: rgba(138,107,67,0.14);
+            border: 3px solid #8a6b43; border-radius: 6px;
+            padding: 12px; margin: 12px 0; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .card.defeated { filter: grayscale(0.85); }
+        .card .boss-avatar {
+            height: 84px; image-rendering: pixelated;
+            transform: scaleX(-1);               /* bosses face LEFT, toward your marching army */
+            filter: drop-shadow(0 0 6px rgba(192,57,43,0.85)) contrast(1.08) saturate(1.1);
+        }
+        .card.defeated .boss-avatar { filter: none; }
+        .card .boss-avatar.sprite-crop { width: 84px; object-fit: cover; object-position: left center; }
+        .card h4 { margin: 4px 0 2px 0; font-size: 1.05em; letter-spacing: 1px; }
+        .card small { opacity: 0.8; }
+        .apr-tag { color: var(--hp-red); font-size: 0.75em; letter-spacing: 1px; }
+        .stamp {
+            position: absolute; top: 55%; left: 50%;
+            transform: translateX(-50%) rotate(-8deg);
+            color: var(--hp-red); border: 3px solid var(--hp-red); border-radius: 4px;
+            padding: 0 10px; font-size: 1.3em;
+            background: rgba(253,246,227,0.85); letter-spacing: 2px; z-index: 3;
+        }
+        .boom {
+            position: absolute; inset: 0;
+            background-image: url('https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Particle%20FX/Explosion_01.png');
+            background-size: auto 100%; background-position: 0 0;
+            image-rendering: pixelated; pointer-events: none; z-index: 5;
+            animation: boom 0.7s steps(8) forwards;
+        }
+        @keyframes boom { from { background-position-x: 0; } to { background-position-x: -800%; } }
+
+        /* the hired army marching across a boss card */
+        .army { position: absolute; inset: 0; pointer-events: none; z-index: 4; overflow: hidden; }
+        .army .unit {
+            position: absolute; bottom: 6px; left: -70px;
+            width: 64px; height: 64px;
+            background-repeat: no-repeat; background-size: auto 100%;
+            image-rendering: pixelated;
+            animation: unitmarch 1.3s linear forwards;
+        }
+        @keyframes unitmarch { from { left: -70px; } to { left: 72%; } }
+        @keyframes unitframes { to { background-position-x: var(--fw); } }
+
+        .asset-gallery {
+            display: flex; flex-wrap: wrap; gap: 8px; padding: 10px;
+            background: var(--paper-hi);
+            border: 3px solid #8a6b43; border-radius: 6px;
+            min-height: 80px; max-height: 300px; overflow-y: auto;
+        }
+        .asset-img { height: 58px; cursor: pointer; border: 3px solid transparent; border-radius: 4px; image-rendering: pixelated; }
+        .asset-img:hover { border-color: var(--gold-text); background: #fff8e0; }
+        .asset-img.selected { border-color: var(--quest-green); background: #eaf7ef; }
+        .asset-img.sprite-crop { width: 58px; height: 58px; object-fit: cover; object-position: left center; }
+        .gallery-note { width: 100%; text-align: center; margin: 8px 0; }
+        .gallery-error { color: var(--hp-red); }
+
+        /* guide */
+        .guide h3 { margin: 16px 0 4px 0; color: #6b4f2a; letter-spacing: 1px; text-transform: uppercase; font-size: 0.95em; }
+        .guide p { margin: 4px 0; font-size: 0.9em; line-height: 1.35; }
+        .guide .gicon { width: 40px; vertical-align: middle; image-rendering: pixelated; margin-right: 6px; }
+
+        #toast { display: none; position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); padding: 8px 20px; font-size: 1.05em; z-index: 300; max-width: 92%; }
+        #toast.error { color: var(--hp-red); }
+        hr.rope { border: none; border-top: 3px dashed #8a6b43; margin: 18px 0 14px 0; }
+
+        button, .building, .asset-img, .blabel, .chip, .player-card {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        img { -webkit-user-drag: none; }
+
+        @media (max-width: 600px) {
+            body { font-size: 1.15em; padding: 10px 8px 50px 8px; }
+            .paper { border-width: 20px; }
+            .ribbon-title { border-width: 0 42px; min-height: 54px; line-height: 44px; font-size: 0.95em; letter-spacing: 1px; }
+            .stats-panel { margin-bottom: 22px; padding: 8px 2px 2px 2px; }
+            .stats-row { gap: 4px; }
+            .hero-frame { width: 62px; height: 62px; }
+            .hero-name { font-size: 0.85em; }
+            .stamina-num { font-size: 0.7em; }
+            .vault-num { font-size: 0.75em; }
+            .gold-slot .coin { width: 24px; height: 24px; }
+            .gold-amount { font-size: 0.95em; }
+            .gbar { height: 24px; border-width: 0 10px; margin: 4px 0 8px 0; }
+            .gbar-fill { top: 5px; bottom: 5px; left: -2px; }
+            .village { gap: 2px 8px; }
+            .building:nth-child(1) img { width: 138px; }
+            .building:nth-child(2) img { width: 94px; }
+            .building:nth-child(3) img { width: 94px; }
+            .building:nth-child(4) img { width: 72px; }
+            .building:nth-child(5) img { width: 86px; }
+            .blabel { border-width: 0 24px; min-height: 32px; line-height: 24px; font-size: 0.72em; margin-top: -10px; }
+            .modal-content { width: calc(100% - 12px); max-width: 470px; margin: 26px auto; padding: 4px 4px 12px 4px; }
+            .modal-head { margin-top: -34px; }
+            .close-btn { top: -14px; right: -6px; width: 46px; height: 46px; border-width: 12px; }
+            .asset-gallery { max-height: 260px; gap: 6px; }
+            .asset-img { height: 48px; }
+            .asset-img.sprite-crop { width: 48px; height: 48px; }
+            .card { padding: 10px 8px; }
+            .card .boss-avatar { height: 68px; }
+            .card .boss-avatar.sprite-crop { width: 68px; }
+            .title-castle { width: 170px; }
+            .player-card { width: 150px; margin: 6px; }
+            .player-card .hero-frame { width: 78px; height: 78px; }
+            #toast { bottom: 14px; font-size: 0.95em; }
+            .cloud { opacity: 0.7; }
+        }
+        @media (max-width: 370px) {
+            .ribbon-title { border-width: 0 30px; font-size: 0.85em; }
+            .building:nth-child(1) img { width: 118px; }
+            .hero-frame { width: 54px; height: 54px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cloud" style="top: 6%;  animation-duration: 70s; animation-delay: -12s; background-image:url('https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Terrain/Decorations/Clouds/Clouds_01.png');"></div>
+    <div class="cloud" style="top: 34%; animation-duration: 95s; animation-delay: -48s; width: 220px; background-image:url('https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Terrain/Decorations/Clouds/Clouds_04.png');"></div>
+    <div class="cloud" style="top: 62%; animation-duration: 80s; animation-delay: -30s; width: 250px; background-image:url('https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Terrain/Decorations/Clouds/Clouds_06.png');"></div>
+    <div class="cloud" style="top: 82%; animation-duration: 110s; animation-delay: -70s; width: 180px; opacity: 0.8; background-image:url('https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Terrain/Decorations/Clouds/Clouds_02.png');"></div>
+
+    <!-- ============ TITLE SCREEN ============ -->
+    <div id="screenTitle" class="screen on">
+        <img class="title-castle" src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/Castle.png" alt="">
+        <div><span class="ribbon-title">Command Center</span></div>
+        <div class="subtitle">The Family Finance Kingdom</div>
+        <div class="title-box paper">
+            <div id="titleStatus">&#9203; Connecting to Village Database...</div>
+            <button class="game-btn" id="startBtn" disabled onclick="pressStart()">&#9654; Start</button>
+            <button class="game-btn red" onclick="openModal('modalGuide')">&#128214; How to Play</button>
+            <div id="titleWelcome" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- ============ CHOOSE PLAYER ============ -->
+    <div id="screenPlayers" class="screen">
+        <div style="margin-top:30px;"><span class="ribbon-title">Who's Playing?</span></div>
+        <div style="margin-top:20px;">
+            <button class="player-card paper" onclick="pickPlayer('Sarah')">
+                <div class="hero-frame"><span class="qmark">?</span><img id="pickSarahImg" alt=""></div>
+                <h3>SARAH</h3>
+            </button>
+            <button class="player-card paper" onclick="pickPlayer('Taliyah')">
+                <div class="hero-frame"><span class="qmark">?</span><img id="pickTaliyahImg" alt=""></div>
+                <h3>TALIYAH</h3>
+            </button>
+        </div>
+        <div style="max-width:280px; margin: 16px auto 0 auto;">
+            <button class="game-btn red" onclick="showScreen('screenTitle')">Back</button>
+        </div>
+    </div>
+
+    <!-- ============ CHARACTER CREATOR ============ -->
+    <div id="screenCreator" class="screen">
+        <div style="margin-top:16px;"><span class="ribbon-title">Create Your Hero</span></div>
+        <div class="creator-box paper" style="margin-top:20px;">
+            <p style="margin:4px 0; font-size:0.9em;">Forge <b id="creatorFor">Sarah</b>'s hero. Your banner color is also the army you'll hire to strike your debts!</p>
+            <div class="creator-preview"><img id="creatorPreview" alt="Hero preview"></div>
+            <div id="classRow" class="chip-row"></div>
+            <div id="colorRow" class="chip-row"></div>
+            <button class="game-btn" onclick="confirmCreator()">&#9876; Enlist This Hero</button>
+            <button class="game-btn red" onclick="enterVillage()">Skip for now</button>
+        </div>
+    </div>
+
+    <!-- ============ VILLAGE HUB ============ -->
+    <div id="app-container">
+        <div><span class="ribbon-title">Command Center</span></div>
+        <div class="badge-row">
+            Playing as <b id="playerBadge">&mdash;</b>
+            <button class="mini-link" onclick="switchPlayer()">Switch</button>
+            <button class="mini-link" onclick="openModal('modalGuide')">? Guide</button>
+        </div>
+
+        <div class="stats-panel paper">
+            <div class="stats-row">
+                <div class="hero-slot">
+                    <div class="hero-frame"><span class="qmark">?</span><img id="hubSarahAvatar" alt="Sarah"></div>
+                    <div class="hero-name">SARAH</div>
+                    <div class="vault-num">Vault: $<span id="sarahVault">0.00</span></div>
+                    <div class="gbar" title="Weekly stamina"><div class="gbar-fill gold" id="sarahBar" style="width:0%"></div></div>
+                    <div class="stamina-num" id="hubSarahStamina">$0.00</div>
+                </div>
+                <div class="hero-slot gold-slot">
+                    <div id="treasuryLabel">Family Treasury</div>
+                    <div class="gold-amount" id="goldWrap"><img class="coin" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAErElEQVR42u2aPWsbQRCG5w4hlbpKLiR3RgI5SpXCbQwWAVcGgQuns0oXhmBi/wLHhICKlHaXdIa0JoGkdZEqkgUR7uLGqk6lRECp9ry3nt2d/bgjITdgMJLvpPeZmXdn1wdQRBFF/M8R5PEhJ73e0ua608vL4J8FYCs6bxhBnqIPz2PtPQb9KFcYQdbCKaJtgPiCEPgW3l6rAABA9/geAABq1S/Je9PZ1l8HIvAlXiXcBwAVCBcIgat4JpyJx4SL4j+/WZHemwHMC0SQtXgmXCXaBYYIwhRC4Es8VvbT2ZaVcFMYPITMANQaT5f7G02peCxk4tc78+T3WVxOvXf3K3CCkAkAlXjM5THhjdUHz6xGi9R7DAL/OnuNBzK+nUuXVtsqCCniTXpeFL/emacyjkV7bwrtvSnUt2Oob8cpGI3VZQoeZVgymUJDivj9jWZKvMzlMfFY1sWyF6O+HcPK2uMK6j4vSyGIVXHS6y0pIEIKJVE868XpbCv5EcWLWRMhsGyzjGOB+YEOgunkGZhmHzMilXix35lg2ZL5++eDqK+fKlKYn78tlOM21RNC0+xTel4UTRHPotSKk5/u8T1s7uD+oaoEkz1IaFIuusEEMzvW7zrx2JjMqqH5bKGFYGuKoar8373sGGVf1u/JfQ3EiyGD4FoFoa/sN1aXUneXGR0zUCx4L1BBoFaBlxagZl9VBT53hjaHKVoA/OBDDdVoi0HQiceybxusDWQ+UJJdyPc/dYuqC5VwPnvsS4sgSq0Y4HsNbQN+WcylBVTlLlaB6Y5w0I9g0I9SS2KpFXvbWToD4L+IbM7Xjbs6x26vVVKfQxVv6gOhT5oq06MIODjCr2PXYhOh62rgDEBleiatwPr94OgxCGxHmHkLvPowJGdPVe6zuJy0yfh2Ti7RzZ05bO7MMxMuBTC9+xG4QmBVwO/z+ZWEmRxl2dNNgN4B2MwBskMOndGJIEzu5Suc54BqtEiyP4vLUI0Wyj3+4XmcEo0ZX55R8uX+PIQ6ccnzOfFlOgiJ/d89vk/84WZY0S6BThlqmZ3wYG1mbYK64E2ShzD+WNNe6zP7mS+DWAxHteTvWBX4rgSWfd0KZFv+RoOQ6ktglUAZenyIpx6AyM4FQ5MSl1UBAMCL1xPlGGsjftCPkn+G2GSfssSiAGQ+oMsGD4HfJFGzyHZ94peXTYNM/MX1xPpBDOdlcDiqQefJNAXh6qyZQGD+wCDwMwVfDe/fAgBE5E0OL16XfatjcVYFYhtg2eRbQVUJsoyXWjF6/C4Tv3s6govrSSJe/PzcByFZJQAAXJ01Ewg3wwpaCfwZgKrkd09HWvgm2Qcg/HdYdkQuG495CHxcnTVTyyUWqp2fjXivAEQI49u50nhkILB7ycRjolXiTbNPAiBCYM8JUNZeCgibVqMse9RnBIyeEJFByAOEzuiY+IvridE4b/Q4ie6sgOrGJjAo9xz0o2RFMBFvDEAFgq8K16dDqSGCNBVvDUAEgbWEjzXapHpsxHsDIPMGcUpzgaFqG1vxzgBUvsDDwMZVCgydV7gI9waAapC+wofoTABkDcK38MwA+ISRlegiiiiiiCKKKKIIAIA/TxOsJLhXkFIAAAAASUVORK5CYII=" alt="">&nbsp;$<span id="hubGold">0.00</span></div>
+                    <div class="unified-banner" id="unifiedBanner" style="display:none;">&#9733; VAULTS UNIFIED &#9733;</div>
+                </div>
+                <div class="hero-slot">
+                    <div class="hero-frame"><span class="qmark">?</span><img id="hubTaliyahAvatar" alt="Taliyah"></div>
+                    <div class="hero-name">TALIYAH</div>
+                    <div class="vault-num">Vault: $<span id="taliyahVault">0.00</span></div>
+                    <div class="gbar" title="Weekly stamina"><div class="gbar-fill gold" id="taliyahBar" style="width:0%"></div></div>
+                    <div class="stamina-num" id="hubTaliyahStamina">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="village">
+            <button class="building" onclick="openModal('modalVault')">
+                <img src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/Castle.png" width="180" alt="">
+                <span class="blabel">The Vault</span>
+            </button>
+            <button class="building" onclick="openModal('modalArena')">
+                <img src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/Barracks.png" width="120" alt="">
+                <span class="blabel">The Arena</span>
+            </button>
+            <button class="building" onclick="openModal('modalGuild')">
+                <img src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/Archery.png" width="120" alt="">
+                <span class="blabel">Guild</span>
+            </button>
+            <button class="building" onclick="openModal('modalTavern')">
+                <img src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/House1.png" width="92" alt="">
+                <span class="blabel">Tavern</span>
+            </button>
+            <button class="building" onclick="openModal('modalCharacter')">
+                <img src="https://raw.githubusercontent.com/sjmhenson-cyber/fin-game-assets/main/Buildings/Blue%20Buildings/Monastery.png" width="110" alt="">
+                <span class="blabel">Heroes</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="toast" class="paper"></div>
+
+    <!-- ============ MODALS ============ -->
+    <div id="modalVault" class="modal">
+        <div class="modal-content paper">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">The Vault</span></div>
+            <p style="text-align:center; margin: 4px 0;">
+                Sarah's Vault: <b>$<span id="vaultSarah">0.00</span></b><br>
+                Taliyah's Vault: <b>$<span id="vaultTaliyah">0.00</span></b>
+            </p>
+            <p style="text-align:center; font-size:0.85em; margin: 2px 0 10px 0;">Deposits go to <b class="depositWho">your</b> vault.</p>
+            <input type="number" id="depositAmt" placeholder="Earnings Amount ($)" min="0" step="0.01" inputmode="decimal">
+            <button class="game-btn" onclick="executeAction('DEPOSIT')">Deposit Earnings</button>
+        </div>
+    </div>
+
+    <div id="modalArena" class="modal">
+        <div class="modal-content paper">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">The Arena</span></div>
+            <p style="text-align:center; margin:4px 0;">Hire your army with real debt payments!<br>
+            <small>Your war chest: $<span id="arenaGold">0.00</span> (<span class="depositWho">your</span> vault)</small></p>
+
+            <div class="card" style="text-align:left;">
+                <h4 style="text-align:center;">&#128220; Report a New Debt</h4>
+                <p style="font-size:0.75em; margin:2px 0 8px 0; text-align:center;">Enter the real facts &mdash; the game forges the monster.</p>
+                <input type="text" id="debtName" placeholder="Debt name (e.g. Chase Visa)" maxlength="40">
+                <input type="number" id="debtBalance" placeholder="Current balance ($)" min="0" step="0.01" inputmode="decimal">
+                <input type="number" id="debtApr" placeholder="Interest rate APR % (0 if none)" min="0" step="0.01" inputmode="decimal">
+                <button class="game-btn red" onclick="executeAction('ADD_DEBT')">&#9889; Summon the Boss</button>
+            </div>
+
+            <div id="bossList"></div>
+        </div>
+    </div>
+
+    <div id="modalTavern" class="modal">
+        <div class="modal-content paper">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">The Tavern</span></div>
+            <label>Select Hero:</label>
+            <select id="staminaUser">
+                <option value="Sarah">Sarah</option>
+                <option value="Taliyah">Taliyah</option>
+            </select>
+            <input type="number" id="staminaAmt" placeholder="Spend Amount ($)" min="0" step="0.01" inputmode="decimal">
+            <button class="game-btn" onclick="executeAction('STAMINA')">Log Expense</button>
+            <hr class="rope">
+            <button class="game-btn red" id="resetBtn" onclick="confirmReset(this)">Reset Weekly Basecamp</button>
+        </div>
+    </div>
+
+    <div id="modalGuild" class="modal">
+        <div class="modal-content paper">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">Guild</span></div>
+            <div class="card" style="text-align:left;">
+                <input type="text" id="questName" placeholder="Quest Name (savings goal)" maxlength="60">
+                <input type="number" id="questTarget" placeholder="Target Amount ($)" min="0" step="0.01" inputmode="decimal">
+                <button class="game-btn" onclick="executeAction('ADD_QUEST')">Post New Quest</button>
+            </div>
+            <div id="questList"></div>
+        </div>
+    </div>
+
+    <div id="modalCharacter" class="modal">
+        <div class="modal-content paper">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">Heroes</span></div>
+            <div style="display:flex; gap:8px;">
+                <button class="game-btn" style="flex:1;" onclick="closeModals(); openCreator('Sarah');">Sarah's Creator</button>
+                <button class="game-btn" style="flex:1;" onclick="closeModals(); openCreator('Taliyah');">Taliyah's Creator</button>
+            </div>
+            <hr class="rope">
+            <p style="font-size: 0.85em; margin-top: 0;">Or pick ANY sprite from the armory below. Select a slot, pick a folder, then tap an asset.</p>
+            <select id="avatarSlot">
+                <option value="SarahAvatar">Assign Sarah Hero</option>
+                <option value="TaliyahAvatar">Assign Taliyah Hero</option>
+            </select>
+            <select id="assetFolder" onchange="renderGallery()" style="display:none;"></select>
+            <div class="asset-gallery" id="driveAssets">
+                <p class="gallery-note"><em>Scanning GitHub repository...</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ HOW TO PLAY ============ -->
+    <div id="modalGuide" class="modal">
+        <div class="modal-content paper guide">
+            <button class="close-btn" onclick="closeModals()">X</button>
+            <div class="modal-head"><span class="ribbon-title">How to Play</span></div>
+
+            <h3>The Goal</h3>
+            <p>This kingdom IS your real family finances. Every gold piece is a real dollar. Slay your debts, fund your dreams, and keep your weekly spending in check &mdash; together.</p>
+
+            <h3>&#128273; Your Save File</h3>
+            <p>Everything you do is saved instantly to your Google Sheet &mdash; it's the kingdom's ledger. Close the game, come back next week, it's all still here. (You can open the Sheet anytime to see or export the raw numbers to Excel.)</p>
+
+            <h3>&#127984; The Vault (Castle)</h3>
+            <p>When real money comes in (paychecks from your businesses), deposit it here. Sarah and Taliyah each have their own vault &mdash; the game remembers who's playing. The center shows the Family Treasury (both vaults combined).</p>
+
+            <h3>&#9876; The Arena (Barracks)</h3>
+            <p><b>Your debts are the bosses.</b> A boss's HP equals the real dollars you owe. Report a new debt with its name, balance, and interest rate &mdash; the game forges its monster form automatically.</p>
+            <p><b>To damage a boss, make a real payment on that debt</b>, then hire your army for the same amount. Your gold pays their wages, they march, and the boss loses exactly that much HP. When HP hits $0 the debt is SLAIN forever.</p>
+            <p class="apr-tag">&#9888; Interest makes bosses GROW. Each month, a boss with an APR gains HP automatically &mdash; just like real interest. Strike hard, strike often.</p>
+
+            <h3>&#127993; The Guild (Archery)</h3>
+            <p>Quests are savings goals &mdash; a vacation, a new PC, an emergency fund. Post a quest with a target amount, then fund it from your vault as you save. Fill the bar to complete the quest!</p>
+
+            <h3>&#127866; The Tavern (House)</h3>
+            <p>Stamina is your weekly fun-money budget. Every leisure expense (eating out, games, treats) drains that hero's stamina bar. Once a week, tap Reset Weekly Basecamp to refill both bars to your weekly budgets (editable in the Sheet's State tab).</p>
+
+            <h3>&#9962; Heroes (Monastery)</h3>
+            <p>Forge your hero in the creator: pick a class and a banner color. Your color is the faction of the army you hire in the Arena! Or browse the full armory and pick any sprite in the kingdom.</p>
+
+            <h3>&#9733; The Unification</h3>
+            <p>When EVERY debt boss lies defeated, the vaults fuse into one shining Family Treasury &mdash; the endgame of shared dreams begins.</p>
+        </div>
+    </div>
+
+    <script>
+        // ================= CONFIG =================
+        const GH_OWNER = 'sjmhenson-cyber';
+        const GH_REPO = 'fin-game-assets';
+        const GH_BRANCH = 'main';
+
+        const CLASS_FILES = { Warrior: 'Warrior_Idle.png', Archer: 'Archer_Idle.png', Lancer: 'Lancer_Idle.png', Pawn: 'Pawn_Idle.png', Monk: 'Idle.png' };
+        const CLASSES = ['Warrior', 'Archer', 'Lancer', 'Pawn', 'Monk'];
+        const COLORS = [
+            { name: 'Blue', hex: '#3a7bd5' }, { name: 'Red', hex: '#c0392b' },
+            { name: 'Yellow', hex: '#e0b12c' }, { name: 'Purple', hex: '#8e44ad' },
+            { name: 'Black', hex: '#3b3b46' }
+        ];
+        const BOSS_COLORS = ['Black', 'Purple']; // dark factions only — never the same look as a player army
+        const BOSS_TITLES = ['the Ravenous', 'the Gold-Fanged', 'the Iron-Clad', 'the Insatiable', 'the Creeping', 'the Merciless', 'the Shadowed', 'the Cursed'];
+        const BOSS_CREATURES = ['Golem', 'Dragon', 'Ogre', 'Warlord', 'Serpent', 'Reaper', 'Kraken', 'Revenant'];
+
+        let appData = {};
+        let activePlayer = null;
+        let dataReady = false;
+        let inVillage = false;
+        let assetIndex = [];
+        let selectedAssetUrl = null;
+        let creator = { forWho: 'Sarah', cls: 'Warrior', color: 'Blue' };
+
+        // ================= HELPERS =================
+        function rawUrl(path) {
+            return 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/' + GH_BRANCH + '/' +
+                path.split('/').map(encodeURIComponent).join('/');
+        }
+        function unitUrl(color, cls) {
+            let file = CLASS_FILES[cls];
+            if (color === 'Blue' && cls === 'Warrior') file = 'Warrior_Guard.png'; // Blue Warrior has no idle sprite
+            return rawUrl(color + ' Units/' + cls + '/' + file);
+        }
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+        }
+        function money(v) { const n = Number(v); return (isFinite(n) ? n : 0).toFixed(2); }
+        function pctOf(c, m) {
+            c = Number(c); m = Number(m);
+            if (!isFinite(c) || !isFinite(m) || m <= 0) return 0;
+            return Math.max(0, Math.min((c / m) * 100, 100));
+        }
+        function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; } return h; }
+        function cropIfSpriteSheet(img) {
+            const apply = function () { if (img.naturalWidth >= img.naturalHeight * 1.9) img.classList.add('sprite-crop'); };
+            if (img.complete && img.naturalWidth) apply(); else img.addEventListener('load', apply);
+        }
+        function saveProfile(p) { try { localStorage.setItem('ccPlayer', p); } catch (e) {} window.__player = p; }
+        function loadProfile() { try { const v = localStorage.getItem('ccPlayer'); if (v) return v; } catch (e) {} return window.__player || null; }
+        function clearProfile() { try { localStorage.removeItem('ccPlayer'); } catch (e) {} window.__player = null; }
+        function playerFaction(who) {
+            const url = (appData.state && appData.state[who + 'Avatar']) || '';
+            const m = url.match(/(Blue|Red|Yellow|Purple|Black)%20Units/);
+            return m ? m[1] : 'Blue';
+        }
+
+        // ================= SCREENS =================
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+            document.getElementById('app-container').style.display = 'none';
+            if (id) document.getElementById(id).classList.add('on');
+        }
+        function enterVillage() {
+            inVillage = true;
+            showScreen(null);
+            document.getElementById('app-container').style.display = 'block';
+            document.getElementById('playerBadge').innerText = activePlayer || '—';
+            document.querySelectorAll('.depositWho').forEach(el => el.innerText = activePlayer ? (activePlayer + "'s") : 'your');
+            const sel = document.getElementById('staminaUser');
+            if (activePlayer) sel.value = activePlayer;
+            if (appData && appData.state) renderApp(appData); // refresh war chest etc. for this player
+        }
+        function pressStart() {
+            if (!dataReady) return;
+            if (!activePlayer) { showScreen('screenPlayers'); refreshPickCards(); }
+            else routeAfterPlayer();
+        }
+        function routeAfterPlayer() {
+            const hasAvatar = appData.state && appData.state[activePlayer + 'Avatar'];
+            if (hasAvatar) enterVillage();
+            else openCreator(activePlayer);
+        }
+        function pickPlayer(p) { activePlayer = p; saveProfile(p); routeAfterPlayer(); }
+        function switchPlayer() { clearProfile(); activePlayer = null; showScreen('screenPlayers'); refreshPickCards(); }
+        function refreshPickCards() {
+            ['Sarah', 'Taliyah'].forEach(function (who) {
+                const img = document.getElementById('pick' + who + 'Img');
+                const url = (appData.state && appData.state[who + 'Avatar']) || '';
+                const q = img.parentElement.querySelector('.qmark');
+                if (url) { img.src = url; img.style.display = 'block'; if (q) q.style.display = 'none'; cropIfSpriteSheet(img); }
+                else { img.style.display = 'none'; if (q) q.style.display = 'block'; }
+            });
+        }
+
+        // ================= CHARACTER CREATOR =================
+        function openCreator(who) {
+            creator.forWho = who;
+            document.getElementById('creatorFor').innerText = who;
+            const cRow = document.getElementById('classRow');
+            cRow.innerHTML = CLASSES.map(c =>
+                `<button class="chip ${c === creator.cls ? 'sel' : ''}" data-cls="${c}" onclick="setCreator('cls','${c}')">${c}</button>`).join('');
+            const kRow = document.getElementById('colorRow');
+            kRow.innerHTML = COLORS.map(k =>
+                `<button class="chip ${k.name === creator.color ? 'sel' : ''}" data-color="${k.name}" onclick="setCreator('color','${k.name}')"><span class="swatch" style="background:${k.hex}"></span>${k.name}</button>`).join('');
+            updateCreatorPreview();
+            showScreen('screenCreator');
+        }
+        function setCreator(field, value) {
+            creator[field] = value;
+            document.querySelectorAll('#classRow .chip').forEach(c => c.classList.toggle('sel', c.dataset.cls === creator.cls));
+            document.querySelectorAll('#colorRow .chip').forEach(c => c.classList.toggle('sel', c.dataset.color === creator.color));
+            updateCreatorPreview();
+        }
+        function updateCreatorPreview() {
+            const img = document.getElementById('creatorPreview');
+            img.classList.remove('sprite-crop');
+            img.src = unitUrl(creator.color, creator.cls);
+            cropIfSpriteSheet(img);
+        }
+        function confirmCreator() {
+            const url = unitUrl(creator.color, creator.cls);
+            setBusy(true);
+            showToast('Enlisting your hero...');
+            google.script.run
+                .withSuccessHandler(function (d) { renderApp(d); showToast(creator.forWho + "'s hero enlisted!"); enterVillage(); })
+                .withFailureHandler(onServerError)
+                .saveAction('SET_AVATAR', { key: creator.forWho + 'Avatar', url: url, player: activePlayer });
+        }
+
+        // ================= GITHUB ASSETS (1 API call) =================
+        function loadGitHubAssets() {
+            const gallery = document.getElementById('driveAssets');
+            gallery.innerHTML = '<p class="gallery-note"><em>Scanning GitHub repository...</em></p>';
+            try {
+                const cached = JSON.parse(sessionStorage.getItem('ghAssetCache') || 'null');
+                if (cached && Date.now() - cached.at < 10 * 60 * 1000 && Array.isArray(cached.assets)) {
+                    assetIndex = cached.assets; buildFolderFilter(); renderGallery(); return;
+                }
+            } catch (e) {}
+            const treesUrl = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/git/trees/' + GH_BRANCH + '?recursive=1';
+            fetch(treesUrl)
+                .then(r => {
+                    if (r.status === 403 || r.status === 429) throw new Error('GitHub rate limit reached. Wait an hour and reopen.');
+                    if (!r.ok) throw new Error('GitHub responded with status ' + r.status);
+                    return r.json();
+                })
+                .then(data => {
+                    if (!data || !Array.isArray(data.tree)) throw new Error('Unexpected GitHub response.');
+                    assetIndex = data.tree
+                        .filter(t => t.type === 'blob' && /\.(png|jpe?g|gif|webp)$/i.test(t.path))
+                        .map(t => ({ path: t.path, url: rawUrl(t.path), folder: t.path.indexOf('/') > -1 ? t.path.split('/')[0] : '(root)' }));
+                    if (!assetIndex.length) throw new Error('No image files found in the repository.');
+                    try { sessionStorage.setItem('ghAssetCache', JSON.stringify({ at: Date.now(), assets: assetIndex })); } catch (e) {}
+                    buildFolderFilter(); renderGallery();
+                })
+                .catch(err => {
+                    console.log('GitHub API Error:', err);
+                    gallery.innerHTML = '<p class="gallery-note gallery-error"><em>Could not load assets: ' + escapeHtml(err.message) + '</em></p>';
+                });
+        }
+        function buildFolderFilter() {
+            const sel = document.getElementById('assetFolder');
+            const folders = [...new Set(assetIndex.map(a => a.folder))].sort();
+            sel.innerHTML = '<option value="">All folders (' + assetIndex.length + ' assets)</option>' +
+                folders.map(f => '<option value="' + escapeHtml(f) + '">' + escapeHtml(f) + '</option>').join('');
+            sel.style.display = 'block';
+        }
+        function renderGallery() {
+            const gallery = document.getElementById('driveAssets');
+            const folder = document.getElementById('assetFolder').value;
+            const items = folder ? assetIndex.filter(a => a.folder === folder) : assetIndex;
+            gallery.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            items.forEach(a => {
+                const img = document.createElement('img');
+                img.src = a.url;
+                img.className = 'asset-img' + (a.url === selectedAssetUrl ? ' selected' : '');
+                img.alt = a.path; img.title = a.path;
+                img.loading = 'lazy'; img.decoding = 'async';
+                img.addEventListener('click', function () { setAvatar(a.url, img); });
+                img.addEventListener('error', function () { img.remove(); });
+                cropIfSpriteSheet(img);
+                frag.appendChild(img);
+            });
+            gallery.appendChild(frag);
+            if (!items.length) gallery.innerHTML = '<p class="gallery-note"><em>No images in this folder.</em></p>';
+        }
+
+        // ================= BOOT =================
+        window.onload = function () {
+            loadGitHubAssets();
+            activePlayer = loadProfile();
+            if (activePlayer) {
+                const w = document.getElementById('titleWelcome');
+                w.style.display = 'block';
+                w.innerHTML = 'Welcome back, <b>' + escapeHtml(activePlayer) + '</b>!';
+            }
+            if (typeof google === 'undefined' || !google.script || !google.script.run) {
+                document.getElementById('titleStatus').innerHTML =
+                    '&#9888;&#65039; Open this page through its Google Apps Script /exec link.<br><small>Deploy a NEW VERSION after each code change.</small>';
+                return;
+            }
+            google.script.run.withSuccessHandler(renderApp).withFailureHandler(onServerError).getAppData();
+        };
+        function onServerError(err) {
+            const msg = err && err.message ? err.message : String(err);
+            if (inVillage) { showToast(msg, true); setBusy(false); }
+            else document.getElementById('titleStatus').innerHTML = '&#10060; ' + escapeHtml(msg);
+        }
+
+        // ================= RENDER =================
+        function setHeroAvatar(id, url) {
+            const el = document.getElementById(id);
+            const q = el.parentElement.querySelector('.qmark');
+            if (url) {
+                el.src = url; el.style.display = 'block';
+                if (q) q.style.display = 'none';
+                el.onerror = function () { el.style.display = 'none'; if (q) q.style.display = 'block'; };
+                cropIfSpriteSheet(el);
+            } else { el.style.display = 'none'; if (q) q.style.display = 'block'; }
+        }
+
+        function renderApp(data) {
+            try {
+                if (!data) throw new Error('Received empty data from spreadsheet.');
+                appData = data;
+                appData.state = appData.state || {};
+                appData.bosses = appData.bosses || [];
+                appData.quests = appData.quests || [];
+                const s = appData.state;
+
+                if (!dataReady) {
+                    dataReady = true;
+                    document.getElementById('titleStatus').innerHTML = '&#9989; The village is ready!';
+                    document.getElementById('startBtn').disabled = false;
+                }
+                setBusy(false);
+
+                const sv = Number(s['SarahVault']) || 0;
+                const tv = Number(s['TaliyahVault']) || 0;
+                const total = money(sv + tv);
+                document.getElementById('sarahVault').innerText = money(sv);
+                document.getElementById('taliyahVault').innerText = money(tv);
+                document.getElementById('vaultSarah').innerText = money(sv);
+                document.getElementById('vaultTaliyah').innerText = money(tv);
+                document.getElementById('hubGold').innerText = total;
+                const myVault = activePlayer === 'Taliyah' ? tv : sv;
+                document.getElementById('arenaGold').innerText = money(myVault);
+                const gw = document.getElementById('goldWrap');
+                gw.style.fontSize = total.length > 10 ? '0.65em' : (total.length > 7 ? '0.82em' : '');
+
+                // Unification event: every boss slain
+                const realBosses = appData.bosses.filter(b => Number(b.max) > 0);
+                const unified = realBosses.length > 0 && realBosses.every(b => Number(b.current) <= 0);
+                document.getElementById('unifiedBanner').style.display = unified ? 'block' : 'none';
+                document.getElementById('treasuryLabel').innerText = unified ? 'FAMILY TREASURY' : 'Family Treasury';
+
+                ['Sarah', 'Taliyah'].forEach(function (who) {
+                    const st = Number(s[who + 'Stamina']) || 0;
+                    const budget = Number(s[who + 'WeeklyBudget']) || 100;
+                    const numEl = document.getElementById('hub' + who + 'Stamina');
+                    numEl.innerText = '$' + money(st);
+                    numEl.className = 'stamina-num' + (st < 0 ? ' broke' : '');
+                    document.getElementById(who.toLowerCase() + 'Bar').style.width = pctOf(st, budget) + '%';
+                });
+                setHeroAvatar('hubSarahAvatar', s['SarahAvatar']);
+                setHeroAvatar('hubTaliyahAvatar', s['TaliyahAvatar']);
+
+                // ---- Arena bosses ----
+                let bossHtml = '';
+                appData.bosses.forEach(b => {
+                    const pct = pctOf(b.current, b.max);
+                    const dead = Number(b.current) <= 0 && Number(b.max) > 0;
+                    const avatarUrl = b.avatar || (b.id === 'chase' ? s['ChaseAvatar'] : (b.id === 'loan' ? s['LoanAvatar'] : ''));
+                    const apr = Number(b.apr) || 0;
+                    bossHtml += `
+                        <div class="card ${dead ? 'defeated' : ''}" id="bosscard_${escapeHtml(String(b.id))}">
+                            ${dead ? '<div class="stamp">SLAIN!</div>' : ''}
+                            ${avatarUrl ? `<img src="${escapeHtml(avatarUrl)}" class="boss-avatar" onerror="this.style.display='none'" alt="">` : ''}
+                            <h4>${escapeHtml(b.name)}</h4>
+                            <small>HP: $${money(b.current)} / $${money(b.max)}</small>
+                            ${apr > 0 && !dead ? `<div class="apr-tag">&#9888; grows ${apr}%/yr &mdash; interest strikes monthly!</div>` : ''}
+                            <div class="gbar"><div class="gbar-fill" style="width:${pct}%"></div></div>
+                            ${dead ? '<small>This debt has been slain. Huzzah!</small>' : `
+                            <input type="number" id="atk_${escapeHtml(String(b.id))}" placeholder="Real payment made ($)" min="0" step="0.01" inputmode="decimal">
+                            <button class="game-btn red" onclick="executeAction('ATTACK', '${escapeHtml(String(b.id))}')">&#9876;&#65039; Hire Army &mdash; Strike!</button>`}
+                        </div>`;
+                });
+                document.getElementById('bossList').innerHTML =
+                    bossHtml || '<p style="text-align:center;"><em>No debts reported. Peace reigns... for now.</em></p>';
+                document.querySelectorAll('#bossList .boss-avatar').forEach(cropIfSpriteSheet);
+
+                // ---- Guild quests ----
+                let questHtml = '';
+                appData.quests.forEach(q => {
+                    const pct = pctOf(q.current, q.max);
+                    const done = pct >= 100;
+                    questHtml += `
+                        <div class="card">
+                            <h4>${escapeHtml(q.name)} ${done ? '&#127942;' : ''}</h4>
+                            <small>Saved: $${money(q.current)} / $${money(q.max)}</small>
+                            <div class="gbar"><div class="gbar-fill green" style="width:${pct}%"></div></div>
+                            ${done ? '<small>Quest complete!</small>' : `
+                            <input type="number" id="fund_${escapeHtml(String(q.id))}" placeholder="Fund from your vault ($)" min="0" step="0.01" inputmode="decimal">
+                            <button class="game-btn" onclick="executeAction('FUND_QUEST', '${escapeHtml(String(q.id))}')">Fund Quest</button>`}
+                        </div>`;
+                });
+                document.getElementById('questList').innerHTML =
+                    questHtml || '<p style="text-align:center;"><em>No quests posted yet. Add one above!</em></p>';
+            } catch (err) {
+                if (inVillage) showToast('Render Error: ' + err.message, true);
+                else document.getElementById('titleStatus').innerHTML = '&#10060; Render Error: ' + escapeHtml(err.message);
+            }
+        }
+
+        // ================= THE ARMY MARCH =================
+        function spawnArmy(card, color) {
+            const wrap = document.createElement('div');
+            wrap.className = 'army';
+            ['Warrior', 'Archer', 'Lancer'].forEach(function (cls, i) {
+                const u = document.createElement('div');
+                u.className = 'unit';
+                u.style.animationDelay = (i * 0.15) + 's';
+                u.style.bottom = (6 + i * 4) + 'px';
+                const url = unitUrl(color, cls);
+                const im = new Image();
+                im.onload = function () {
+                    const frames = Math.max(1, Math.round(im.naturalWidth / im.naturalHeight));
+                    u.style.backgroundImage = 'url("' + url + '")';
+                    u.style.setProperty('--fw', -(frames * 64) + 'px');
+                    u.style.animation = 'unitmarch 1.3s linear ' + (i * 0.15) + 's forwards, unitframes 0.65s steps(' + frames + ') infinite';
+                };
+                im.src = url;
+                wrap.appendChild(u);
+            });
+            card.appendChild(wrap);
+            setTimeout(function () {
+                const fx = document.createElement('div');
+                fx.className = 'boom';
+                card.appendChild(fx);
+                setTimeout(function () { fx.remove(); wrap.remove(); }, 800);
+            }, 1100);
+        }
+
+        // ================= ACTIONS =================
+        function readAmount(id) {
+            const el = document.getElementById(id);
+            const n = parseFloat(el.value);
+            if (!isFinite(n) || n <= 0) { showToast('Enter an amount greater than $0.', true); el.focus(); return null; }
+            return n;
+        }
+
+        function executeAction(type, targetId = null) {
+            let data = { player: activePlayer };
+            let delayClose = 0;
+
+            if (type === 'DEPOSIT') {
+                const amt = readAmount('depositAmt');
+                if (amt === null) return;
+                data.amount = amt;
+                document.getElementById('depositAmt').value = '';
+            } else if (type === 'ATTACK') {
+                const amt = readAmount('atk_' + targetId);
+                if (amt === null) return;
+                data.amount = amt; data.bossId = targetId;
+                const card = document.getElementById('bosscard_' + targetId);
+                if (card) spawnArmy(card, playerFaction(activePlayer || 'Sarah'));
+                delayClose = 1900;
+            } else if (type === 'STAMINA') {
+                const amt = readAmount('staminaAmt');
+                if (amt === null) return;
+                data.amount = amt;
+                data.user = document.getElementById('staminaUser').value;
+                document.getElementById('staminaAmt').value = '';
+            } else if (type === 'ADD_QUEST') {
+                const name = document.getElementById('questName').value.trim();
+                const target = parseFloat(document.getElementById('questTarget').value);
+                if (!name) { showToast('Give the quest a name.', true); return; }
+                if (!isFinite(target) || target <= 0) { showToast('Enter a target above $0.', true); return; }
+                data.name = name; data.target = target;
+                document.getElementById('questName').value = '';
+                document.getElementById('questTarget').value = '';
+            } else if (type === 'FUND_QUEST') {
+                const amt = readAmount('fund_' + targetId);
+                if (amt === null) return;
+                data.amount = amt; data.questId = targetId;
+            } else if (type === 'ADD_DEBT') {
+                const rawName = document.getElementById('debtName').value.trim();
+                const balance = parseFloat(document.getElementById('debtBalance').value);
+                const apr = parseFloat(document.getElementById('debtApr').value) || 0;
+                if (!rawName) { showToast('Name the debt (e.g. Chase Visa).', true); return; }
+                if (!isFinite(balance) || balance <= 0) { showToast('Enter the current balance.', true); return; }
+                if (apr < 0 || apr > 400) { showToast('APR looks wrong — enter 0 to 400.', true); return; }
+                // The game forges the boss: epic title + monster sprite, no decisions needed
+                const h = hashStr(rawName.toLowerCase());
+                const epic = rawName + ', ' + BOSS_TITLES[h % BOSS_TITLES.length] + ' ' + BOSS_CREATURES[(h >>> 3) % BOSS_CREATURES.length];
+                const bossSprite = unitUrl(BOSS_COLORS[(h >>> 6) % BOSS_COLORS.length], CLASSES[(h >>> 9) % CLASSES.length]);
+                data.name = epic; data.balance = balance; data.apr = apr; data.avatar = bossSprite;
+                document.getElementById('debtName').value = '';
+                document.getElementById('debtBalance').value = '';
+                document.getElementById('debtApr').value = '';
+                showToast('&#9889; ' + epic + ' rises from the deep!'.replace(/&#\d+;/, ''), false);
+            }
+
+            setBusy(true);
+            if (type !== 'ADD_DEBT') showToast(type === 'ATTACK' ? 'Your army marches!' : 'Saving to the Village Ledger...');
+            if (delayClose) setTimeout(closeModals, delayClose); else closeModals();
+
+            google.script.run
+                .withSuccessHandler(function (d) {
+                    const finish = function () {
+                        renderApp(d);
+                        showToast(type === 'ATTACK' ? 'Strike lands! The ledger is updated.' : 'Saved!');
+                    };
+                    // Let the army finish its march before the re-render wipes the card
+                    if (type === 'ATTACK') setTimeout(finish, 1700); else finish();
+                })
+                .withFailureHandler(onServerError)
+                .saveAction(type, data);
+        }
+
+        function confirmReset(btn) {
+            if (btn.dataset.armed === '1') {
+                btn.dataset.armed = '';
+                btn.innerText = 'Reset Weekly Basecamp';
+                setBusy(true);
+                showToast('Refilling stamina...');
+                closeModals();
+                google.script.run
+                    .withSuccessHandler(function (d) { renderApp(d); showToast('Basecamp reset — stamina refilled!'); })
+                    .withFailureHandler(onServerError)
+                    .saveAction('RESET_BASECAMP', { player: activePlayer });
+            } else {
+                btn.dataset.armed = '1';
+                btn.innerText = 'Tap again to confirm reset';
+                setTimeout(function () { btn.dataset.armed = ''; btn.innerText = 'Reset Weekly Basecamp'; }, 4000);
+            }
+        }
+
+        function setAvatar(url, imgEl) {
+            const key = document.getElementById('avatarSlot').value;
+            selectedAssetUrl = url;
+            document.querySelectorAll('.asset-img.selected').forEach(i => i.classList.remove('selected'));
+            if (imgEl) imgEl.classList.add('selected');
+            setBusy(true);
+            showToast('Updating Character Roster...');
+            closeModals();
+            google.script.run
+                .withSuccessHandler(function (d) { renderApp(d); showToast('Character updated!'); })
+                .withFailureHandler(onServerError)
+                .saveAction('SET_AVATAR', { key: key, url: url, player: activePlayer });
+        }
+
+        // ================= UI HELPERS =================
+        let toastTimer = null;
+        function showToast(msg, isError) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.className = 'paper' + (isError ? ' error' : '');
+            t.style.display = 'block';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function () { t.style.display = 'none'; }, isError ? 5000 : 2500);
+        }
+        function setBusy(busy) { document.querySelectorAll('button.game-btn').forEach(b => { b.disabled = busy; }); }
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModals(); });
+        document.addEventListener('click', function (e) { if (e.target.classList && e.target.classList.contains('modal')) closeModals(); });
+    </script>
+</body>
+</html>

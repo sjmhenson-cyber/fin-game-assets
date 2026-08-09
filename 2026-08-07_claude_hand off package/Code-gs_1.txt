@@ -1,0 +1,314 @@
+/**
+ * COMMAND CENTER — backend (Code.gs) — V4
+ * ---------------------------------------
+ * Google Sheet = the kingdom's save file. Tabs are auto-created on first run:
+ *   State   : key/value pairs (vaults, stamina, budgets, avatars)
+ *   Bosses  : your debts (ID, Name, CurrentHP, MaxHP, APR, Avatar, LastInterest)
+ *   Quests  : savings goals (ID, Name, Saved, Target)
+ *   Log     : every action, timestamped, with the player's name
+ *
+ * ECONOMY (dual vaults, per your game design doc):
+ *   - Each player (Sarah / Taliyah) has her own Vault.
+ *   - Deposits credit the ACTIVE player's vault.
+ *   - Hiring the army (debt payments) and funding quests debit the active player's vault.
+ *   - Boss HP = real debt balance. HP 0 = debt slain.
+ *   - Bosses with an APR grow automatically: compound interest is applied
+ *     once per calendar month, every time the app loads. Just like real life.
+ *   - Tavern expenses drain that hero's weekly Stamina; Reset Basecamp refills
+ *     both to their WeeklyBudget values.
+ */
+
+var SHEET_ID = '1pnITJig1UmQ5sc2ZEDmLqbiof1Ph8T8pF-d6UgZWkSA';
+
+var SH_STATE = 'State';
+var SH_BOSSES = 'Bosses';
+var SH_QUESTS = 'Quests';
+var SH_LOG = 'Log';
+
+// ---------------------------------------------------------------- doGet
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('Command Center')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+// ------------------------------------------------------------- helpers
+function getSS_() {
+  try {
+    return SpreadsheetApp.openById(SHEET_ID);
+  } catch (e) {
+    throw new Error('Could not open the spreadsheet. Check SHEET_ID in Code.gs and sharing permissions. (' + e.message + ')');
+  }
+}
+
+function round2_(n) { return Math.round(n * 100) / 100; }
+
+function toAmount_(value, label) {
+  var n = Number(value);
+  if (!isFinite(n) || n <= 0) throw new Error(label + ' must be a number greater than 0.');
+  return round2_(n);
+}
+
+function vaultKey_(player) {
+  if (player === 'Taliyah') return 'TaliyahVault';
+  if (player === 'Sarah') return 'SarahVault';
+  throw new Error('Pick a player first (tap Switch on the hub if needed).');
+}
+
+function ensureSetup_(ss) {
+  // ---- State
+  var st = ss.getSheetByName(SH_STATE);
+  if (!st) {
+    st = ss.insertSheet(SH_STATE);
+    st.getRange(1, 1, 1, 2).setValues([['Key', 'Value']]);
+  }
+  var existing = readState_(st);
+  var defaults = {
+    SarahVault: 0, TaliyahVault: 0,
+    SarahStamina: 100, TaliyahStamina: 100,
+    SarahWeeklyBudget: 100, TaliyahWeeklyBudget: 100,
+    SarahAvatar: '', TaliyahAvatar: '',
+    ChaseAvatar: '', LoanAvatar: ''
+  };
+  var toAdd = [];
+  for (var key in defaults) {
+    if (!(key in existing)) toAdd.push([key, defaults[key]]);
+  }
+  if (toAdd.length) st.getRange(st.getLastRow() + 1, 1, toAdd.length, 2).setValues(toAdd);
+
+  // Migrate legacy single-treasury PartyGold into the two vaults (50/50), once.
+  if ('PartyGold' in existing && !('SarahVault' in existing)) {
+    var pg = Number(existing.PartyGold) || 0;
+    if (pg > 0) {
+      var half = round2_(pg / 2);
+      writeStateValue_(st, 'SarahVault', half);
+      writeStateValue_(st, 'TaliyahVault', round2_(pg - half));
+      writeStateValue_(st, 'PartyGold', 0);
+      log_(ss, 'MIGRATE', 'Split legacy Party Gold into the two vaults', pg);
+    }
+  }
+
+  // ---- Bosses (7 columns; upgrade older 4-column sheets in place)
+  var bs = ss.getSheetByName(SH_BOSSES);
+  if (!bs) {
+    bs = ss.insertSheet(SH_BOSSES);
+    bs.getRange(1, 1, 1, 7).setValues([['ID', 'Name', 'CurrentHP', 'MaxHP', 'APR', 'Avatar', 'LastInterest']]);
+  } else if (String(bs.getRange(1, 5).getValue()) === '') {
+    bs.getRange(1, 5, 1, 3).setValues([['APR', 'Avatar', 'LastInterest']]);
+  }
+
+  // ---- Quests
+  var qs = ss.getSheetByName(SH_QUESTS);
+  if (!qs) {
+    qs = ss.insertSheet(SH_QUESTS);
+    qs.getRange(1, 1, 1, 4).setValues([['ID', 'Name', 'Saved', 'Target']]);
+  }
+
+  // ---- Log
+  var lg = ss.getSheetByName(SH_LOG);
+  if (!lg) {
+    lg = ss.insertSheet(SH_LOG);
+    lg.getRange(1, 1, 1, 4).setValues([['Timestamp', 'Action', 'Details', 'Amount']]);
+  }
+}
+
+function readState_(st) {
+  var out = {};
+  var last = st.getLastRow();
+  if (last < 2) return out;
+  var rows = st.getRange(2, 1, last - 1, 2).getValues();
+  for (var i = 0; i < rows.length; i++) {
+    if (rows[i][0] !== '') out[String(rows[i][0])] = rows[i][1];
+  }
+  return out;
+}
+
+function writeStateValue_(st, key, value) {
+  var last = st.getLastRow();
+  if (last >= 2) {
+    var keys = st.getRange(2, 1, last - 1, 1).getValues();
+    for (var i = 0; i < keys.length; i++) {
+      if (String(keys[i][0]) === key) { st.getRange(i + 2, 2).setValue(value); return; }
+    }
+  }
+  st.getRange(last + 1, 1, 1, 2).setValues([[key, value]]);
+}
+
+function readRows_(sheet, cols) {
+  var last = sheet.getLastRow();
+  if (last < 2) return [];
+  return sheet.getRange(2, 1, last - 1, cols).getValues();
+}
+
+function log_(ss, action, details, amount) {
+  try {
+    ss.getSheetByName(SH_LOG).appendRow([new Date(), action, details, amount]);
+  } catch (e) { /* logging must never break the app */ }
+}
+
+// ---------------------------------------------- automatic monthly interest
+function applyInterest_(ss) {
+  var bs = ss.getSheetByName(SH_BOSSES);
+  var rows = readRows_(bs, 7);
+  var now = new Date();
+  for (var i = 0; i < rows.length; i++) {
+    var current = Number(rows[i][2]) || 0;
+    var apr = Number(rows[i][4]) || 0;
+    var last = rows[i][6];
+    if (apr <= 0 || current <= 0) continue;
+    if (!(last instanceof Date) || isNaN(last.getTime())) {
+      // Older rows without a date: start the clock now.
+      bs.getRange(i + 2, 7).setValue(now);
+      continue;
+    }
+    var months = (now.getFullYear() - last.getFullYear()) * 12 + (now.getMonth() - last.getMonth());
+    if (now.getDate() < last.getDate()) months -= 1;
+    if (months < 1) continue;
+
+    var factor = Math.pow(1 + apr / 1200, months); // monthly compounding
+    var newHP = round2_(current * factor);
+    var growth = round2_(newHP - current);
+    var max = Number(rows[i][3]) || 0;
+
+    bs.getRange(i + 2, 3).setValue(newHP);
+    if (newHP > max) bs.getRange(i + 2, 4).setValue(newHP);
+    var advanced = new Date(last.getTime());
+    advanced.setMonth(advanced.getMonth() + months);
+    bs.getRange(i + 2, 7).setValue(advanced);
+
+    log_(ss, 'INTEREST', rows[i][1] + ' grew stronger (' + months + ' month(s) at ' + apr + '% APR)', growth);
+  }
+}
+
+// ------------------------------------------------------------ getAppData
+function getAppData() {
+  var ss = getSS_();
+  ensureSetup_(ss);
+  applyInterest_(ss);
+
+  var state = readState_(ss.getSheetByName(SH_STATE));
+
+  var bosses = readRows_(ss.getSheetByName(SH_BOSSES), 7).map(function (r) {
+    return {
+      id: String(r[0]), name: String(r[1]),
+      current: Number(r[2]) || 0, max: Number(r[3]) || 0,
+      apr: Number(r[4]) || 0, avatar: String(r[5] || '')
+    };
+  }).filter(function (b) { return b.id; });
+
+  var quests = readRows_(ss.getSheetByName(SH_QUESTS), 4).map(function (r) {
+    return { id: String(r[0]), name: String(r[1]), current: Number(r[2]) || 0, max: Number(r[3]) || 0 };
+  }).filter(function (q) { return q.id; });
+
+  return { state: state, bosses: bosses, quests: quests };
+}
+
+// ------------------------------------------------------------ saveAction
+function saveAction(type, data) {
+  data = data || {};
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var ss = getSS_();
+    ensureSetup_(ss);
+    var st = ss.getSheetByName(SH_STATE);
+    var state = readState_(st);
+    var by = data.player ? ' [' + String(data.player) + ']' : '';
+
+    if (type === 'DEPOSIT') {
+      var amt = toAmount_(data.amount, 'Deposit');
+      var vk = vaultKey_(data.player);
+      writeStateValue_(st, vk, round2_((Number(state[vk]) || 0) + amt));
+      log_(ss, 'DEPOSIT', 'Earnings deposited' + by, amt);
+
+    } else if (type === 'ATTACK') {
+      var amt = toAmount_(data.amount, 'Payment');
+      var vk = vaultKey_(data.player);
+      var vault = Number(state[vk]) || 0;
+      if (amt > vault) throw new Error('Not enough gold in ' + data.player + "'s vault! You have $" + vault.toFixed(2) + '.');
+      var bs = ss.getSheetByName(SH_BOSSES);
+      var rows = readRows_(bs, 7);
+      var found = false;
+      for (var i = 0; i < rows.length; i++) {
+        if (String(rows[i][0]) === String(data.bossId)) {
+          var newHP = Math.max(0, round2_((Number(rows[i][2]) || 0) - amt));
+          bs.getRange(i + 2, 3).setValue(newHP);
+          writeStateValue_(st, vk, round2_(vault - amt));
+          log_(ss, 'ATTACK', 'Army hired against ' + rows[i][1] + by, amt);
+          if (newHP === 0) log_(ss, 'BOSS_SLAIN', rows[i][1] + ' has been defeated!' + by, 0);
+          found = true;
+          break;
+        }
+      }
+      if (!found) throw new Error('Boss not found: ' + data.bossId);
+
+    } else if (type === 'ADD_DEBT') {
+      var balance = toAmount_(data.balance, 'Balance');
+      var apr = Number(data.apr) || 0;
+      if (apr < 0 || apr > 400) throw new Error('APR must be between 0 and 400.');
+      var name = String(data.name || '').trim();
+      if (!name) throw new Error('The debt needs a name.');
+      var avatar = String(data.avatar || '');
+      if (avatar && avatar.indexOf('https://raw.githubusercontent.com/') !== 0) avatar = '';
+      var bs = ss.getSheetByName(SH_BOSSES);
+      var id = 'b' + new Date().getTime();
+      bs.appendRow([id, name, balance, balance, apr, avatar, new Date()]);
+      log_(ss, 'ADD_DEBT', name + ' summoned (' + apr + '% APR)' + by, balance);
+
+    } else if (type === 'STAMINA') {
+      var amt = toAmount_(data.amount, 'Expense');
+      var user = data.user === 'Taliyah' ? 'Taliyah' : 'Sarah';
+      writeStateValue_(st, user + 'Stamina', round2_((Number(state[user + 'Stamina']) || 0) - amt));
+      log_(ss, 'STAMINA', user + ' expense' + by, amt);
+
+    } else if (type === 'ADD_QUEST') {
+      var name = String(data.name || '').trim();
+      if (!name) throw new Error('Quest needs a name.');
+      var target = toAmount_(data.target, 'Target');
+      var qs = ss.getSheetByName(SH_QUESTS);
+      qs.appendRow(['q' + new Date().getTime(), name, 0, target]);
+      log_(ss, 'ADD_QUEST', name + ' (target $' + target.toFixed(2) + ')' + by, 0);
+
+    } else if (type === 'FUND_QUEST') {
+      var amt = toAmount_(data.amount, 'Fund amount');
+      var vk = vaultKey_(data.player);
+      var vault = Number(state[vk]) || 0;
+      if (amt > vault) throw new Error('Not enough gold in ' + data.player + "'s vault! You have $" + vault.toFixed(2) + '.');
+      var qs = ss.getSheetByName(SH_QUESTS);
+      var rows = readRows_(qs, 4);
+      var found = false;
+      for (var i = 0; i < rows.length; i++) {
+        if (String(rows[i][0]) === String(data.questId)) {
+          qs.getRange(i + 2, 3).setValue(round2_((Number(rows[i][2]) || 0) + amt));
+          writeStateValue_(st, vk, round2_(vault - amt));
+          log_(ss, 'FUND_QUEST', 'Funded ' + rows[i][1] + by, amt);
+          found = true;
+          break;
+        }
+      }
+      if (!found) throw new Error('Quest not found: ' + data.questId);
+
+    } else if (type === 'RESET_BASECAMP') {
+      writeStateValue_(st, 'SarahStamina', Number(state.SarahWeeklyBudget) || 100);
+      writeStateValue_(st, 'TaliyahStamina', Number(state.TaliyahWeeklyBudget) || 100);
+      log_(ss, 'RESET_BASECAMP', 'Weekly stamina refilled' + by, 0);
+
+    } else if (type === 'SET_AVATAR') {
+      var allowed = { SarahAvatar: 1, TaliyahAvatar: 1, ChaseAvatar: 1, LoanAvatar: 1 };
+      if (!allowed[data.key]) throw new Error('Unknown avatar slot: ' + data.key);
+      var url = String(data.url || '');
+      if (url && url.indexOf('https://raw.githubusercontent.com/') !== 0) {
+        throw new Error('Avatar must come from the GitHub asset repository.');
+      }
+      writeStateValue_(st, data.key, url);
+      log_(ss, 'SET_AVATAR', data.key + by, 0);
+
+    } else {
+      throw new Error('Unknown action: ' + type);
+    }
+
+    return getAppData();
+  } finally {
+    lock.releaseLock();
+  }
+}

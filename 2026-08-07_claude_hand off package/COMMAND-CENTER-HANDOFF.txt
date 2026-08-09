@@ -1,0 +1,342 @@
+================================================================
+COMMAND CENTER — HANDOFF & TECHNICAL DOCUMENT (V4)
+Last updated: 2026-08-07 by Claude (claude-fable-5)
+Status: V4 SHIPPED, FULLY TESTED (62/62 automated browser checks passing)
+================================================================
+
+1. PROJECT OVERVIEW
+----------------------------------------------------------------
+Type:      Google Apps Script Web App ("Command Center"), a gamified
+           real-life family finance tracker styled as a Tiny Swords
+           pixel-art kingdom.
+Players:   Sarah and Taliyah (couple), each with their own vault.
+Backend:   Code.gs (Google Apps Script) + Google Sheets as database.
+Frontend:  Index.html — single self-contained file (HTML+CSS+JS,
+           no canvas, no external libraries except the VT323 font).
+Assets:    Public GitHub repo: sjmhenson-cyber/fin-game-assets
+           (branch: main, ~975 images: Tiny Swords pack + food/
+           Banquet pack + FX gifs + pets + tilesets + icons).
+Sheet ID:  1pnITJig1UmQ5sc2ZEDmLqbiof1Ph8T8pF-d6UgZWkSA
+           (hardcoded in Code.gs as SHEET_ID; uses
+           SpreadsheetApp.openById — NEVER getActiveSpreadsheet,
+           see Issue Log #1 and #5).
+
+CORE PRINCIPLE (user-confirmed): The game math is 1:1 with real
+life. 1 gold = 1 real dollar. Boss HP = real debt balance. A real
+payment of $X = a strike that removes exactly $X of boss HP and $X
+from the paying player's vault. The only fictional layer is FLAVOR
+(army hire animation, epic boss names). Never break the 1:1 rule.
+
+
+2. GAME DESIGN (AS BUILT IN V4)
+----------------------------------------------------------------
+FLOW / STATE MACHINE (all in Index.html, div-based "screens"):
+  screenTitle   -> title screen. Castle sprite, START (disabled
+                   until getAppData returns), HOW TO PLAY (guide),
+                   "Welcome back, <name>" if profile saved.
+  screenPlayers -> "Who's Playing?" Sarah/Taliyah cards.
+                   Choice saved to localStorage key 'ccPlayer'
+                   (try/catch-guarded; falls back to window var).
+  screenCreator -> Character creator: class chips (Warrior, Archer,
+                   Lancer, Pawn, Monk) x color chips (Blue, Red,
+                   Yellow, Purple, Black), live sprite preview,
+                   "Enlist This Hero" (SET_AVATAR) or "Skip".
+                   Routing: Start -> (no profile? screenPlayers)
+                   -> (no avatar? screenCreator) -> village.
+  app-container -> the Village hub. Ribbon title; badge row
+                   ("Playing as X · Switch · ? Guide"); stats panel
+                   (Sarah col | Family Treasury center | Taliyah
+                   col); 5 clickable buildings.
+
+BUILDINGS -> MODALS:
+  The Vault (Castle)      DEPOSIT into ACTIVE player's vault.
+                          Shows both vault balances.
+  The Arena (Barracks)    (a) "Report a New Debt" form: name,
+                          balance, APR only — the game AUTO-FORGES
+                          the boss (see 4). (b) Boss cards: HP bar,
+                          APR growth warning, payment input,
+                          "Hire Army — Strike!" button.
+  Guild (Archery)         Savings goals ("quests"): ADD_QUEST
+                          (name+target), FUND_QUEST from active
+                          player's vault, trophy at 100%.
+  Tavern (House1)         STAMINA: weekly leisure budget. Expense
+                          drains hero's stamina. RESET_BASECAMP
+                          (two-tap confirm) refills both to
+                          <Who>WeeklyBudget. Select defaults to
+                          active player.
+  Heroes (Monastery)      Creator shortcuts + full armory browser
+                          (975 sprites, folder filter, lazy load,
+                          sprite-sheet crop) to assign any sprite
+                          to SarahAvatar/TaliyahAvatar.
+
+ECONOMY (user chose "Yes, deduct" + dual vaults from their GDD):
+  - DEPOSIT: +vault of data.player.
+  - ATTACK (army hire): requires vault >= amount, else server
+    throws "Not enough gold in <name>'s vault!" -> error toast.
+    Deducts vault, reduces boss CurrentHP (clamped at 0).
+    HP 0 => "SLAIN!" stamp, card greyed, no attack button,
+    BOSS_SLAIN log entry.
+  - FUND_QUEST: same vault check/deduct.
+  - STAMINA: can go negative (shown red) — overspending visible.
+  - UNIFICATION EVENT: when every boss with MaxHP>0 has
+    CurrentHP<=0, hub shows pulsing "VAULTS UNIFIED" banner and
+    FAMILY TREASURY label (front-end only; vaults still tracked
+    separately in the sheet).
+
+COMBAT FLAVOR (user picked "Hire your army"):
+  On strike, 3 units (Warrior/Archer/Lancer) of the PLAYER'S
+  FACTION COLOR march across the boss card (CSS keyframes:
+  unitmarch left -70px -> 72%; unitframes steps(N) where N =
+  naturalWidth/naturalHeight computed at Image.onload), then the
+  Explosion_01.png 8-frame steps() animation plays. renderApp is
+  DELAYED 1700ms on ATTACK success so the animation isn't wiped.
+  Player faction = parsed from their avatar URL via regex
+  /(Blue|Red|Yellow|Purple|Black)%20Units/ (fallback 'Blue').
+
+AUTO-GENERATED DEBT BOSSES (user: "I don't want to decide"):
+  Input: real name, balance, APR only. Client computes:
+    h = hashStr(name.toLowerCase())   // unsigned 32-bit
+    epic name = "<name>, <BOSS_TITLES[h % 8]> <BOSS_CREATURES[(h>>>3) % 8]>"
+    sprite    = unitUrl(BOSS_COLORS[(h>>>6) % 2], CLASSES[(h>>>9) % 5])
+                BOSS_COLORS = Black/Purple ONLY (dark factions).
+                Red was removed after the user noticed bosses could
+                look identical to a player's army. Bosses are also
+                mirrored (scaleX(-1), facing the marching army) and
+                get a red drop-shadow glow via CSS .boss-avatar so
+                they read as monsters, not troops (glow removed on
+                .defeated).
+  CRITICAL: use >>> (unsigned shift). Using >> caused negative
+  array indexes -> "undefined" names/sprites (fixed bug, see
+  Issue Log #8).
+
+AUTOMATIC MONTHLY INTEREST (backend, applyInterest_ in Code.gs):
+  Runs on every getAppData(). For each boss with APR>0 and HP>0:
+  whole calendar months elapsed since LastInterest (day-of-month
+  aware). If >=1: HP *= (1 + APR/1200)^months (compound monthly),
+  MaxHP raised if HP exceeds it, LastInterest advanced by exactly
+  that many months, INTEREST row logged with the growth amount.
+  Rows with no/invalid LastInterest get stamped with now (clock
+  starts) instead of retroactive growth.
+
+
+3. GOOGLE SHEET SCHEMA (auto-created/upgraded by ensureSetup_)
+----------------------------------------------------------------
+State  : Key | Value            (row 1 headers)
+  Keys: SarahVault, TaliyahVault, SarahStamina, TaliyahStamina,
+        SarahWeeklyBudget, TaliyahWeeklyBudget, SarahAvatar,
+        TaliyahAvatar, ChaseAvatar, LoanAvatar
+  MIGRATION: if legacy PartyGold exists and SarahVault doesn't,
+  PartyGold is split 50/50 into the two vaults, zeroed, logged.
+Bosses : ID | Name | CurrentHP | MaxHP | APR | Avatar | LastInterest
+  Legacy 4-column sheets are upgraded in place (headers cols 5-7
+  written if col 5 header is blank). Legacy rows 'chase'/'loan'
+  with empty Avatar fall back to State ChaseAvatar/LoanAvatar
+  in the frontend. New rows get ID 'b'+timestamp.
+Quests : ID | Name | Saved | Target      (ID 'q'+timestamp)
+Log    : Timestamp | Action | Details | Amount
+  Details are suffixed " [<player>]" when data.player present.
+  Actions: DEPOSIT, ATTACK, BOSS_SLAIN, ADD_DEBT, STAMINA,
+  ADD_QUEST, FUND_QUEST, RESET_BASECAMP, SET_AVATAR, INTEREST,
+  MIGRATE.
+
+The user calls this their "excel sheet". It IS the save file;
+weekly budgets and boss rows are hand-editable. Users can export
+to real Excel from Google Sheets at any time.
+
+
+4. CLIENT<->SERVER API (google.script.run)
+----------------------------------------------------------------
+getAppData() -> { state: {..}, bosses: [{id,name,current,max,apr,
+                 avatar}], quests: [{id,name,current,max}] }
+saveAction(type, data) -> same shape (always returns full fresh
+                 state). Wrapped in LockService.getScriptLock()
+                 (10s wait) — protects against both players
+                 saving simultaneously.
+Payloads (data.player = active player on all of them):
+  DEPOSIT        { amount, player }
+  ATTACK         { amount, bossId, player }
+  ADD_DEBT       { name(epic), balance, apr, avatar(rawURL), player }
+  STAMINA        { amount, user }          // user = hero selector
+  ADD_QUEST      { name, target, player }
+  FUND_QUEST     { amount, questId, player }
+  RESET_BASECAMP { player }
+  SET_AVATAR     { key: <Sarah|Taliyah|Chase|Loan>Avatar, url, player }
+Validation is BOTH client-side (toasts) and server-side (throws
+with friendly messages -> withFailureHandler -> error toast or
+title-screen error). Amounts must be finite and > 0; money is
+rounded to cents server-side (round2_). Avatar URLs must start
+with https://raw.githubusercontent.com/ (server-enforced).
+
+
+5. GITHUB ASSET STRATEGY (hard-won lessons — do not regress)
+----------------------------------------------------------------
+a) ONE API request per session: Git Trees API
+   https://api.github.com/repos/sjmhenson-cyber/fin-game-assets/git/trees/main?recursive=1
+   NEVER crawl folders recursively via the contents API — the repo
+   has 65+ directories and unauthenticated GitHub API allows only
+   60 requests/hour/IP. That bug shipped once and silently blanked
+   the gallery (Issue Log #2). Results cached in sessionStorage
+   for 10 minutes (try/catch guarded).
+b) Image URLs: https://raw.githubusercontent.com/<owner>/<repo>/main/<path>
+   with EACH path segment encodeURIComponent-ed (paths contain
+   spaces: "UI Elements/...", "Blue Units/...").
+c) Always check response.ok / handle 403+429 and SHOW the error in
+   the gallery — never swallow.
+d) UI CHROME IS EMBEDDED, NOT FETCHED: paper panels, ribbon
+   banners, blue/red buttons (+pressed), HP bar base/fill, coin
+   icon are base64 data-URLs baked into Index.html (~21KB total).
+   They were sliced from the Tiny Swords sheets, which are 3x3
+   9-slice kits WITH GAPS at 64px tiles located at x,y in
+   {0,128,256} of a 320x320 sheet — reassembled contiguous and
+   used via CSS border-image (e.g. `border-image: url(data:...)
+   64 fill round`). BigBar_Base pieces: x 40-64 / 128-192 /
+   256-280, y 8-60. Ribbon_Blue pieces: left fork x31-128,
+   band x192-256, right fork x320-417, y22-120.
+   Rationale: core UI can never 404 or rate-limit.
+e) SPRITE-SHEET CROPPING: most unit images are horizontal frame
+   strips. cropIfSpriteSheet(img): if naturalWidth >=
+   1.9*naturalHeight add class .sprite-crop -> square box with
+   object-fit: cover; object-position: left center (shows frame 1).
+f) Known filename quirks (VERIFIED against the repo):
+   Archer -> Archer_Idle.png; Lancer -> Lancer_Idle.png;
+   Monk -> Idle.png (no prefix!); Pawn -> Pawn_Idle.png;
+   Warrior -> Warrior_Idle.png EXCEPT Blue Warrior which has NO
+   idle sprite -> use Warrior_Guard.png (special-cased in
+   unitUrl()).
+   Terrain/Water/Water.png DOES NOT EXIST (old 404 bug) — the
+   water background is an inline SVG data-URL pattern instead.
+g) New (unused so far) asset groups for future features: food/
+   Banquet sprites at repo root + numbered dishes (Bakery/
+   crafting), FX gifs (Fire, Lightning, Dark Aura, Smoke...),
+   pet1.png 512x1408 sheet + cat/bird animations (Hunter the
+   battle-poodle!), walls_floor.png / house_details.png /
+   Interior.png / exterior.png / ground_grass_details.png
+   (tilesets), "1 Icons"/Icons_01-40, SpriteAtlas/, Palette/,
+   Bonfire-Sheet.png (GDD bonfire checkpoint).
+
+
+6. FRONTEND CONVENTIONS
+----------------------------------------------------------------
+- Single file Index.html; the maintained source in this workspace
+  is Index.template.html with {{name}} placeholders + a python
+  build step that injects inline_assets.json data-URLs.
+  If you don't have that pipeline, edit Index.html directly and
+  leave the data URLs alone.
+- Font: VT323, font-weight normal everywhere (bold is unreadable
+  in this font — user complaint, Issue Log #4).
+- All dynamic strings pass through escapeHtml() before innerHTML
+  (quest/boss names may contain quotes/angle brackets).
+- money() -> 2 decimals; pctOf() guards div-by-zero (max<=0 -> 0,
+  else NaN% bars).
+- Buttons: .game-btn (blue) / .game-btn.red, 9-slice border-image
+  with :active pressed-sprite swap; setBusy(true) disables all
+  .game-btn during server calls.
+- Toast (#toast, paper-styled) for progress/errors; the app is
+  NEVER hidden for a save (old versions blanked the whole app on
+  every action — bad UX, removed).
+- Two-tap confirm pattern for destructive actions (basecamp reset).
+- Esc / backdrop click close modals. Focus-visible outlines on.
+- Mobile: media queries at 600px and 370px; touch-action:
+  manipulation; tap targets >=44px; gold amount auto-shrinks at
+  >7 and >10 chars so it never overlaps hero columns (regression-
+  tested by a bounding-box overlap detector).
+- If `google` is undefined (page opened outside Apps Script), the
+  title screen explains the /exec link requirement instead of
+  hanging (old infinite-load bug).
+
+
+7. ISSUE LOG (CUMULATIVE — includes pre-handoff history)
+----------------------------------------------------------------
+#1 Infinite "Connecting to Village Database": standalone script +
+   getActiveSpreadsheet() fails silently. FIX: openById(SHEET_ID).
+#2 Blank asset gallery: recursive contents-API crawl blew the
+   60/hr unauthenticated rate limit; errors were swallowed
+   (no response.ok check, 403 object silently ignored).
+   FIX: single Trees API call + explicit error surface + cache.
+#3 Live app not updating after code changes: Apps Script serves
+   the LAST DEPLOYED VERSION. FIX: Deploy -> Manage deployments ->
+   Edit -> New version -> Deploy, every time. Incognito helps with
+   multi-account sessions.
+#4 VT323 bold unreadable; background didn't match Tiny Swords.
+   FIX: normal weight everywhere; teal #47a6b2-family water.
+#5 (Gemini regression, 2026-08-06) A rewrite replaced the working
+   app with a canvas skeleton: reintroduced getActiveSpreadsheet,
+   required nonexistent "Lexicon"/"Finances" tabs with hardcoded
+   cells (B2/C2/D2), deleted the entire village UI. Rolled back;
+   never build on that skeleton. LESSON: incremental changes on
+   the tested base only.
+#6 The file the user had in Code.gs was actually frontend JS
+   (loadGitHubAssets) — there was NO backend at all. That was the
+   root cause of their original loading hang. V3 built Code.gs
+   from scratch.
+#7 Sprite strips rendered as "6 tiny repeated characters" in
+   avatars. FIX: cropIfSpriteSheet + .sprite-crop CSS (see 5e).
+#8 Boss auto-generator produced "undefined" names/sprites for
+   some debt names: SIGNED right-shift on a large unsigned hash
+   went negative -> negative array index. FIX: >>> everywhere.
+#9 Army animation vanished instantly: ATTACK success re-render
+   rebuilt bossList mid-animation. FIX: delay renderApp 1700ms on
+   ATTACK only.
+#10 Switching players didn't refresh vault-dependent UI (war
+   chest). FIX: enterVillage() re-runs renderApp(appData).
+#11 Hub gold overlapped "TALIYAH" at large balances. FIX: nowrap
+   line + length-based font shrink + automated overlap test.
+
+
+8. TESTING (how quality was maintained — keep doing this)
+----------------------------------------------------------------
+Playwright (Chromium headless) against the real Index.html with:
+- google.script.run MOCKED via addInitScript (mirrors Code.gs
+  semantics exactly: dual vaults, deductions, thrown errors).
+- GitHub API intercepted: Trees endpoint -> JSON built from a
+  local clone of the asset repo; raw.githubusercontent -> files
+  served from the clone (so encoding bugs & 404s are caught).
+- Suites: test.js (3 desktop flows: new player end-to-end,
+  returning player, unification) and test_mobile.js (390px/360px/
+  big-balance; overflow, tap targets, overlap detector).
+- 62 checks currently green. Code.gs is syntax-checked with
+  `node --check` (it's valid JS).
+Manual sanity: screenshots reviewed at every UI change.
+
+
+9. DEPLOYMENT RUNBOOK (for the user)
+----------------------------------------------------------------
+1. Apps Script project has exactly two files: Code.gs and Index
+   (.html). Paste full replacements — never merge fragments.
+2. Save both. Deploy -> Manage deployments -> pencil -> Version:
+   New version -> Deploy. (Skipping this = stale app.)
+3. Open the /exec URL. First run after backend changes may ask to
+   re-authorize; approve. Multi-account issues -> incognito.
+4. First getAppData auto-creates/upgrades sheet tabs; nothing
+   manual needed. Weekly budgets & boss rows editable in-sheet.
+
+
+10. ROADMAP (user's GDD items NOT yet built, in suggested order)
+----------------------------------------------------------------
+a) Payday Audit: scheduled paydays (Sheet tab of payday dates or
+   State keys), (!) alert over each player's business building
+   (Sarah: "The Hearth" bakery; Taliyah: Animal Sanctuary —
+   could add two more buildings), [Collect] expected amount or
+   [Audit] exact-amount keypad -> DEPOSIT.
+b) Hunter the Battle-Poodle companion: pet1.png sheet + cat
+   animations exist; GDD: 15% end-of-round RNG assist, treats
+   crafted -> "Rescue" heal. Needs a combat loop first (see d).
+c) Crafting/Bakery: Banquet food sprites are already in the repo;
+   Meat + Berries -> Hunter's Treats; oven upgrades via "Keep of
+   Ekehya" merchant (gold sink — careful: any gold spent on
+   fictional upgrades breaks the 1:1 rule unless it maps to real
+   purchases; consider stamina-cost instead).
+d) Random-encounter turn-based combat spending Stamina (leisure
+   budget as HP/energy), synergy 1.5x if both play within 24h.
+e) Walkable overworld with zone gating (bosses block bridges;
+   defeat = zone unlock). Big lift: tilemap engine over the
+   current menu-driven hub. The GDD's full Pokemon-style engine
+   is a rewrite — do it as a NEW view layered on the same
+   backend/API, never by discarding the working app.
+f) Payday/weekly automation: time-driven Apps Script triggers
+   (ScriptApp.newTrigger) could auto-reset basecamp Mondays and
+   pre-log payday audits.
+
+================================================================
+END OF HANDOFF
+================================================================

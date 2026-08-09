@@ -1,0 +1,73 @@
+// ==========================================
+// COMMAND CENTER RPG - BACKEND ENGINE
+// ==========================================
+
+// 1. Web App Initialization
+// This required function tells Google to serve your Index.html file as a webpage.
+function doGet(e) {
+  var template = HtmlService.createTemplateFromFile('Index');
+  return template.evaluate()
+      .setTitle('Command Center RPG')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// 2. Data Retrieval (Google Sheet -> Game)
+// Developer Note: This function reads the 'Lexicon' tab and passes it to the game.
+function getGameData() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // Fetch Factions from Lexicon Tab
+  const lexiconSheet = ss.getSheetByName("Lexicon");
+  const lexiconData = lexiconSheet.getDataRange().getValues();
+  
+  // Fetch Live Balances (HP) from Finance Tab
+  const financeSheet = ss.getSheetByName("Finances");
+  const financeData = financeSheet.getDataRange().getValues();
+  
+  // Construct the state object
+  const gameState = {
+    venmoBossHP: financeSheet.getRange("B2").getValue(), // Example: Target Venn-Mhor balance
+    sarahVault: financeSheet.getRange("C2").getValue(),
+    taliyahVault: financeSheet.getRange("D2").getValue(),
+    lexicon: parseLexicon(lexiconData)
+  };
+  
+  return JSON.stringify(gameState);
+}
+
+// 3. Payment Logging (Game -> Google Sheet)
+// Developer Note: This handles the "Channel Strike" mechanic.
+function processChannelStrike(amount, debtId, playerKey) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const financeSheet = ss.getSheetByName("Finances");
+  
+  // Locate the specific debt and deduct the payment (Damage the Boss)
+  // For demonstration, assuming Venn-Mhor is row 2
+  let currentBalance = financeSheet.getRange("B2").getValue();
+  let newBalance = currentBalance - amount;
+  
+  if (newBalance < 0) newBalance = 0;
+  financeSheet.getRange("B2").setValue(newBalance);
+  
+  // Deduct from the player's vault
+  let vaultCell = playerKey === 'sarah' ? "C2" : "D2";
+  let currentVault = financeSheet.getRange(vaultCell).getValue();
+  financeSheet.getRange(vaultCell).setValue(currentVault - amount);
+  
+  // Check for Milestone Unlocks
+  if (newBalance === 0) {
+    return { status: "success", event: "BOSS_DEFEATED", zone_unlocked: "Whispering Woods" };
+  }
+  
+  return { status: "success", event: "DAMAGE_DEALT", new_hp: newBalance };
+}
+
+// Utility to parse spreadsheet arrays into JSON objects
+function parseLexicon(data) {
+  let lexicon = {};
+  for (let i = 1; i < data.length; i++) {
+    lexicon[data[i][1]] = data[i][3]; // Maps System ID to Custom Name
+  }
+  return lexicon;
+}

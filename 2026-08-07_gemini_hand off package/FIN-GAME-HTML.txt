@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        margin: 0;
+        background-color: #1a1a1a;
+        color: #fff;
+        font-family: 'Courier New', Courier, monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      #game-container {
+        width: 100%;
+        max-width: 800px;
+        height: 100vh;
+        max-height: 600px;
+        background-color: #2c3e50;
+        border: 4px solid #f1c40f;
+        position: relative;
+        overflow: hidden;
+      }
+      .ui-panel {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 150px;
+        background: rgba(0, 0, 0, 0.8);
+        border-top: 2px solid #fff;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      .btn-action {
+        background: #e74c3c;
+        color: white;
+        border: 2px solid #fff;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container">
+      <!-- Game Canvas for Sprite Rendering -->
+      <canvas id="gameCanvas" width="800" height="450"></canvas>
+      
+      <!-- Combat UI / Dialogue Box -->
+      <div class="ui-panel" id="uiPanel">
+        <h3 id="dialogueText">Loading World Data from Lexicon...</h3>
+        <button class="btn-action" id="btnStrike" style="display:none;" onclick="triggerChannelStrike()">Channel Strike (Pay $50)</button>
+      </div>
+    </div>
+
+    <script>
+      // 1. Initialize Game Data
+      let currentGameState = null;
+
+      window.onload = function() {
+        // Silently fetch the spreadsheet data on load
+        google.script.run.withSuccessHandler(initializeGame).getGameData();
+      };
+
+      function initializeGame(data) {
+        currentGameState = JSON.parse(data);
+        
+        const dialogue = document.getElementById('dialogueText');
+        const btn = document.getElementById('btnStrike');
+        
+        dialogue.innerHTML = `A wild <b>${currentGameState.lexicon.fact_venmo || 'Vanguard'}</b> blocks the bridge!<br>Boss HP: $${currentGameState.venmoBossHP}`;
+        
+        if(currentGameState.venmoBossHP > 0) {
+          btn.style.display = "inline-block";
+        } else {
+          dialogue.innerHTML = "The bridge is clear! Whispering Woods unlocked.";
+        }
+      }
+
+      // 2. Combat Mechanic (Logs payment to Sheet)
+      function triggerChannelStrike() {
+        const paymentAmount = 50; 
+        document.getElementById('dialogueText').innerHTML = "Channeling real-world gold... Strike incoming!";
+        document.getElementById('btnStrike').style.display = "none";
+        
+        // Send the payment to Code.gs to update the spreadsheet
+        google.script.run
+          .withSuccessHandler(handleStrikeResult)
+          .processChannelStrike(paymentAmount, 'fact_venmo', 'sarah');
+      }
+
+      function handleStrikeResult(response) {
+        if(response.event === "BOSS_DEFEATED") {
+          document.getElementById('dialogueText').innerHTML = "CRITICAL HIT! The Vanguard shatters.<br>Zone Unlocked: " + response.zone_unlocked;
+        } else {
+          document.getElementById('dialogueText').innerHTML = `Direct hit! The Vanguard reels.<br>Remaining HP: $${response.new_hp}`;
+          document.getElementById('btnStrike').style.display = "inline-block";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Command Center — Overworld Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment:#f1e4c3; --ink:#2b1d0e; --gold:#b8860b;
+    --hp-red:#a83232; --hp-back:#5a3b2a; --panel:#3c2a1a; --panel-border:#8a6a3a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'VT323',monospace; font-size:1.2em; background:#1b120a;
+    color:var(--parchment); min-height:100vh;
+  }
+  header{
+    background:linear-gradient(180deg,#4a2f18,#2b1d0e); padding:14px 20px;
+    border-bottom:4px solid var(--gold); display:flex; align-items:center;
+    justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  header h1{margin:0; letter-spacing:2px; color:var(--gold); font-size:1.5em;}
+  header .sub{font-size:.85em; color:#d8c39a;}
+  header .actions button{margin-left:6px;}
+  button{
+    background:var(--gold); color:#2b1d0e; border:none; padding:6px 14px; border-radius:4px;
+    cursor:pointer; font-weight:bold; font-family:inherit; font-size:1em;
+  }
+  button:hover{filter:brightness(1.1);}
+  button.secondary{background:#6a5638; color:#f1e4c3;}
+  main{max-width:700px; margin:20px auto; padding:0 16px;}
+  .hint{text-align:center; font-size:.9em; color:#b89a6a; margin-bottom:10px;}
+
+  /* ---------- World ---------- */
+  #world{
+    position:relative; width:624px; height:384px; margin:0 auto;
+    background-color:#7cb356;
+    background-image:
+      linear-gradient(45deg,#6a9c46 25%, transparent 25%),
+      linear-gradient(-45deg,#6a9c46 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #6a9c46 75%),
+      linear-gradient(-45deg, transparent 75%, #6a9c46 75%);
+    background-size:48px 48px;
+    background-position:0 0, 0 24px, 24px -24px, -24px 0px;
+    border:4px solid #3c2a1a; outline:2px solid var(--panel-border); overflow:hidden;
+    image-rendering:pixelated;
+  }
+  #world:focus{outline:2px solid var(--gold);}
+  .tile-obj{position:absolute; image-rendering:pixelated; pointer-events:none;}
+  .building{cursor:default;}
+  .building img{width:48px; height:auto;}
+  .building-label{
+    position:absolute; bottom:-16px; left:50%; transform:translateX(-50%);
+    font-size:.6em; color:#fff; text-shadow:1px 1px #000; white-space:nowrap;
+  }
+  #bridgeLane{
+    position:absolute; top:0; right:0; width:48px; height:100%;
+    background:repeating-linear-gradient(0deg,#8a5a2b 0 10px,#7a4c22 10px 12px);
+    border-left:3px dashed #4a2f18;
+  }
+  #gate img{width:44px; height:auto;}
+  #gate .hp-mini{position:absolute; top:-10px; left:2px; width:44px; height:6px; background:var(--hp-back); border-radius:3px; overflow:hidden;}
+  #gate .hp-mini .fill{height:100%; background:var(--hp-red);}
+  #player{
+    position:absolute; width:40px; height:40px; z-index:5;
+    transition:left .12s linear, top .12s linear;
+  }
+  #player img{width:40px; height:40px; object-fit:cover; object-position:left center;}
+  #player.flip img{transform:scaleX(-1);}
+
+  /* ---------- Toast ---------- */
+  #toast{
+    position:fixed; left:50%; bottom:24px; transform:translate(-50%,20px);
+    background:#2b1d0e; border:2px solid var(--gold); color:var(--parchment);
+    padding:10px 18px; border-radius:6px; opacity:0; pointer-events:none;
+    transition:opacity .25s, transform .25s; z-index:80; font-size:1em;
+  }
+  #toast.show{opacity:1; transform:translate(-50%,0);}
+
+  /* ---------- Modals ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.75); display:flex; align-items:center;
+    justify-content:center; z-index:50;
+  }
+  .modal-overlay.hidden{display:none;}
+  .book{
+    background:var(--parchment); color:var(--ink); width:520px; max-width:92vw; max-height:85vh;
+    overflow-y:auto; border-radius:4px; padding:22px 26px; font-family:'VT323',monospace; font-size:1.15em;
+    box-shadow:0 0 0 6px #5a3b2a, 0 0 40px rgba(0,0,0,.8);
+  }
+  .book h2{margin-top:0; text-align:center; border-bottom:2px solid var(--ink); padding-bottom:8px; letter-spacing:1px;}
+  .book .flavor{font-style:italic; text-align:center; margin-bottom:14px; color:#5a4526; font-size:.9em;}
+  .entry{border:1px solid #b8a578; border-radius:4px; padding:10px; margin-bottom:10px; background:#e8d9b0;}
+  .entry .who{font-size:.75em; text-transform:uppercase; letter-spacing:.5px; color:#7a5c2e;}
+  .entry .narration{margin:4px 0;}
+  .entry .delta{font-size:.85em; color:#5a4526;}
+  .entry.approved{opacity:.5;}
+  .entry button{margin-top:6px;}
+  .owner-choices button{margin:3px;}
+  .close-x{float:right; cursor:pointer; font-weight:bold;}
+  .boss-card{background:#e8d9b0; border:1px solid #b8a578; border-radius:6px; padding:12px; margin-bottom:10px;}
+  .boss-card .name{font-weight:bold; font-size:1.15em;}
+  .boss-card .sub{font-size:.8em; color:#7a5c2e; margin-bottom:6px;}
+  .hp-back{background:var(--hp-back); border-radius:4px; height:14px; overflow:hidden; margin:6px 0;}
+  .hp-fill{background:linear-gradient(90deg,var(--hp-red),#d9534f); height:100%; transition:width .3s;}
+  .row{display:flex; gap:6px; align-items:center; margin-top:6px;}
+  input[type=number]{width:80px; padding:4px; border-radius:4px; border:1px solid var(--panel-border); background:#fff; color:#2b1d0e; font-family:inherit; font-size:1em;}
+  .trophy{background:#e8d9b0; border:1px solid var(--gold); border-radius:6px; padding:10px; margin-bottom:10px;}
+  .trophy .name{color:#8a5a00; font-weight:bold;}
+  .trophy .meta{font-size:.75em; color:#7a5c2e;}
+  .log-entry{font-size:.85em; border-bottom:1px dashed #b8a578; padding:6px 0;}
+  .empty{font-size:.9em; color:#7a5c2e; font-style:italic;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>⚔ Command Center</h1>
+    <div class="sub">The Plains — walk into a building to enter</div>
+  </div>
+  <div class="actions">
+    <button class="secondary" id="logBtn">📜 Log</button>
+    <button class="secondary" id="simulateEditBtn">🖊 Simulate hand-edit</button>
+    <button class="secondary" id="checkSyncBtn">🔄 Check Sync</button>
+  </div>
+</header>
+
+<main>
+  <p class="hint">Arrow keys / WASD to walk. Bump a building to enter it. The Bridge (right edge) is blocked until Vinmohr falls.</p>
+  <div id="world" tabindex="0"></div>
+</main>
+
+<div id="toast"></div>
+
+<!-- Owner backfill modal -->
+<div class="modal-overlay hidden" id="ownerModal">
+  <div class="book">
+    <h2>Whose Debt Is This?</h2>
+    <p class="flavor">The scribes found unlabeled ledgers among the vault records.</p>
+    <div id="ownerModalBody"></div>
+  </div>
+</div>
+
+<!-- Ledger book modal -->
+<div class="modal-overlay hidden" id="ledgerModal">
+  <div class="book">
+    <h2>📖 The Ledger Book Awakens</h2>
+    <p class="flavor">"Someone has written in the sheets while the kingdom slept..."</p>
+    <div id="ledgerModalBody"></div>
+    <div style="text-align:center; margin-top:14px;">
+      <button id="approveAllBtn">Approve All &amp; Close the Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- Boss encounter modal (Barracks / Bridge) -->
+<div class="modal-overlay hidden" id="bossModal">
+  <div class="book">
+    <span class="close-x" onclick="closeModal('bossModal')">✕</span>
+    <h2 id="bossModalTitle">Sieges</h2>
+    <div id="bossModalBody"></div>
+  </div>
+</div>
+
+<!-- Trophy room modal (Keep of Ekehya) -->
+<div class="modal-overlay hidden" id="trophyModal">
+  <div class="book">
+    <span class="close-x" onclick="closeModal('trophyModal')">✕</span>
+    <h2>🏆 Trophy Room — The Keep of Ēkehya</h2>
+    <div id="trophyModalBody"></div>
+  </div>
+</div>
+
+<!-- Log modal -->
+<div class="modal-overlay hidden" id="logModal">
+  <div class="book">
+    <span class="close-x" onclick="closeModal('logModal')">✕</span>
+    <h2>Transaction Log</h2>
+    <div id="logModalBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

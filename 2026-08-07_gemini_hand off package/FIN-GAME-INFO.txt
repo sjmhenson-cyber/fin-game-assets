@@ -1,0 +1,139 @@
+FIN-GAME-INFO
+
+1. Game Design Document (GDD) & Architecture Guide
+Core Loop
+Work (Real Life): Players earn real-life paychecks through their respective businesses.
+
+Audit & Collect: On payday, the game alerts players to audit and collect their income into their separate Vaults.
+
+Fight (Pay Debts): Players navigate the map and encounter "Keter-class" anomaly bosses (debts). Players use "Channel Strikes" to input real-world debt payments, permanently lowering the boss's Max HP.
+
+Explore & Craft: Players use weekly Stamina (leisure budget) to fight random encounters for ingredient drops.
+
+Upgrade: Players spend Vault Gold at the Swedish Keep to expand the home base or maintain appliances (like the Blueprint Drill-Driver) for buffs.
+
+Player Characters
+Sarah (The Culinary Arcanist): Uses baking/alchemy for support and combat.
+
+Weapon: Blueprint Drill-Driver (upgradable).
+
+Moves: Obsidian Strike, Aegis of the Hearth, Flash Focus, Macaron Mend.
+
+Taliyah (The Dimensional Weaver): Uses sci-fi anomalies and radiant energy.
+
+Weapon: Tachyon Gauntlet.
+
+Moves: Luminous Pierce, Isotope Ward, Spirit Bash, Stasis Module.
+
+Hunter (The Battle-Poodle): AI companion.
+
+Moves: High-Pitch Bark (Stun), Slow Blink (Defense Drop).
+
+Mechanic: Fed homemade dog treats (crafted from monster meat drops) to trigger "Rescue" (Party-wide heal).
+
+Map Zones & Gated Progression
+The Plains (Hub): Contains the shared home, Sarah's Bakery (The Hearth), Taliyah's Animal Sanctuary, and the Bonfire checkpoint.
+
+The Bridge (Tutorial Gate): Guarded by the Vanguard of Venn-Mhor. Must be defeated (Venmo balance hits zero) to access the Whispering Woods.
+
+The Keep of Ēkehya: The Swedish merchant fortress run by tall, faceless builders. Receives gold in exchange for permanent home upgrades.
+
+Sapphire Lake: Mid-game zone guarded by the Sapphire Gargoyle (Chase Reserve).
+
+The Unification Event
+Once all Keter-class anomaly bosses are defeated, the individual Vaults permanently fuse into a single Family Treasury, unlocking endgame town-building mechanics and shared progression.
+
+
+
+
+Command Center RPG: Technical & Mechanics Specification
+1. The Game Loop & State Machine
+The game operates on a continuous, live-service loop tied to real-world time and data. The engine relies on a state machine that transitions between three primary views:
+
+Overworld State (The Hub): The default isometric/top-down view where players navigate The Plains, interact with NPCs, forage, and trigger shop menus.
+
+Combat State: Triggered by interacting with a Boss (Anomaly) or wandering into tall grass (Random Encounters). The UI locks into a turn-based battle screen.
+
+Audit State: Triggered by a real-world calendar event (Payday). Halts overworld exploration until the player acknowledges or edits their incoming Vault deposit.
+
+2. The Economy & Dual Vault System
+The game features a two-phase economic engine powered by the Google Sheet (Finances tab).
+
+Phase 1: Dual Economy (Early/Mid Game)
+Sarah’s Vault: Funded by "The Hearth" (Bakery).
+
+Taliyah’s Vault: Funded by the "Animal Sanctuary."
+
+The Payday Audit: On scheduled real-world paydays, an alert icon (!) spawns over both businesses.
+
+Logic: Player taps the building -> UI presents the Expected Yield (e.g., $2,000) -> Player taps [Collect] (deposits exactly $2k) OR [Audit] (opens a keypad to input the exact real-world paycheck).
+
+Isolated Spending: Sarah can only spend her Vault gold for her upgrades; Taliyah spends hers. However, they can both contribute gold to the same boss.
+
+Phase 2: Unification (Endgame)
+The Trigger: When the game detects that the final Keter-class boss HP equals 0, the vaults_merged boolean in the JSON configuration flips to true.
+
+The Result: The UI permanently merges the two Vaults into a "Family Treasury." All future business income pools into one massive shared wallet for endgame town-building.
+
+3. Debt Anomalies & Channel Strikes
+Monsters blocking the map (e.g., Vanguard of Venn-Mhor, Sapphire Gargoyle) represent real-world debts.
+
+Health Points (HP): Boss Max HP = Total Debt Balance.
+
+The "Channel Strike" Mechanic: Players do not use standard attacks on Bosses.
+
+Logic: Player taps [Channel Strike] -> Inputs the exact real-world dollar amount they just paid toward the debt -> Engine subtracts that amount from the Player's Vault AND the Boss's HP.
+
+Milestone Gating: When Boss HP hits exactly 0, the entity shatters, and the overworld map dynamically updates to remove the roadblock, granting access to the next zone.
+
+4. Turn-Based Combat Logic (Random Encounters)
+Unlike Bosses, random encounters (foraging for materials) use traditional RPG logic.
+
+The Stamina System: Fighting costs Stamina (representing real-world leisure energy). Stamina caps at 100 and replenishes by 25 points at the start of every real-world week.
+
+Combat Flow: Speed stat determines turn order.
+
+Co-Op Synergy Multiplier: If Sarah and Taliyah both participate in a combat encounter within the same 24-hour real-world window, a Synergy Buff activates, applying a 1.5x multiplier to all damage dealt.
+
+Character Move Sets & Logic
+Sarah (Culinary Arcanist):
+
+Weapon: Blueprint Drill-Driver.
+
+Moves: Flash Focus (Lowers enemy accuracy by 20%), Macaron Mend (Restores 30% HP to one ally).
+
+Taliyah (Dimensional Weaver):
+
+Moves: Spirit Bash (Deals physical damage and boosts speed), Stasis Module (Applies "Stun" status, skipping the enemy's next turn).
+
+Hunter (The AI Battle-Poodle):
+
+Logic: Hunter operates autonomously. At the end of every round, he has a 15% RNG chance to cast Slow Blink (lowers enemy defense) or High-Pitch Bark (interrupts an enemy attack).
+
+The Defeat Penalty
+If a player's HP hits 0 during a random encounter, they "Faint."
+
+Logic: No items or gold are lost. The player is teleported back to the Bonfire in The Plains. HP is restored to 100%, but their weekly Stamina pool is penalized by 15 points.
+
+5. Crafting & Hunter's Diet
+Players farm materials from random encounters to craft items.
+
+Meat Drops: Defeating organic monsters yields "Mystery Meat," which goes into the Shared Inventory.
+
+Baking Dog Treats: Sarah can combine Meat + Foraged Berries at the Bakery oven to craft "Hunter's Treats."
+
+The Rescue Mechanic: Feeding Hunter a treat during a battle consumes a turn but guarantees he will cast Rescue, a massive party-wide heal (restores 70% HP to all allies).
+
+6. The Keep of Ēkehya (Upgrades & Buffs)
+The Swedish Keep is the primary merchant for home improvements.
+
+Appliance Durability: Items like the Bakery Oven degrade slightly over time. Players can spend basic raw materials (Wood/Ore) to repair them, granting a temporary 10% buff to crafted items.
+
+Permanent Upgrades: Players spend Vault Gold at Ēkehya to completely replace an appliance.
+
+Logic: Purchasing the "Modern Oven" permanently swaps the 16x16 sprite in the overworld and applies a permanent base-stat increase to all crafted baked goods.
+
+7. Dynamic Expansion (Adding New Content)
+The game is built to run infinitely. The developer must ensure the Google Sheet can hot-reload the game state.
+
+Adding a Boss: If the player takes out a new car loan, they simply add a new row to the Lexicon tab in Excel (e.g., "Steel Chariot") and a new row in the Finances tab. The game engine dynamically reads this and spawns a new Keter-class boss on the map without requiring code deployment.
