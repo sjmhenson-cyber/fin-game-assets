@@ -1,0 +1,4512 @@
+[
+    {
+        "id":  "ts-00",
+        "file":  "tiles/ts-00.png",
+        "col":  "Tiny Swords",
+        "full":  0.92
+    },
+    {
+        "id":  "ts-10",
+        "file":  "tiles/ts-10.png",
+        "col":  "Tiny Swords",
+        "full":  0.94
+    },
+    {
+        "id":  "ts-20",
+        "file":  "tiles/ts-20.png",
+        "col":  "Tiny Swords",
+        "full":  0.91
+    },
+    {
+        "id":  "ts-30",
+        "file":  "tiles/ts-30.png",
+        "col":  "Tiny Swords",
+        "full":  0.86
+    },
+    {
+        "id":  "ts-50",
+        "file":  "tiles/ts-50.png",
+        "col":  "Tiny Swords",
+        "full":  0.95
+    },
+    {
+        "id":  "ts-60",
+        "file":  "tiles/ts-60.png",
+        "col":  "Tiny Swords",
+        "full":  0.99
+    },
+    {
+        "id":  "ts-70",
+        "file":  "tiles/ts-70.png",
+        "col":  "Tiny Swords",
+        "full":  0.93
+    },
+    {
+        "id":  "ts-80",
+        "file":  "tiles/ts-80.png",
+        "col":  "Tiny Swords",
+        "full":  0.91
+    },
+    {
+        "id":  "ts-01",
+        "file":  "tiles/ts-01.png",
+        "col":  "Tiny Swords",
+        "full":  0.98
+    },
+    {
+        "id":  "ts-11",
+        "file":  "tiles/ts-11.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-21",
+        "file":  "tiles/ts-21.png",
+        "col":  "Tiny Swords",
+        "full":  0.99
+    },
+    {
+        "id":  "ts-31",
+        "file":  "tiles/ts-31.png",
+        "col":  "Tiny Swords",
+        "full":  0.97
+    },
+    {
+        "id":  "ts-51",
+        "file":  "tiles/ts-51.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-61",
+        "file":  "tiles/ts-61.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-71",
+        "file":  "tiles/ts-71.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-81",
+        "file":  "tiles/ts-81.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-02",
+        "file":  "tiles/ts-02.png",
+        "col":  "Tiny Swords",
+        "full":  0.98
+    },
+    {
+        "id":  "ts-12",
+        "file":  "tiles/ts-12.png",
+        "col":  "Tiny Swords",
+        "full":  0.99
+    },
+    {
+        "id":  "ts-22",
+        "file":  "tiles/ts-22.png",
+        "col":  "Tiny Swords",
+        "full":  0.95
+    },
+    {
+        "id":  "ts-32",
+        "file":  "tiles/ts-32.png",
+        "col":  "Tiny Swords",
+        "full":  0.93
+    },
+    {
+        "id":  "ts-52",
+        "file":  "tiles/ts-52.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-62",
+        "file":  "tiles/ts-62.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-72",
+        "file":  "tiles/ts-72.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-82",
+        "file":  "tiles/ts-82.png",
+        "col":  "Tiny Swords",
+        "full":  1
+    },
+    {
+        "id":  "ts-03",
+        "file":  "tiles/ts-03.png",
+        "col":  "Tiny Swords",
+        "full":  0.91
+    },
+    {
+        "id":  "ts-13",
+        "file":  "tiles/ts-13.png",
+        "col":  "Tiny Swords",
+        "full":  0.93
+    },
+    {
+        "id":  "ts-23",
+        "file":  "tiles/ts-23.png",
+        "col":  "Tiny Swords",
+        "full":  0.88
+    },
+    {
+        "id":  "ts-33",
+        "file":  "tiles/ts-33.png",
+        "col":  "Tiny Swords",
+        "full":  0.85
+    },
+    {
+        "id":  "ts-53",
+        "file":  "tiles/ts-53.png",
+        "col":  "Tiny Swords",
+        "full":  0.95
+    },
+    {
+        "id":  "ts-63",
+        "file":  "tiles/ts-63.png",
+        "col":  "Tiny Swords",
+        "full":  0.99
+    },
+    {
+        "id":  "ts-73",
+        "file":  "tiles/ts-73.png",
+        "col":  "Tiny Swords",
+        "full":  0.93
+    },
+    {
+        "id":  "ts-83",
+        "file":  "tiles/ts-83.png",
+        "col":  "Tiny Swords",
+        "full":  0.92
+    },
+    {
+        "id":  "ts-04",
+        "file":  "tiles/ts-04.png",
+        "col":  "Tiny Swords",
+        "full":  0.51
+    },
+    {
+        "id":  "ts-34",
+        "file":  "tiles/ts-34.png",
+        "col":  "Tiny Swords",
+        "full":  0.5
+    },
+    {
+        "id":  "ts-54",
+        "file":  "tiles/ts-54.png",
+        "col":  "Tiny Swords",
+        "full":  0.86
+    },
+    {
+        "id":  "ts-64",
+        "file":  "tiles/ts-64.png",
+        "col":  "Tiny Swords",
+        "full":  0.93
+    },
+    {
+        "id":  "ts-74",
+        "file":  "tiles/ts-74.png",
+        "col":  "Tiny Swords",
+        "full":  0.84
+    },
+    {
+        "id":  "ts-84",
+        "file":  "tiles/ts-84.png",
+        "col":  "Tiny Swords",
+        "full":  0.78
+    },
+    {
+        "id":  "ts-05",
+        "file":  "tiles/ts-05.png",
+        "col":  "Tiny Swords",
+        "full":  0.86
+    },
+    {
+        "id":  "ts-35",
+        "file":  "tiles/ts-35.png",
+        "col":  "Tiny Swords",
+        "full":  0.86
+    },
+    {
+        "id":  "ts-55",
+        "file":  "tiles/ts-55.png",
+        "col":  "Tiny Swords",
+        "full":  0.83
+    },
+    {
+        "id":  "ts-65",
+        "file":  "tiles/ts-65.png",
+        "col":  "Tiny Swords",
+        "full":  0.9
+    },
+    {
+        "id":  "ts-75",
+        "file":  "tiles/ts-75.png",
+        "col":  "Tiny Swords",
+        "full":  0.8
+    },
+    {
+        "id":  "ts-85",
+        "file":  "tiles/ts-85.png",
+        "col":  "Tiny Swords",
+        "full":  0.75
+    },
+    {
+        "id":  "tsh-11",
+        "file":  "tiles/tsh-11.png",
+        "col":  "Tiny Swords",
+        "full":  0.98
+    },
+    {
+        "id":  "ts2-00",
+        "file":  "tiles/ts2-00.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.92
+    },
+    {
+        "id":  "ts2-10",
+        "file":  "tiles/ts2-10.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.94
+    },
+    {
+        "id":  "ts2-20",
+        "file":  "tiles/ts2-20.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.91
+    },
+    {
+        "id":  "ts2-30",
+        "file":  "tiles/ts2-30.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.86
+    },
+    {
+        "id":  "ts2-50",
+        "file":  "tiles/ts2-50.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.95
+    },
+    {
+        "id":  "ts2-60",
+        "file":  "tiles/ts2-60.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.99
+    },
+    {
+        "id":  "ts2-70",
+        "file":  "tiles/ts2-70.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.93
+    },
+    {
+        "id":  "ts2-80",
+        "file":  "tiles/ts2-80.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.91
+    },
+    {
+        "id":  "ts2-01",
+        "file":  "tiles/ts2-01.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.98
+    },
+    {
+        "id":  "ts2-11",
+        "file":  "tiles/ts2-11.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-21",
+        "file":  "tiles/ts2-21.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.99
+    },
+    {
+        "id":  "ts2-31",
+        "file":  "tiles/ts2-31.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.97
+    },
+    {
+        "id":  "ts2-51",
+        "file":  "tiles/ts2-51.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-61",
+        "file":  "tiles/ts2-61.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-71",
+        "file":  "tiles/ts2-71.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-81",
+        "file":  "tiles/ts2-81.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-02",
+        "file":  "tiles/ts2-02.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.98
+    },
+    {
+        "id":  "ts2-12",
+        "file":  "tiles/ts2-12.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.99
+    },
+    {
+        "id":  "ts2-22",
+        "file":  "tiles/ts2-22.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.95
+    },
+    {
+        "id":  "ts2-32",
+        "file":  "tiles/ts2-32.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.93
+    },
+    {
+        "id":  "ts2-52",
+        "file":  "tiles/ts2-52.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-62",
+        "file":  "tiles/ts2-62.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-72",
+        "file":  "tiles/ts2-72.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-82",
+        "file":  "tiles/ts2-82.png",
+        "col":  "Tiny Swords c2",
+        "full":  1
+    },
+    {
+        "id":  "ts2-03",
+        "file":  "tiles/ts2-03.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.91
+    },
+    {
+        "id":  "ts2-13",
+        "file":  "tiles/ts2-13.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.93
+    },
+    {
+        "id":  "ts2-23",
+        "file":  "tiles/ts2-23.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.88
+    },
+    {
+        "id":  "ts2-33",
+        "file":  "tiles/ts2-33.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.85
+    },
+    {
+        "id":  "ts2-53",
+        "file":  "tiles/ts2-53.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.95
+    },
+    {
+        "id":  "ts2-63",
+        "file":  "tiles/ts2-63.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.99
+    },
+    {
+        "id":  "ts2-73",
+        "file":  "tiles/ts2-73.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.93
+    },
+    {
+        "id":  "ts2-83",
+        "file":  "tiles/ts2-83.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.92
+    },
+    {
+        "id":  "ts2-04",
+        "file":  "tiles/ts2-04.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.51
+    },
+    {
+        "id":  "ts2-34",
+        "file":  "tiles/ts2-34.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.5
+    },
+    {
+        "id":  "ts2-54",
+        "file":  "tiles/ts2-54.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.86
+    },
+    {
+        "id":  "ts2-64",
+        "file":  "tiles/ts2-64.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.93
+    },
+    {
+        "id":  "ts2-74",
+        "file":  "tiles/ts2-74.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.84
+    },
+    {
+        "id":  "ts2-84",
+        "file":  "tiles/ts2-84.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.78
+    },
+    {
+        "id":  "ts2-05",
+        "file":  "tiles/ts2-05.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.86
+    },
+    {
+        "id":  "ts2-35",
+        "file":  "tiles/ts2-35.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.86
+    },
+    {
+        "id":  "ts2-55",
+        "file":  "tiles/ts2-55.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.83
+    },
+    {
+        "id":  "ts2-65",
+        "file":  "tiles/ts2-65.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.9
+    },
+    {
+        "id":  "ts2-75",
+        "file":  "tiles/ts2-75.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.8
+    },
+    {
+        "id":  "ts2-85",
+        "file":  "tiles/ts2-85.png",
+        "col":  "Tiny Swords c2",
+        "full":  0.75
+    },
+    {
+        "id":  "ts3-00",
+        "file":  "tiles/ts3-00.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.92
+    },
+    {
+        "id":  "ts3-10",
+        "file":  "tiles/ts3-10.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.94
+    },
+    {
+        "id":  "ts3-20",
+        "file":  "tiles/ts3-20.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.91
+    },
+    {
+        "id":  "ts3-30",
+        "file":  "tiles/ts3-30.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.86
+    },
+    {
+        "id":  "ts3-50",
+        "file":  "tiles/ts3-50.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.95
+    },
+    {
+        "id":  "ts3-60",
+        "file":  "tiles/ts3-60.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.99
+    },
+    {
+        "id":  "ts3-70",
+        "file":  "tiles/ts3-70.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.93
+    },
+    {
+        "id":  "ts3-80",
+        "file":  "tiles/ts3-80.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.91
+    },
+    {
+        "id":  "ts3-01",
+        "file":  "tiles/ts3-01.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.98
+    },
+    {
+        "id":  "ts3-11",
+        "file":  "tiles/ts3-11.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-21",
+        "file":  "tiles/ts3-21.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.99
+    },
+    {
+        "id":  "ts3-31",
+        "file":  "tiles/ts3-31.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.97
+    },
+    {
+        "id":  "ts3-51",
+        "file":  "tiles/ts3-51.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-61",
+        "file":  "tiles/ts3-61.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-71",
+        "file":  "tiles/ts3-71.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-81",
+        "file":  "tiles/ts3-81.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-02",
+        "file":  "tiles/ts3-02.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.98
+    },
+    {
+        "id":  "ts3-12",
+        "file":  "tiles/ts3-12.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.99
+    },
+    {
+        "id":  "ts3-22",
+        "file":  "tiles/ts3-22.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.95
+    },
+    {
+        "id":  "ts3-32",
+        "file":  "tiles/ts3-32.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.93
+    },
+    {
+        "id":  "ts3-52",
+        "file":  "tiles/ts3-52.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-62",
+        "file":  "tiles/ts3-62.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-72",
+        "file":  "tiles/ts3-72.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-82",
+        "file":  "tiles/ts3-82.png",
+        "col":  "Tiny Swords c3",
+        "full":  1
+    },
+    {
+        "id":  "ts3-03",
+        "file":  "tiles/ts3-03.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.91
+    },
+    {
+        "id":  "ts3-13",
+        "file":  "tiles/ts3-13.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.93
+    },
+    {
+        "id":  "ts3-23",
+        "file":  "tiles/ts3-23.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.88
+    },
+    {
+        "id":  "ts3-33",
+        "file":  "tiles/ts3-33.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.85
+    },
+    {
+        "id":  "ts3-53",
+        "file":  "tiles/ts3-53.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.95
+    },
+    {
+        "id":  "ts3-63",
+        "file":  "tiles/ts3-63.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.99
+    },
+    {
+        "id":  "ts3-73",
+        "file":  "tiles/ts3-73.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.93
+    },
+    {
+        "id":  "ts3-83",
+        "file":  "tiles/ts3-83.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.92
+    },
+    {
+        "id":  "ts3-04",
+        "file":  "tiles/ts3-04.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.51
+    },
+    {
+        "id":  "ts3-34",
+        "file":  "tiles/ts3-34.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.5
+    },
+    {
+        "id":  "ts3-54",
+        "file":  "tiles/ts3-54.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.86
+    },
+    {
+        "id":  "ts3-64",
+        "file":  "tiles/ts3-64.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.93
+    },
+    {
+        "id":  "ts3-74",
+        "file":  "tiles/ts3-74.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.84
+    },
+    {
+        "id":  "ts3-84",
+        "file":  "tiles/ts3-84.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.78
+    },
+    {
+        "id":  "ts3-05",
+        "file":  "tiles/ts3-05.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.86
+    },
+    {
+        "id":  "ts3-35",
+        "file":  "tiles/ts3-35.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.86
+    },
+    {
+        "id":  "ts3-55",
+        "file":  "tiles/ts3-55.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.83
+    },
+    {
+        "id":  "ts3-65",
+        "file":  "tiles/ts3-65.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.9
+    },
+    {
+        "id":  "ts3-75",
+        "file":  "tiles/ts3-75.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.8
+    },
+    {
+        "id":  "ts3-85",
+        "file":  "tiles/ts3-85.png",
+        "col":  "Tiny Swords c3",
+        "full":  0.75
+    },
+    {
+        "id":  "ts4-00",
+        "file":  "tiles/ts4-00.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.92
+    },
+    {
+        "id":  "ts4-10",
+        "file":  "tiles/ts4-10.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.94
+    },
+    {
+        "id":  "ts4-20",
+        "file":  "tiles/ts4-20.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.91
+    },
+    {
+        "id":  "ts4-30",
+        "file":  "tiles/ts4-30.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.86
+    },
+    {
+        "id":  "ts4-50",
+        "file":  "tiles/ts4-50.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.95
+    },
+    {
+        "id":  "ts4-60",
+        "file":  "tiles/ts4-60.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.99
+    },
+    {
+        "id":  "ts4-70",
+        "file":  "tiles/ts4-70.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.93
+    },
+    {
+        "id":  "ts4-80",
+        "file":  "tiles/ts4-80.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.91
+    },
+    {
+        "id":  "ts4-01",
+        "file":  "tiles/ts4-01.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.98
+    },
+    {
+        "id":  "ts4-11",
+        "file":  "tiles/ts4-11.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-21",
+        "file":  "tiles/ts4-21.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.99
+    },
+    {
+        "id":  "ts4-31",
+        "file":  "tiles/ts4-31.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.97
+    },
+    {
+        "id":  "ts4-51",
+        "file":  "tiles/ts4-51.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-61",
+        "file":  "tiles/ts4-61.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-71",
+        "file":  "tiles/ts4-71.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-81",
+        "file":  "tiles/ts4-81.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-02",
+        "file":  "tiles/ts4-02.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.98
+    },
+    {
+        "id":  "ts4-12",
+        "file":  "tiles/ts4-12.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.99
+    },
+    {
+        "id":  "ts4-22",
+        "file":  "tiles/ts4-22.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.95
+    },
+    {
+        "id":  "ts4-32",
+        "file":  "tiles/ts4-32.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.93
+    },
+    {
+        "id":  "ts4-52",
+        "file":  "tiles/ts4-52.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-62",
+        "file":  "tiles/ts4-62.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-72",
+        "file":  "tiles/ts4-72.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-82",
+        "file":  "tiles/ts4-82.png",
+        "col":  "Tiny Swords c4",
+        "full":  1
+    },
+    {
+        "id":  "ts4-03",
+        "file":  "tiles/ts4-03.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.91
+    },
+    {
+        "id":  "ts4-13",
+        "file":  "tiles/ts4-13.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.93
+    },
+    {
+        "id":  "ts4-23",
+        "file":  "tiles/ts4-23.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.88
+    },
+    {
+        "id":  "ts4-33",
+        "file":  "tiles/ts4-33.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.85
+    },
+    {
+        "id":  "ts4-53",
+        "file":  "tiles/ts4-53.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.95
+    },
+    {
+        "id":  "ts4-63",
+        "file":  "tiles/ts4-63.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.99
+    },
+    {
+        "id":  "ts4-73",
+        "file":  "tiles/ts4-73.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.93
+    },
+    {
+        "id":  "ts4-83",
+        "file":  "tiles/ts4-83.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.92
+    },
+    {
+        "id":  "ts4-04",
+        "file":  "tiles/ts4-04.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.51
+    },
+    {
+        "id":  "ts4-34",
+        "file":  "tiles/ts4-34.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.5
+    },
+    {
+        "id":  "ts4-54",
+        "file":  "tiles/ts4-54.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.86
+    },
+    {
+        "id":  "ts4-64",
+        "file":  "tiles/ts4-64.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.93
+    },
+    {
+        "id":  "ts4-74",
+        "file":  "tiles/ts4-74.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.84
+    },
+    {
+        "id":  "ts4-84",
+        "file":  "tiles/ts4-84.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.78
+    },
+    {
+        "id":  "ts4-05",
+        "file":  "tiles/ts4-05.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.86
+    },
+    {
+        "id":  "ts4-35",
+        "file":  "tiles/ts4-35.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.86
+    },
+    {
+        "id":  "ts4-55",
+        "file":  "tiles/ts4-55.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.83
+    },
+    {
+        "id":  "ts4-65",
+        "file":  "tiles/ts4-65.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.9
+    },
+    {
+        "id":  "ts4-75",
+        "file":  "tiles/ts4-75.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.8
+    },
+    {
+        "id":  "ts4-85",
+        "file":  "tiles/ts4-85.png",
+        "col":  "Tiny Swords c4",
+        "full":  0.75
+    },
+    {
+        "id":  "ts5-00",
+        "file":  "tiles/ts5-00.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.92
+    },
+    {
+        "id":  "ts5-10",
+        "file":  "tiles/ts5-10.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.94
+    },
+    {
+        "id":  "ts5-20",
+        "file":  "tiles/ts5-20.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.91
+    },
+    {
+        "id":  "ts5-30",
+        "file":  "tiles/ts5-30.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.86
+    },
+    {
+        "id":  "ts5-50",
+        "file":  "tiles/ts5-50.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.95
+    },
+    {
+        "id":  "ts5-60",
+        "file":  "tiles/ts5-60.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.99
+    },
+    {
+        "id":  "ts5-70",
+        "file":  "tiles/ts5-70.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.93
+    },
+    {
+        "id":  "ts5-80",
+        "file":  "tiles/ts5-80.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.91
+    },
+    {
+        "id":  "ts5-01",
+        "file":  "tiles/ts5-01.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.98
+    },
+    {
+        "id":  "ts5-11",
+        "file":  "tiles/ts5-11.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-21",
+        "file":  "tiles/ts5-21.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.99
+    },
+    {
+        "id":  "ts5-31",
+        "file":  "tiles/ts5-31.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.97
+    },
+    {
+        "id":  "ts5-51",
+        "file":  "tiles/ts5-51.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-61",
+        "file":  "tiles/ts5-61.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-71",
+        "file":  "tiles/ts5-71.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-81",
+        "file":  "tiles/ts5-81.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-02",
+        "file":  "tiles/ts5-02.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.98
+    },
+    {
+        "id":  "ts5-12",
+        "file":  "tiles/ts5-12.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.99
+    },
+    {
+        "id":  "ts5-22",
+        "file":  "tiles/ts5-22.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.95
+    },
+    {
+        "id":  "ts5-32",
+        "file":  "tiles/ts5-32.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.93
+    },
+    {
+        "id":  "ts5-52",
+        "file":  "tiles/ts5-52.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-62",
+        "file":  "tiles/ts5-62.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-72",
+        "file":  "tiles/ts5-72.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-82",
+        "file":  "tiles/ts5-82.png",
+        "col":  "Tiny Swords c5",
+        "full":  1
+    },
+    {
+        "id":  "ts5-03",
+        "file":  "tiles/ts5-03.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.91
+    },
+    {
+        "id":  "ts5-13",
+        "file":  "tiles/ts5-13.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.93
+    },
+    {
+        "id":  "ts5-23",
+        "file":  "tiles/ts5-23.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.88
+    },
+    {
+        "id":  "ts5-33",
+        "file":  "tiles/ts5-33.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.85
+    },
+    {
+        "id":  "ts5-53",
+        "file":  "tiles/ts5-53.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.95
+    },
+    {
+        "id":  "ts5-63",
+        "file":  "tiles/ts5-63.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.99
+    },
+    {
+        "id":  "ts5-73",
+        "file":  "tiles/ts5-73.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.93
+    },
+    {
+        "id":  "ts5-83",
+        "file":  "tiles/ts5-83.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.92
+    },
+    {
+        "id":  "ts5-04",
+        "file":  "tiles/ts5-04.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.51
+    },
+    {
+        "id":  "ts5-34",
+        "file":  "tiles/ts5-34.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.5
+    },
+    {
+        "id":  "ts5-54",
+        "file":  "tiles/ts5-54.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.86
+    },
+    {
+        "id":  "ts5-64",
+        "file":  "tiles/ts5-64.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.93
+    },
+    {
+        "id":  "ts5-74",
+        "file":  "tiles/ts5-74.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.84
+    },
+    {
+        "id":  "ts5-84",
+        "file":  "tiles/ts5-84.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.78
+    },
+    {
+        "id":  "ts5-05",
+        "file":  "tiles/ts5-05.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.86
+    },
+    {
+        "id":  "ts5-35",
+        "file":  "tiles/ts5-35.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.86
+    },
+    {
+        "id":  "ts5-55",
+        "file":  "tiles/ts5-55.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.83
+    },
+    {
+        "id":  "ts5-65",
+        "file":  "tiles/ts5-65.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.9
+    },
+    {
+        "id":  "ts5-75",
+        "file":  "tiles/ts5-75.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.8
+    },
+    {
+        "id":  "ts5-85",
+        "file":  "tiles/ts5-85.png",
+        "col":  "Tiny Swords c5",
+        "full":  0.75
+    },
+    {
+        "id":  "cg-00",
+        "file":  "tiles/cg-00.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-10",
+        "file":  "tiles/cg-10.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-20",
+        "file":  "tiles/cg-20.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-30",
+        "file":  "tiles/cg-30.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-40",
+        "file":  "tiles/cg-40.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-50",
+        "file":  "tiles/cg-50.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-60",
+        "file":  "tiles/cg-60.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-70",
+        "file":  "tiles/cg-70.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-01",
+        "file":  "tiles/cg-01.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-11",
+        "file":  "tiles/cg-11.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-21",
+        "file":  "tiles/cg-21.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-31",
+        "file":  "tiles/cg-31.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-41",
+        "file":  "tiles/cg-41.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-51",
+        "file":  "tiles/cg-51.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-61",
+        "file":  "tiles/cg-61.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-71",
+        "file":  "tiles/cg-71.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-02",
+        "file":  "tiles/cg-02.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-12",
+        "file":  "tiles/cg-12.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-22",
+        "file":  "tiles/cg-22.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-32",
+        "file":  "tiles/cg-32.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-42",
+        "file":  "tiles/cg-42.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-52",
+        "file":  "tiles/cg-52.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-62",
+        "file":  "tiles/cg-62.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-72",
+        "file":  "tiles/cg-72.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-03",
+        "file":  "tiles/cg-03.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-13",
+        "file":  "tiles/cg-13.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-23",
+        "file":  "tiles/cg-23.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-33",
+        "file":  "tiles/cg-33.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-43",
+        "file":  "tiles/cg-43.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-53",
+        "file":  "tiles/cg-53.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-63",
+        "file":  "tiles/cg-63.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-73",
+        "file":  "tiles/cg-73.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-04",
+        "file":  "tiles/cg-04.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-14",
+        "file":  "tiles/cg-14.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-24",
+        "file":  "tiles/cg-24.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-34",
+        "file":  "tiles/cg-34.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-44",
+        "file":  "tiles/cg-44.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-54",
+        "file":  "tiles/cg-54.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-64",
+        "file":  "tiles/cg-64.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-74",
+        "file":  "tiles/cg-74.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-05",
+        "file":  "tiles/cg-05.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-15",
+        "file":  "tiles/cg-15.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-25",
+        "file":  "tiles/cg-25.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-35",
+        "file":  "tiles/cg-35.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-45",
+        "file":  "tiles/cg-45.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-55",
+        "file":  "tiles/cg-55.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-65",
+        "file":  "tiles/cg-65.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-75",
+        "file":  "tiles/cg-75.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-06",
+        "file":  "tiles/cg-06.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-16",
+        "file":  "tiles/cg-16.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-26",
+        "file":  "tiles/cg-26.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-36",
+        "file":  "tiles/cg-36.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-46",
+        "file":  "tiles/cg-46.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-56",
+        "file":  "tiles/cg-56.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-66",
+        "file":  "tiles/cg-66.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-76",
+        "file":  "tiles/cg-76.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-07",
+        "file":  "tiles/cg-07.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-17",
+        "file":  "tiles/cg-17.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-27",
+        "file":  "tiles/cg-27.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-37",
+        "file":  "tiles/cg-37.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-47",
+        "file":  "tiles/cg-47.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-57",
+        "file":  "tiles/cg-57.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-67",
+        "file":  "tiles/cg-67.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cg-77",
+        "file":  "tiles/cg-77.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-00",
+        "file":  "tiles/cs-00.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-10",
+        "file":  "tiles/cs-10.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-20",
+        "file":  "tiles/cs-20.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-30",
+        "file":  "tiles/cs-30.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-40",
+        "file":  "tiles/cs-40.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-50",
+        "file":  "tiles/cs-50.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-60",
+        "file":  "tiles/cs-60.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-70",
+        "file":  "tiles/cs-70.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-01",
+        "file":  "tiles/cs-01.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-11",
+        "file":  "tiles/cs-11.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-21",
+        "file":  "tiles/cs-21.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-31",
+        "file":  "tiles/cs-31.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-41",
+        "file":  "tiles/cs-41.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-51",
+        "file":  "tiles/cs-51.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-61",
+        "file":  "tiles/cs-61.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-71",
+        "file":  "tiles/cs-71.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-02",
+        "file":  "tiles/cs-02.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-12",
+        "file":  "tiles/cs-12.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-22",
+        "file":  "tiles/cs-22.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-32",
+        "file":  "tiles/cs-32.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-42",
+        "file":  "tiles/cs-42.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-52",
+        "file":  "tiles/cs-52.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-62",
+        "file":  "tiles/cs-62.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-72",
+        "file":  "tiles/cs-72.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-03",
+        "file":  "tiles/cs-03.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-13",
+        "file":  "tiles/cs-13.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-23",
+        "file":  "tiles/cs-23.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-33",
+        "file":  "tiles/cs-33.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-43",
+        "file":  "tiles/cs-43.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-63",
+        "file":  "tiles/cs-63.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-54",
+        "file":  "tiles/cs-54.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-64",
+        "file":  "tiles/cs-64.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-74",
+        "file":  "tiles/cs-74.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-05",
+        "file":  "tiles/cs-05.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-15",
+        "file":  "tiles/cs-15.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-25",
+        "file":  "tiles/cs-25.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-65",
+        "file":  "tiles/cs-65.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-06",
+        "file":  "tiles/cs-06.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-26",
+        "file":  "tiles/cs-26.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-46",
+        "file":  "tiles/cs-46.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-56",
+        "file":  "tiles/cs-56.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-66",
+        "file":  "tiles/cs-66.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-76",
+        "file":  "tiles/cs-76.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-07",
+        "file":  "tiles/cs-07.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-17",
+        "file":  "tiles/cs-17.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-27",
+        "file":  "tiles/cs-27.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-47",
+        "file":  "tiles/cs-47.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-57",
+        "file":  "tiles/cs-57.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-67",
+        "file":  "tiles/cs-67.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cs-77",
+        "file":  "tiles/cs-77.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-11",
+        "file":  "tiles/cw-11.png",
+        "col":  "Cainos",
+        "full":  0.52
+    },
+    {
+        "id":  "cw-31",
+        "file":  "tiles/cw-31.png",
+        "col":  "Cainos",
+        "full":  0.36
+    },
+    {
+        "id":  "cw-51",
+        "file":  "tiles/cw-51.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-61",
+        "file":  "tiles/cw-61.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-71",
+        "file":  "tiles/cw-71.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-81",
+        "file":  "tiles/cw-81.png",
+        "col":  "Cainos",
+        "full":  0.36
+    },
+    {
+        "id":  "cw-91",
+        "file":  "tiles/cw-91.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-12",
+        "file":  "tiles/cw-12.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-52",
+        "file":  "tiles/cw-52.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-62",
+        "file":  "tiles/cw-62.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-72",
+        "file":  "tiles/cw-72.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-82",
+        "file":  "tiles/cw-82.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-92",
+        "file":  "tiles/cw-92.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-122",
+        "file":  "tiles/cw-122.png",
+        "col":  "Cainos",
+        "full":  0.52
+    },
+    {
+        "id":  "cw-132",
+        "file":  "tiles/cw-132.png",
+        "col":  "Cainos",
+        "full":  0.36
+    },
+    {
+        "id":  "cw-13",
+        "file":  "tiles/cw-13.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-23",
+        "file":  "tiles/cw-23.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-33",
+        "file":  "tiles/cw-33.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-83",
+        "file":  "tiles/cw-83.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-93",
+        "file":  "tiles/cw-93.png",
+        "col":  "Cainos",
+        "full":  0.4
+    },
+    {
+        "id":  "cw-123",
+        "file":  "tiles/cw-123.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-133",
+        "file":  "tiles/cw-133.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-14",
+        "file":  "tiles/cw-14.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-24",
+        "file":  "tiles/cw-24.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-34",
+        "file":  "tiles/cw-34.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-124",
+        "file":  "tiles/cw-124.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-134",
+        "file":  "tiles/cw-134.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-16",
+        "file":  "tiles/cw-16.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-26",
+        "file":  "tiles/cw-26.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-36",
+        "file":  "tiles/cw-36.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-46",
+        "file":  "tiles/cw-46.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-66",
+        "file":  "tiles/cw-66.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-17",
+        "file":  "tiles/cw-17.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-27",
+        "file":  "tiles/cw-27.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-37",
+        "file":  "tiles/cw-37.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-47",
+        "file":  "tiles/cw-47.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-67",
+        "file":  "tiles/cw-67.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-19",
+        "file":  "tiles/cw-19.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-29",
+        "file":  "tiles/cw-29.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-49",
+        "file":  "tiles/cw-49.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-59",
+        "file":  "tiles/cw-59.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-110",
+        "file":  "tiles/cw-110.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-210",
+        "file":  "tiles/cw-210.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-410",
+        "file":  "tiles/cw-410.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "cw-510",
+        "file":  "tiles/cw-510.png",
+        "col":  "Cainos",
+        "full":  1
+    },
+    {
+        "id":  "road1-grass-2-1",
+        "file":  "tiles/road1-grass-2-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-1",
+        "file":  "tiles/road1-grass-7-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-1",
+        "file":  "tiles/road1-grass-12-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-2",
+        "file":  "tiles/road1-grass-1-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-2",
+        "file":  "tiles/road1-grass-2-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-2",
+        "file":  "tiles/road1-grass-3-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-2",
+        "file":  "tiles/road1-grass-6-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-2",
+        "file":  "tiles/road1-grass-7-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-2",
+        "file":  "tiles/road1-grass-8-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-11-2",
+        "file":  "tiles/road1-grass-11-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-2",
+        "file":  "tiles/road1-grass-12-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-2",
+        "file":  "tiles/road1-grass-13-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-3",
+        "file":  "tiles/road1-grass-2-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-3",
+        "file":  "tiles/road1-grass-7-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-3",
+        "file":  "tiles/road1-grass-12-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-3",
+        "file":  "tiles/road1-grass-13-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-6",
+        "file":  "tiles/road1-grass-2-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-6",
+        "file":  "tiles/road1-grass-6-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-6",
+        "file":  "tiles/road1-grass-7-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-6",
+        "file":  "tiles/road1-grass-8-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-7",
+        "file":  "tiles/road1-grass-1-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-7",
+        "file":  "tiles/road1-grass-2-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-7",
+        "file":  "tiles/road1-grass-3-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-7",
+        "file":  "tiles/road1-grass-6-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-7",
+        "file":  "tiles/road1-grass-7-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-7",
+        "file":  "tiles/road1-grass-8-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-8",
+        "file":  "tiles/road1-grass-2-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-8",
+        "file":  "tiles/road1-grass-7-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-8",
+        "file":  "tiles/road1-grass-8-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-10",
+        "file":  "tiles/road1-grass-4-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-5-10",
+        "file":  "tiles/road1-grass-5-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-10",
+        "file":  "tiles/road1-grass-6-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-10",
+        "file":  "tiles/road1-grass-7-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-10",
+        "file":  "tiles/road1-grass-10-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-11",
+        "file":  "tiles/road1-grass-1-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-11",
+        "file":  "tiles/road1-grass-2-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-11",
+        "file":  "tiles/road1-grass-4-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-11",
+        "file":  "tiles/road1-grass-7-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-9-11",
+        "file":  "tiles/road1-grass-9-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-11",
+        "file":  "tiles/road1-grass-10-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-11-11",
+        "file":  "tiles/road1-grass-11-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-12",
+        "file":  "tiles/road1-grass-1-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-12",
+        "file":  "tiles/road1-grass-2-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-12",
+        "file":  "tiles/road1-grass-4-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-12",
+        "file":  "tiles/road1-grass-7-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-12",
+        "file":  "tiles/road1-grass-10-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-12",
+        "file":  "tiles/road1-grass-13-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-13",
+        "file":  "tiles/road1-grass-4-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-5-13",
+        "file":  "tiles/road1-grass-5-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-13",
+        "file":  "tiles/road1-grass-6-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-13",
+        "file":  "tiles/road1-grass-7-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-13",
+        "file":  "tiles/road1-grass-13-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-14",
+        "file":  "tiles/road1-grass-10-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-14",
+        "file":  "tiles/road1-grass-13-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-15",
+        "file":  "tiles/road1-grass-1-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-15",
+        "file":  "tiles/road1-grass-2-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-15",
+        "file":  "tiles/road1-grass-3-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-15",
+        "file":  "tiles/road1-grass-4-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-15",
+        "file":  "tiles/road1-grass-6-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-15",
+        "file":  "tiles/road1-grass-7-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-15",
+        "file":  "tiles/road1-grass-8-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-9-15",
+        "file":  "tiles/road1-grass-9-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-15",
+        "file":  "tiles/road1-grass-10-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-15",
+        "file":  "tiles/road1-grass-13-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-16",
+        "file":  "tiles/road1-grass-1-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-16",
+        "file":  "tiles/road1-grass-4-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-16",
+        "file":  "tiles/road1-grass-7-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-16",
+        "file":  "tiles/road1-grass-10-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-16",
+        "file":  "tiles/road1-grass-13-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-17",
+        "file":  "tiles/road1-grass-1-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-17",
+        "file":  "tiles/road1-grass-4-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-17",
+        "file":  "tiles/road1-grass-7-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-17",
+        "file":  "tiles/road1-grass-10-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-17",
+        "file":  "tiles/road1-grass-13-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-18",
+        "file":  "tiles/road1-grass-1-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-18",
+        "file":  "tiles/road1-grass-2-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-18",
+        "file":  "tiles/road1-grass-3-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-18",
+        "file":  "tiles/road1-grass-4-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-18",
+        "file":  "tiles/road1-grass-7-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-8-18",
+        "file":  "tiles/road1-grass-8-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-9-18",
+        "file":  "tiles/road1-grass-9-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-10-18",
+        "file":  "tiles/road1-grass-10-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-11-18",
+        "file":  "tiles/road1-grass-11-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-7-19",
+        "file":  "tiles/road1-grass-7-19.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-20",
+        "file":  "tiles/road1-grass-2-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-20",
+        "file":  "tiles/road1-grass-3-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-20",
+        "file":  "tiles/road1-grass-12-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-1-21",
+        "file":  "tiles/road1-grass-1-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-21",
+        "file":  "tiles/road1-grass-2-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-21",
+        "file":  "tiles/road1-grass-3-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-21",
+        "file":  "tiles/road1-grass-4-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-11-21",
+        "file":  "tiles/road1-grass-11-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-21",
+        "file":  "tiles/road1-grass-12-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-21",
+        "file":  "tiles/road1-grass-13-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-22",
+        "file":  "tiles/road1-grass-2-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-22",
+        "file":  "tiles/road1-grass-3-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-11-22",
+        "file":  "tiles/road1-grass-11-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-22",
+        "file":  "tiles/road1-grass-12-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-13-22",
+        "file":  "tiles/road1-grass-13-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-12-23",
+        "file":  "tiles/road1-grass-12-23.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-2-24",
+        "file":  "tiles/road1-grass-2-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-3-24",
+        "file":  "tiles/road1-grass-3-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-4-24",
+        "file":  "tiles/road1-grass-4-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-5-24",
+        "file":  "tiles/road1-grass-5-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-grass-6-24",
+        "file":  "tiles/road1-grass-6-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-1",
+        "file":  "tiles/road1-ground-2-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-1",
+        "file":  "tiles/road1-ground-7-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-1",
+        "file":  "tiles/road1-ground-12-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-2",
+        "file":  "tiles/road1-ground-1-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-2",
+        "file":  "tiles/road1-ground-2-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-2",
+        "file":  "tiles/road1-ground-3-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-2",
+        "file":  "tiles/road1-ground-6-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-2",
+        "file":  "tiles/road1-ground-7-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-2",
+        "file":  "tiles/road1-ground-8-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-11-2",
+        "file":  "tiles/road1-ground-11-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-2",
+        "file":  "tiles/road1-ground-12-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-2",
+        "file":  "tiles/road1-ground-13-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-3",
+        "file":  "tiles/road1-ground-2-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-3",
+        "file":  "tiles/road1-ground-7-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-3",
+        "file":  "tiles/road1-ground-12-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-6",
+        "file":  "tiles/road1-ground-2-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-6",
+        "file":  "tiles/road1-ground-7-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-6",
+        "file":  "tiles/road1-ground-8-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-7",
+        "file":  "tiles/road1-ground-1-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-7",
+        "file":  "tiles/road1-ground-2-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-7",
+        "file":  "tiles/road1-ground-3-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-7",
+        "file":  "tiles/road1-ground-6-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-7",
+        "file":  "tiles/road1-ground-7-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-7",
+        "file":  "tiles/road1-ground-8-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-8",
+        "file":  "tiles/road1-ground-2-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-8",
+        "file":  "tiles/road1-ground-7-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-8",
+        "file":  "tiles/road1-ground-8-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-10",
+        "file":  "tiles/road1-ground-4-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-5-10",
+        "file":  "tiles/road1-ground-5-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-10",
+        "file":  "tiles/road1-ground-6-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-10",
+        "file":  "tiles/road1-ground-7-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-10",
+        "file":  "tiles/road1-ground-10-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-11",
+        "file":  "tiles/road1-ground-1-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-11",
+        "file":  "tiles/road1-ground-2-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-11",
+        "file":  "tiles/road1-ground-4-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-11",
+        "file":  "tiles/road1-ground-7-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-9-11",
+        "file":  "tiles/road1-ground-9-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-11",
+        "file":  "tiles/road1-ground-10-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-11-11",
+        "file":  "tiles/road1-ground-11-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-12",
+        "file":  "tiles/road1-ground-1-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-12",
+        "file":  "tiles/road1-ground-2-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-12",
+        "file":  "tiles/road1-ground-4-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-12",
+        "file":  "tiles/road1-ground-7-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-12",
+        "file":  "tiles/road1-ground-10-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-12",
+        "file":  "tiles/road1-ground-13-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-13",
+        "file":  "tiles/road1-ground-4-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-5-13",
+        "file":  "tiles/road1-ground-5-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-13",
+        "file":  "tiles/road1-ground-6-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-13",
+        "file":  "tiles/road1-ground-7-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-13",
+        "file":  "tiles/road1-ground-13-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-14",
+        "file":  "tiles/road1-ground-10-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-14",
+        "file":  "tiles/road1-ground-13-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-15",
+        "file":  "tiles/road1-ground-1-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-15",
+        "file":  "tiles/road1-ground-2-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-15",
+        "file":  "tiles/road1-ground-3-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-15",
+        "file":  "tiles/road1-ground-4-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-15",
+        "file":  "tiles/road1-ground-6-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-15",
+        "file":  "tiles/road1-ground-7-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-15",
+        "file":  "tiles/road1-ground-8-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-9-15",
+        "file":  "tiles/road1-ground-9-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-15",
+        "file":  "tiles/road1-ground-10-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-15",
+        "file":  "tiles/road1-ground-13-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-16",
+        "file":  "tiles/road1-ground-1-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-16",
+        "file":  "tiles/road1-ground-4-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-16",
+        "file":  "tiles/road1-ground-7-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-16",
+        "file":  "tiles/road1-ground-10-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-16",
+        "file":  "tiles/road1-ground-13-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-17",
+        "file":  "tiles/road1-ground-1-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-17",
+        "file":  "tiles/road1-ground-4-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-17",
+        "file":  "tiles/road1-ground-7-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-17",
+        "file":  "tiles/road1-ground-10-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-17",
+        "file":  "tiles/road1-ground-13-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-18",
+        "file":  "tiles/road1-ground-1-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-18",
+        "file":  "tiles/road1-ground-2-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-18",
+        "file":  "tiles/road1-ground-3-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-18",
+        "file":  "tiles/road1-ground-4-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-18",
+        "file":  "tiles/road1-ground-7-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-8-18",
+        "file":  "tiles/road1-ground-8-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-9-18",
+        "file":  "tiles/road1-ground-9-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-10-18",
+        "file":  "tiles/road1-ground-10-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-11-18",
+        "file":  "tiles/road1-ground-11-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-7-19",
+        "file":  "tiles/road1-ground-7-19.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-20",
+        "file":  "tiles/road1-ground-2-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-20",
+        "file":  "tiles/road1-ground-3-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-20",
+        "file":  "tiles/road1-ground-12-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-1-21",
+        "file":  "tiles/road1-ground-1-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-21",
+        "file":  "tiles/road1-ground-2-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-21",
+        "file":  "tiles/road1-ground-3-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-21",
+        "file":  "tiles/road1-ground-4-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-11-21",
+        "file":  "tiles/road1-ground-11-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-21",
+        "file":  "tiles/road1-ground-12-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-21",
+        "file":  "tiles/road1-ground-13-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-22",
+        "file":  "tiles/road1-ground-2-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-22",
+        "file":  "tiles/road1-ground-3-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-11-22",
+        "file":  "tiles/road1-ground-11-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-22",
+        "file":  "tiles/road1-ground-12-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-13-22",
+        "file":  "tiles/road1-ground-13-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-12-23",
+        "file":  "tiles/road1-ground-12-23.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-2-24",
+        "file":  "tiles/road1-ground-2-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-3-24",
+        "file":  "tiles/road1-ground-3-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-4-24",
+        "file":  "tiles/road1-ground-4-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-5-24",
+        "file":  "tiles/road1-ground-5-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road1-ground-6-24",
+        "file":  "tiles/road1-ground-6-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-1",
+        "file":  "tiles/road3-grass-2-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-1",
+        "file":  "tiles/road3-grass-7-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-1",
+        "file":  "tiles/road3-grass-12-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-2",
+        "file":  "tiles/road3-grass-1-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-2",
+        "file":  "tiles/road3-grass-2-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-2",
+        "file":  "tiles/road3-grass-3-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-2",
+        "file":  "tiles/road3-grass-6-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-2",
+        "file":  "tiles/road3-grass-7-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-2",
+        "file":  "tiles/road3-grass-8-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-2",
+        "file":  "tiles/road3-grass-11-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-2",
+        "file":  "tiles/road3-grass-12-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-2",
+        "file":  "tiles/road3-grass-13-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-3",
+        "file":  "tiles/road3-grass-2-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-3",
+        "file":  "tiles/road3-grass-7-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-3",
+        "file":  "tiles/road3-grass-12-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-6",
+        "file":  "tiles/road3-grass-2-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-6",
+        "file":  "tiles/road3-grass-7-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-7",
+        "file":  "tiles/road3-grass-1-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-7",
+        "file":  "tiles/road3-grass-2-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-7",
+        "file":  "tiles/road3-grass-3-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-7",
+        "file":  "tiles/road3-grass-6-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-7",
+        "file":  "tiles/road3-grass-7-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-7",
+        "file":  "tiles/road3-grass-8-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-8",
+        "file":  "tiles/road3-grass-2-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-8",
+        "file":  "tiles/road3-grass-7-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-10",
+        "file":  "tiles/road3-grass-4-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-5-10",
+        "file":  "tiles/road3-grass-5-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-10",
+        "file":  "tiles/road3-grass-6-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-10",
+        "file":  "tiles/road3-grass-7-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-10",
+        "file":  "tiles/road3-grass-10-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-11",
+        "file":  "tiles/road3-grass-1-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-11",
+        "file":  "tiles/road3-grass-2-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-11",
+        "file":  "tiles/road3-grass-4-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-11",
+        "file":  "tiles/road3-grass-7-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-11",
+        "file":  "tiles/road3-grass-9-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-11",
+        "file":  "tiles/road3-grass-10-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-11",
+        "file":  "tiles/road3-grass-11-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-12",
+        "file":  "tiles/road3-grass-1-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-12",
+        "file":  "tiles/road3-grass-2-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-12",
+        "file":  "tiles/road3-grass-4-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-12",
+        "file":  "tiles/road3-grass-7-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-12",
+        "file":  "tiles/road3-grass-10-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-12",
+        "file":  "tiles/road3-grass-13-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-13",
+        "file":  "tiles/road3-grass-4-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-5-13",
+        "file":  "tiles/road3-grass-5-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-13",
+        "file":  "tiles/road3-grass-6-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-13",
+        "file":  "tiles/road3-grass-7-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-13",
+        "file":  "tiles/road3-grass-13-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-14",
+        "file":  "tiles/road3-grass-10-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-14",
+        "file":  "tiles/road3-grass-13-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-15",
+        "file":  "tiles/road3-grass-1-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-15",
+        "file":  "tiles/road3-grass-2-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-15",
+        "file":  "tiles/road3-grass-3-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-15",
+        "file":  "tiles/road3-grass-4-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-15",
+        "file":  "tiles/road3-grass-6-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-15",
+        "file":  "tiles/road3-grass-7-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-15",
+        "file":  "tiles/road3-grass-8-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-15",
+        "file":  "tiles/road3-grass-9-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-15",
+        "file":  "tiles/road3-grass-10-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-15",
+        "file":  "tiles/road3-grass-13-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-16",
+        "file":  "tiles/road3-grass-1-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-16",
+        "file":  "tiles/road3-grass-4-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-16",
+        "file":  "tiles/road3-grass-7-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-16",
+        "file":  "tiles/road3-grass-10-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-16",
+        "file":  "tiles/road3-grass-13-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-17",
+        "file":  "tiles/road3-grass-1-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-17",
+        "file":  "tiles/road3-grass-4-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-17",
+        "file":  "tiles/road3-grass-7-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-17",
+        "file":  "tiles/road3-grass-10-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-18",
+        "file":  "tiles/road3-grass-1-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-18",
+        "file":  "tiles/road3-grass-2-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-18",
+        "file":  "tiles/road3-grass-3-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-18",
+        "file":  "tiles/road3-grass-4-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-18",
+        "file":  "tiles/road3-grass-7-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-18",
+        "file":  "tiles/road3-grass-8-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-18",
+        "file":  "tiles/road3-grass-9-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-18",
+        "file":  "tiles/road3-grass-10-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-18",
+        "file":  "tiles/road3-grass-11-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-19",
+        "file":  "tiles/road3-grass-7-19.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-20",
+        "file":  "tiles/road3-grass-2-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-20",
+        "file":  "tiles/road3-grass-3-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-20",
+        "file":  "tiles/road3-grass-12-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-21",
+        "file":  "tiles/road3-grass-1-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-21",
+        "file":  "tiles/road3-grass-2-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-21",
+        "file":  "tiles/road3-grass-3-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-21",
+        "file":  "tiles/road3-grass-4-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-21",
+        "file":  "tiles/road3-grass-11-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-21",
+        "file":  "tiles/road3-grass-12-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-21",
+        "file":  "tiles/road3-grass-13-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-22",
+        "file":  "tiles/road3-grass-2-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-22",
+        "file":  "tiles/road3-grass-3-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-22",
+        "file":  "tiles/road3-grass-11-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-22",
+        "file":  "tiles/road3-grass-12-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-22",
+        "file":  "tiles/road3-grass-13-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-23",
+        "file":  "tiles/road3-grass-12-23.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-24",
+        "file":  "tiles/road3-grass-2-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-24",
+        "file":  "tiles/road3-grass-3-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-24",
+        "file":  "tiles/road3-grass-4-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-5-24",
+        "file":  "tiles/road3-grass-5-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-24",
+        "file":  "tiles/road3-grass-6-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-24",
+        "file":  "tiles/road3-grass-9-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-24",
+        "file":  "tiles/road3-grass-10-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-24",
+        "file":  "tiles/road3-grass-11-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-24",
+        "file":  "tiles/road3-grass-12-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-24",
+        "file":  "tiles/road3-grass-13-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-25",
+        "file":  "tiles/road3-grass-9-25.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-25",
+        "file":  "tiles/road3-grass-10-25.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-25",
+        "file":  "tiles/road3-grass-11-25.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-25",
+        "file":  "tiles/road3-grass-12-25.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-25",
+        "file":  "tiles/road3-grass-13-25.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-1-26",
+        "file":  "tiles/road3-grass-1-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-2-26",
+        "file":  "tiles/road3-grass-2-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-3-26",
+        "file":  "tiles/road3-grass-3-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-4-26",
+        "file":  "tiles/road3-grass-4-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-6-26",
+        "file":  "tiles/road3-grass-6-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-26",
+        "file":  "tiles/road3-grass-7-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-26",
+        "file":  "tiles/road3-grass-8-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-9-26",
+        "file":  "tiles/road3-grass-9-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-10-26",
+        "file":  "tiles/road3-grass-10-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-26",
+        "file":  "tiles/road3-grass-11-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-26",
+        "file":  "tiles/road3-grass-12-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-13-26",
+        "file":  "tiles/road3-grass-13-26.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-11-28",
+        "file":  "tiles/road3-grass-11-28.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-12-28",
+        "file":  "tiles/road3-grass-12-28.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-7-29",
+        "file":  "tiles/road3-grass-7-29.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road3-grass-8-29",
+        "file":  "tiles/road3-grass-8-29.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-1",
+        "file":  "tiles/road5-grass-1-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-1",
+        "file":  "tiles/road5-grass-2-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-1",
+        "file":  "tiles/road5-grass-3-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-1",
+        "file":  "tiles/road5-grass-7-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-1",
+        "file":  "tiles/road5-grass-11-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-1",
+        "file":  "tiles/road5-grass-12-1.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-2",
+        "file":  "tiles/road5-grass-1-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-2",
+        "file":  "tiles/road5-grass-2-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-2",
+        "file":  "tiles/road5-grass-3-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-2",
+        "file":  "tiles/road5-grass-6-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-2",
+        "file":  "tiles/road5-grass-7-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-2",
+        "file":  "tiles/road5-grass-8-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-2",
+        "file":  "tiles/road5-grass-11-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-2",
+        "file":  "tiles/road5-grass-12-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-2",
+        "file":  "tiles/road5-grass-13-2.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-3",
+        "file":  "tiles/road5-grass-2-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-3",
+        "file":  "tiles/road5-grass-3-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-3",
+        "file":  "tiles/road5-grass-7-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-3",
+        "file":  "tiles/road5-grass-8-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-3",
+        "file":  "tiles/road5-grass-11-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-3",
+        "file":  "tiles/road5-grass-12-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-3",
+        "file":  "tiles/road5-grass-13-3.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-6",
+        "file":  "tiles/road5-grass-2-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-6",
+        "file":  "tiles/road5-grass-7-6.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-7",
+        "file":  "tiles/road5-grass-1-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-7",
+        "file":  "tiles/road5-grass-2-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-7",
+        "file":  "tiles/road5-grass-3-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-7",
+        "file":  "tiles/road5-grass-6-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-7",
+        "file":  "tiles/road5-grass-7-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-7",
+        "file":  "tiles/road5-grass-8-7.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-8",
+        "file":  "tiles/road5-grass-1-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-8",
+        "file":  "tiles/road5-grass-2-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-8",
+        "file":  "tiles/road5-grass-3-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-8",
+        "file":  "tiles/road5-grass-7-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-8",
+        "file":  "tiles/road5-grass-8-8.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-10",
+        "file":  "tiles/road5-grass-4-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-5-10",
+        "file":  "tiles/road5-grass-5-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-10",
+        "file":  "tiles/road5-grass-6-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-10",
+        "file":  "tiles/road5-grass-7-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-10",
+        "file":  "tiles/road5-grass-10-10.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-11",
+        "file":  "tiles/road5-grass-1-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-11",
+        "file":  "tiles/road5-grass-2-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-11",
+        "file":  "tiles/road5-grass-4-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-11",
+        "file":  "tiles/road5-grass-7-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-9-11",
+        "file":  "tiles/road5-grass-9-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-11",
+        "file":  "tiles/road5-grass-10-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-11",
+        "file":  "tiles/road5-grass-11-11.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-12",
+        "file":  "tiles/road5-grass-1-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-12",
+        "file":  "tiles/road5-grass-2-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-12",
+        "file":  "tiles/road5-grass-4-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-12",
+        "file":  "tiles/road5-grass-7-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-12",
+        "file":  "tiles/road5-grass-10-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-12",
+        "file":  "tiles/road5-grass-13-12.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-13",
+        "file":  "tiles/road5-grass-4-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-5-13",
+        "file":  "tiles/road5-grass-5-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-13",
+        "file":  "tiles/road5-grass-6-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-13",
+        "file":  "tiles/road5-grass-7-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-13",
+        "file":  "tiles/road5-grass-13-13.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-14",
+        "file":  "tiles/road5-grass-10-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-14",
+        "file":  "tiles/road5-grass-13-14.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-15",
+        "file":  "tiles/road5-grass-1-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-15",
+        "file":  "tiles/road5-grass-2-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-15",
+        "file":  "tiles/road5-grass-3-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-15",
+        "file":  "tiles/road5-grass-4-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-15",
+        "file":  "tiles/road5-grass-6-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-15",
+        "file":  "tiles/road5-grass-7-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-15",
+        "file":  "tiles/road5-grass-8-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-9-15",
+        "file":  "tiles/road5-grass-9-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-15",
+        "file":  "tiles/road5-grass-10-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-15",
+        "file":  "tiles/road5-grass-13-15.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-16",
+        "file":  "tiles/road5-grass-1-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-16",
+        "file":  "tiles/road5-grass-4-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-16",
+        "file":  "tiles/road5-grass-7-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-16",
+        "file":  "tiles/road5-grass-10-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-16",
+        "file":  "tiles/road5-grass-13-16.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-17",
+        "file":  "tiles/road5-grass-1-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-17",
+        "file":  "tiles/road5-grass-4-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-17",
+        "file":  "tiles/road5-grass-7-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-17",
+        "file":  "tiles/road5-grass-10-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-17",
+        "file":  "tiles/road5-grass-13-17.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-18",
+        "file":  "tiles/road5-grass-1-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-18",
+        "file":  "tiles/road5-grass-2-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-18",
+        "file":  "tiles/road5-grass-3-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-18",
+        "file":  "tiles/road5-grass-4-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-18",
+        "file":  "tiles/road5-grass-7-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-8-18",
+        "file":  "tiles/road5-grass-8-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-9-18",
+        "file":  "tiles/road5-grass-9-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-10-18",
+        "file":  "tiles/road5-grass-10-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-18",
+        "file":  "tiles/road5-grass-11-18.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-19",
+        "file":  "tiles/road5-grass-7-19.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-20",
+        "file":  "tiles/road5-grass-2-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-20",
+        "file":  "tiles/road5-grass-3-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-20",
+        "file":  "tiles/road5-grass-12-20.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-1-21",
+        "file":  "tiles/road5-grass-1-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-21",
+        "file":  "tiles/road5-grass-2-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-21",
+        "file":  "tiles/road5-grass-3-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-21",
+        "file":  "tiles/road5-grass-4-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-21",
+        "file":  "tiles/road5-grass-11-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-21",
+        "file":  "tiles/road5-grass-12-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-21",
+        "file":  "tiles/road5-grass-13-21.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-22",
+        "file":  "tiles/road5-grass-2-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-22",
+        "file":  "tiles/road5-grass-3-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-11-22",
+        "file":  "tiles/road5-grass-11-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-22",
+        "file":  "tiles/road5-grass-12-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-13-22",
+        "file":  "tiles/road5-grass-13-22.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-12-23",
+        "file":  "tiles/road5-grass-12-23.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-2-24",
+        "file":  "tiles/road5-grass-2-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-3-24",
+        "file":  "tiles/road5-grass-3-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-4-24",
+        "file":  "tiles/road5-grass-4-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-5-24",
+        "file":  "tiles/road5-grass-5-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-6-24",
+        "file":  "tiles/road5-grass-6-24.png",
+        "col":  "Roads"
+    },
+    {
+        "id":  "road5-grass-7-24",
+        "file":  "tiles/road5-grass-7-24.png",
+        "col":  "Roads"
+    }
+]

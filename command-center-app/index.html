@@ -2,185 +2,2262 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Command Center — Overworld Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Command Center</title>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
-    --parchment:#f1e4c3; --ink:#2b1d0e; --gold:#b8860b;
-    --hp-red:#a83232; --hp-back:#5a3b2a; --panel:#3c2a1a; --panel-border:#8a6a3a;
+    --sky:#7fd4e8; --water:#4aa8c4; --grass:#8fc75a; --grass2:#82bb4e;
+    --path1:#dcb87a; --path2:#d0ab6c;
+    --parchment:#f1e4c3; --ink:#2b1d0e; --gold:#e8b64c;
+    --hp-red:#c33c3c; --hp-back:#4a2f1e;
+    --wood:#6b4726; --wood-dark:#4a2f18; --wood-light:#8a6a3a;
+    --panel:#3b2a4d; --panel2:#2c1f3a; --panel-line:#c9922f;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0; font-family:'VT323',monospace; font-size:1.2em; background:#1b120a;
-    color:var(--parchment); min-height:100vh;
-  }
-  header{
-    background:linear-gradient(180deg,#4a2f18,#2b1d0e); padding:14px 20px;
-    border-bottom:4px solid var(--gold); display:flex; align-items:center;
-    justify-content:space-between; flex-wrap:wrap; gap:8px;
-  }
-  header h1{margin:0; letter-spacing:2px; color:var(--gold); font-size:1.5em;}
-  header .sub{font-size:.85em; color:#d8c39a;}
-  header .actions button{margin-left:6px;}
-  button{
-    background:var(--gold); color:#2b1d0e; border:none; padding:6px 14px; border-radius:4px;
-    cursor:pointer; font-weight:bold; font-family:inherit; font-size:1em;
-  }
-  button:hover{filter:brightness(1.1);}
-  button.secondary{background:#6a5638; color:#f1e4c3;}
-  main{max-width:700px; margin:20px auto; padding:0 16px;}
-  .hint{text-align:center; font-size:.9em; color:#b89a6a; margin-bottom:10px;}
+  html,body{height:100%;}
+  body{margin:0; font-family:'VT323',monospace; font-size:20px; background:#0d1b22; color:var(--parchment); overflow:hidden;}
+  /* Pixel art must never be smoothed. This has to cover CSS background-image
+     too - most sprites here are divs, not <img>, so an img-only rule left
+     every character and tile blurry when scaled up. */
+  *{image-rendering:pixelated; image-rendering:crisp-edges;}
+  img{image-rendering:pixelated;}
 
-  /* ---------- World ---------- */
-  #world{
-    position:relative; width:624px; height:384px; margin:0 auto;
-    background-color:#7cb356;
-    background-image:
-      linear-gradient(45deg,#6a9c46 25%, transparent 25%),
-      linear-gradient(-45deg,#6a9c46 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #6a9c46 75%),
-      linear-gradient(-45deg, transparent 75%, #6a9c46 75%);
-    background-size:48px 48px;
-    background-position:0 0, 0 24px, 24px -24px, -24px 0px;
-    border:4px solid #3c2a1a; outline:2px solid var(--panel-border); overflow:hidden;
-    image-rendering:pixelated;
-  }
-  #world:focus{outline:2px solid var(--gold);}
-  .tile-obj{position:absolute; image-rendering:pixelated; pointer-events:none;}
-  .building{cursor:default;}
-  .building img{width:48px; height:auto;}
-  .building-label{
-    position:absolute; bottom:-16px; left:50%; transform:translateX(-50%);
-    font-size:.6em; color:#fff; text-shadow:1px 1px #000; white-space:nowrap;
-  }
-  #bridgeLane{
-    position:absolute; top:0; right:0; width:48px; height:100%;
-    background:repeating-linear-gradient(0deg,#8a5a2b 0 10px,#7a4c22 10px 12px);
-    border-left:3px dashed #4a2f18;
-  }
-  #gate img{width:44px; height:auto;}
-  #gate .hp-mini{position:absolute; top:-10px; left:2px; width:44px; height:6px; background:var(--hp-back); border-radius:3px; overflow:hidden;}
-  #gate .hp-mini .fill{height:100%; background:var(--hp-red);}
-  #player{
-    position:absolute; width:40px; height:40px; z-index:5;
-    transition:left .12s linear, top .12s linear;
-  }
-  #player img{width:40px; height:40px; object-fit:cover; object-position:left center;}
-  #player.flip img{transform:scaleX(-1);}
+  #sky{position:fixed; inset:0; z-index:0; overflow:hidden; background:linear-gradient(180deg,#a8e8f5 0%,#7fd4e8 50%,#5cbcd8 100%);}
+  #sky.dim{filter:brightness(.55) saturate(.8);}
+  #sky.off{display:none;}
+  .cloud{position:absolute; background-size:contain; background-repeat:no-repeat; pointer-events:none; animation:drift linear infinite;}
+  @keyframes drift{ from{transform:translateX(-560px);} to{transform:translateX(calc(100vw + 560px));} }
 
-  /* ---------- Toast ---------- */
-  #toast{
-    position:fixed; left:50%; bottom:24px; transform:translate(-50%,20px);
-    background:#2b1d0e; border:2px solid var(--gold); color:var(--parchment);
-    padding:10px 18px; border-radius:6px; opacity:0; pointer-events:none;
-    transition:opacity .25s, transform .25s; z-index:80; font-size:1em;
+  .screen{position:fixed; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; z-index:10; padding:20px; text-align:center;}
+  .screen.active{display:flex;}
+  h1.logo{margin:0; font-size:4em; line-height:.9; color:#fff; text-shadow:4px 4px 0 var(--wood-dark), 8px 8px 0 rgba(0,0,0,.25); letter-spacing:3px;}
+  .tagline{color:#fff; text-shadow:2px 2px 0 var(--wood-dark); margin:6px 0 20px; font-size:1.2em;}
+  .blink{animation:bl 1s steps(2) infinite;}
+  @keyframes bl{ 50%{opacity:.25;} }
+
+  .btn{font-family:'VT323',monospace; font-size:1.15em; cursor:pointer; color:#fff;
+    background:linear-gradient(180deg,#8a5a2b,#6b4726); border:3px solid var(--wood-dark); border-bottom-width:6px;
+    border-radius:8px; padding:8px 22px; text-shadow:2px 2px 0 rgba(0,0,0,.45); box-shadow:0 3px 0 rgba(0,0,0,.25);}
+  .btn:hover{filter:brightness(1.12);}
+  .btn:active{transform:translateY(3px); border-bottom-width:3px;}
+  .btn.big{font-size:1.5em; padding:12px 40px;}
+  .btn.small{font-size:.9em; padding:5px 12px;}
+  .btn.stone{background:linear-gradient(180deg,#7d8b96,#5c6873); border-color:#3c454d;}
+  .btn.gold{background:linear-gradient(180deg,#e8b64c,#b8860b); color:#2b1d0e; text-shadow:none; border-color:#7a5c12;}
+  .btn:disabled{filter:grayscale(.7) brightness(.85); cursor:not-allowed;}
+
+  .card-row{display:flex; gap:22px; flex-wrap:wrap; justify-content:center; margin-top:10px;}
+  .pick-card{background:var(--parchment); color:var(--ink); border:4px solid var(--wood-dark); border-radius:10px;
+    padding:14px 20px; cursor:pointer; min-width:186px; box-shadow:0 6px 0 rgba(0,0,0,.3);}
+  .pick-card:hover{transform:translateY(-3px);}
+  .pick-card .av{width:96px; height:96px; margin:0 auto; background-repeat:no-repeat;}
+  .pick-card .who{font-size:1.5em;}
+  .pick-card .vault{font-size:.8em; color:#7a5c2e;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:8px 0 4px;}
+  .chip{font-family:'VT323',monospace; font-size:1em; cursor:pointer; padding:4px 14px; border-radius:14px;
+    border:3px solid var(--wood-dark); background:var(--parchment); color:var(--ink);}
+  .chip.on{background:var(--gold); box-shadow:0 0 0 3px rgba(255,255,255,.45) inset;}
+  .label{color:#fff; text-shadow:2px 2px 0 var(--wood-dark); font-size:.95em; margin-top:10px;}
+  .preview-box{width:150px; height:150px; margin:8px auto; background:rgba(0,0,0,.18); border:3px solid var(--wood-dark);
+    border-radius:10px; display:flex; align-items:center; justify-content:center;}
+  .preview-box .av{width:120px; height:120px; background-repeat:no-repeat;}
+
+  #gameScreen{display:none; position:fixed; inset:0; z-index:10; flex-direction:column;}
+  #gameScreen.active{display:flex;}
+  #hud{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding:5px 12px;
+    background:linear-gradient(180deg,#6b4726,#4a2f18); border-bottom:4px solid var(--wood-dark); z-index:20;}
+  #hud .zone{color:var(--gold); font-size:1.2em; text-shadow:2px 2px 0 #000;}
+  #hud .who{color:#fff; font-size:.82em;}
+  #hud .right{display:flex; gap:5px; flex-wrap:wrap;}
+  #saveDot{display:inline-block; width:9px; height:9px; border-radius:50%; background:#5fd35f; margin-left:6px; vertical-align:middle;}
+  #saveDot.saving{background:var(--gold);}
+  #saveDot.err{background:#e05252;}
+
+  #viewportWrap{flex:1; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; z-index:5;}
+  #worldScaler{transform-origin:center center;}
+  #viewport{position:relative; width:672px; height:432px; overflow:hidden; box-shadow:0 0 0 5px var(--wood-dark), 0 10px 34px rgba(0,0,0,.6);}
+  #mapLayer{position:absolute; left:0; top:0;}
+  /* every ground tile is real pixel art, pre-cut from the tilesets into /tiles */
+  .tile{position:absolute; width:48px; height:48px; background-size:48px 48px; background-repeat:repeat;}
+  .t-land{background-color:transparent;}
+  .t-grass{background-image:url('tiles/grass.png');}
+  .t-path{background-image:url('tiles/road.png');}
+  .t-path.alt{background-image:url('tiles/road.png'); filter:brightness(.96);}
+  .t-water{background-image:url('tiles/water.png');}
+  .t-fl{background-image:url('tiles/floor.png');}
+  .t-fl.alt{background-image:url('tiles/floor.png'); filter:brightness(.95);}
+  .t-wall{background-image:url('tiles/wall.png');}
+  .t-rug{background-image:url('tiles/floor.png'); filter:sepia(.7) saturate(3) hue-rotate(-28deg) brightness(.8);}
+  .t-soil{background-image:url('tiles/floor.png'); filter:sepia(.85) saturate(2.4) hue-rotate(-16deg) brightness(.62);}
+  .t-cliff{background-image:url('tiles/cliff.png');}
+  .obj{position:absolute; pointer-events:none;}
+  .obj-label{position:absolute; left:50%; transform:translateX(-50%); bottom:-2px; white-space:nowrap;
+    font-size:.66em; color:#fff; text-shadow:2px 2px 0 #000, 0 0 4px #000;}
+  .sign{position:absolute; transform:translateX(-50%); white-space:nowrap; z-index:500; pointer-events:none;
+    font-size:.72em; color:#fff5d6; background:rgba(30,18,8,.72); border:2px solid #8a6a3a;
+    border-radius:5px; padding:0 7px; text-shadow:1px 1px 0 #000;}
+  .door{position:absolute; background:linear-gradient(180deg,#5a3a1c,#38230f); border:2px solid #241708; border-radius:4px 4px 0 0;}
+  .door::after{content:''; position:absolute; right:5px; top:48%; width:4px; height:4px; background:var(--gold); border-radius:50%;}
+  .counter{position:absolute; background:linear-gradient(180deg,#a8763f,#7c5228); border:2px solid #4a2f18; border-radius:3px;}
+  .shelf{position:absolute; background:linear-gradient(180deg,#8a6a3a,#5a4526); border:2px solid #3a2a14;}
+  .actor{position:absolute;}
+  .actor .spr{width:46px; height:46px; background-repeat:no-repeat;}
+  .actor.flip .spr{transform:scaleX(-1);}
+  .actor .tag{position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:.6em; color:#fff;
+    text-shadow:1px 1px 0 #000; white-space:nowrap;}
+  #player{z-index:60;}
+  .marker{position:absolute; width:48px; height:48px; border:3px solid var(--gold); border-radius:6px; pointer-events:none; animation:pulse .65s ease-out infinite;}
+  @keyframes pulse{ from{transform:scale(1); opacity:.9;} to{transform:scale(1.3); opacity:0;} }
+
+  #prompt{position:absolute; left:50%; top:8px; transform:translateX(-50%); background:rgba(20,12,5,.82); color:#fff;
+    border:2px solid var(--gold); border-radius:6px; padding:3px 12px; font-size:.85em; z-index:900; display:none; white-space:nowrap;}
+  #prompt.show{display:block;}
+
+  /* Pokemon-style dialogue box */
+  #dialog{position:absolute; left:10px; right:10px; bottom:10px; min-height:104px; background:#f8f4e4; color:#22303a;
+    border:5px solid #38506b; border-radius:8px; padding:12px 16px; z-index:920; display:none;
+    box-shadow:inset 0 0 0 3px #fff, 0 5px 0 rgba(0,0,0,.35); font-size:1.15em; line-height:1.35;}
+  #dialog.show{display:block;}
+  #dialog .speaker{color:#a0522d; font-size:.85em; margin-bottom:2px;}
+  #dialogNext{position:absolute; right:14px; bottom:8px; color:#38506b; animation:bob .6s ease-in-out infinite alternate; display:none;}
+  #dialogNext.show{display:block;}
+  @keyframes bob{ from{transform:translateY(0);} to{transform:translateY(4px);} }
+  #dialogChoices{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;}
+
+  #fade{position:absolute; inset:0; background:#000; opacity:0; pointer-events:none; transition:opacity .28s linear; z-index:930;}
+  #fade.on{opacity:1;}
+  #flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:940;}
+  #flash.go{animation:battleflash 1.05s steps(1) forwards;}
+  @keyframes battleflash{
+    0%{opacity:0;} 8%{opacity:1;} 16%{opacity:0;} 24%{opacity:1;} 32%{opacity:0;}
+    40%{opacity:1;} 48%{opacity:0;} 56%{opacity:1;} 64%{opacity:0;} 78%{opacity:1;} 100%{opacity:1;}
   }
+
+  #palette{display:none; flex-direction:column; gap:6px; padding:8px 10px;
+    background:linear-gradient(180deg,#4a2f18,#2b1d0e); border-top:4px solid var(--wood-dark); z-index:30;}
+  #palette.show{display:flex;}
+  #palette .pal-row{display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+  #palette .pal-hint{font-size:.75em; color:#d8c39a;}
+  #palGrid{display:grid; grid-template-columns:repeat(auto-fill,52px); gap:5px;
+    max-height:150px; overflow-y:auto; padding:4px; background:rgba(0,0,0,.25); border-radius:6px;}
+  .pal{width:52px; height:52px; border:3px solid var(--wood-dark); border-radius:6px; cursor:pointer;
+    background-size:48px 48px; background-repeat:no-repeat; background-position:center; position:relative;}
+  .pal.on{border-color:var(--gold); box-shadow:0 0 0 3px rgba(232,182,76,.5);}
+  .pal span{position:absolute; left:0; right:0; bottom:-1px; font-size:.55em; text-align:center;
+    color:#fff; text-shadow:1px 1px 0 #000; background:rgba(0,0,0,.45);}
+  .pal-tab{font-family:'VT323',monospace; font-size:.85em; cursor:pointer; padding:3px 10px;
+    border:3px solid var(--wood-dark); border-radius:6px; background:#6a5638; color:#f1e4c3;}
+  .pal-tab.on{background:var(--gold); color:#2b1d0e;}
+  #viewport.editing{cursor:crosshair;}
+  #viewport.editing #mapLayer{outline:2px dashed var(--gold);}
+  #dpad{display:none; gap:10px; padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+        justify-content:space-between; align-items:center; touch-action:none; user-select:none;}
+  #dpad.show{display:flex;}
+  #dpad .pad{display:grid; grid-template-columns:repeat(3,58px); grid-template-rows:repeat(2,52px); gap:5px;}
+  #dpad .btn{width:58px; height:52px; font-size:1.3em; padding:0;}
+  #dpad .btn[data-dir=act]{width:88px; height:88px; border-radius:50%; font-size:1.6em;}
+  @media (max-width:400px){
+    #dpad .pad{grid-template-columns:repeat(3,52px); grid-template-rows:repeat(2,46px);}
+    #dpad .btn{width:52px; height:46px;}
+    #dpad .btn[data-dir=act]{width:76px; height:76px;}
+    #hud{padding:4px 8px;} #hud .zone{font-size:1.05em;} #hud .who{font-size:.72em;}
+    #hud .btn.small{font-size:.78em; padding:4px 8px;}
+  }
+
+  #toast{position:fixed; left:50%; bottom:22px; transform:translate(-50%,20px); background:var(--parchment); color:var(--ink);
+    border:3px solid var(--wood-dark); padding:9px 18px; border-radius:8px; opacity:0; pointer-events:none;
+    transition:opacity .25s, transform .25s; z-index:96; max-width:90vw; text-align:center;}
   #toast.show{opacity:1; transform:translate(-50%,0);}
 
-  /* ---------- Modals ---------- */
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.75); display:flex; align-items:center;
-    justify-content:center; z-index:50;
-  }
+  .modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.74); display:flex; align-items:center; justify-content:center; z-index:70; padding:14px;}
   .modal-overlay.hidden{display:none;}
-  .book{
-    background:var(--parchment); color:var(--ink); width:520px; max-width:92vw; max-height:85vh;
-    overflow-y:auto; border-radius:4px; padding:22px 26px; font-family:'VT323',monospace; font-size:1.15em;
-    box-shadow:0 0 0 6px #5a3b2a, 0 0 40px rgba(0,0,0,.8);
-  }
-  .book h2{margin-top:0; text-align:center; border-bottom:2px solid var(--ink); padding-bottom:8px; letter-spacing:1px;}
-  .book .flavor{font-style:italic; text-align:center; margin-bottom:14px; color:#5a4526; font-size:.9em;}
-  .entry{border:1px solid #b8a578; border-radius:4px; padding:10px; margin-bottom:10px; background:#e8d9b0;}
+  .book{background:var(--parchment); color:var(--ink); width:560px; max-width:94vw; max-height:88vh; overflow-y:auto;
+    border:5px solid var(--wood-dark); border-radius:8px; padding:18px 22px; box-shadow:0 0 0 4px var(--wood-light), 0 14px 40px rgba(0,0,0,.7);}
+  .book h2{margin:0 0 8px; text-align:center; border-bottom:3px solid var(--ink); padding-bottom:8px;}
+  .book .flavor{font-style:italic; text-align:center; margin:0 0 12px; color:#5a4526; font-size:.9em;}
+  .entry{border:3px solid #b8a578; border-radius:6px; padding:10px; margin-bottom:10px; background:#e8d9b0;}
   .entry .who{font-size:.75em; text-transform:uppercase; letter-spacing:.5px; color:#7a5c2e;}
-  .entry .narration{margin:4px 0;}
-  .entry .delta{font-size:.85em; color:#5a4526;}
-  .entry.approved{opacity:.5;}
-  .entry button{margin-top:6px;}
-  .owner-choices button{margin:3px;}
-  .close-x{float:right; cursor:pointer; font-weight:bold;}
-  .boss-card{background:#e8d9b0; border:1px solid #b8a578; border-radius:6px; padding:12px; margin-bottom:10px;}
-  .boss-card .name{font-weight:bold; font-size:1.15em;}
-  .boss-card .sub{font-size:.8em; color:#7a5c2e; margin-bottom:6px;}
-  .hp-back{background:var(--hp-back); border-radius:4px; height:14px; overflow:hidden; margin:6px 0;}
-  .hp-fill{background:linear-gradient(90deg,var(--hp-red),#d9534f); height:100%; transition:width .3s;}
-  .row{display:flex; gap:6px; align-items:center; margin-top:6px;}
-  input[type=number]{width:80px; padding:4px; border-radius:4px; border:1px solid var(--panel-border); background:#fff; color:#2b1d0e; font-family:inherit; font-size:1em;}
-  .trophy{background:#e8d9b0; border:1px solid var(--gold); border-radius:6px; padding:10px; margin-bottom:10px;}
-  .trophy .name{color:#8a5a00; font-weight:bold;}
-  .trophy .meta{font-size:.75em; color:#7a5c2e;}
-  .log-entry{font-size:.85em; border-bottom:1px dashed #b8a578; padding:6px 0;}
-  .empty{font-size:.9em; color:#7a5c2e; font-style:italic;}
+  .entry.approved{opacity:.45;}
+  .close-x{float:right; cursor:pointer; color:#7a5c2e;}
+  .tabs{display:flex; gap:6px; justify-content:center; margin-bottom:10px; flex-wrap:wrap;}
+
+  .panel-dark{background:var(--panel2); color:#f2e6c8; width:640px; max-width:95vw; max-height:88vh; overflow-y:auto;
+    border:4px solid var(--panel-line); border-radius:4px; padding:16px 18px; box-shadow:0 0 0 4px #1b1226, 0 14px 40px rgba(0,0,0,.75);}
+  .panel-dark h2{margin:0 0 10px; text-align:center; color:var(--gold); border-bottom:3px solid var(--panel-line); padding-bottom:8px;}
+  .panel-dark .flavor{color:#b9a7d6; text-align:center; font-style:italic; font-size:.88em; margin:0 0 12px;}
+  .mat-line{text-align:center; margin-bottom:10px; color:var(--gold);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(126px,1fr)); gap:10px;}
+  .slot{background:var(--panel); border:3px solid #6b5390; border-radius:4px; padding:8px; text-align:center;}
+  .slot img{width:42px; height:42px; object-fit:contain; display:block; margin:0 auto 4px;}
+  .slot .nm{font-size:.85em; line-height:1.1;}
+  .slot .pr{font-size:.8em; color:var(--gold);}
+  .slot .have{font-size:.74em; color:#b9a7d6;}
+  .slot .btn{margin-top:5px; font-size:.8em; padding:3px 10px;}
+  .slot.disabled{opacity:.45;}
+  .sect{margin:14px 0 6px; color:var(--gold); border-bottom:2px dashed #6b5390; padding-bottom:4px;}
+
+  /* battle background is built from the real tiles: sky, treeline, grass field */
+  #battle{position:absolute; inset:0; z-index:910; display:none; overflow:hidden;
+    background:linear-gradient(180deg,#a8e8f5 0%,#8fd9ec 46%,#7fd4e8 52%, #7fd4e8 52%);}
+  #battle.show{display:block;}
+  #btGround{position:absolute; left:0; right:0; bottom:0; height:48%;
+    background-image:url('tiles/grass.png'); background-size:48px 48px; background-repeat:repeat;
+    box-shadow:inset 0 7px 0 rgba(0,0,0,.12);}
+  #btTrees{position:absolute; left:0; right:0; bottom:44%; height:112px; pointer-events:none;
+    display:flex; align-items:flex-end; opacity:.95;}
+  #btTrees div{flex:0 0 auto; width:84px; height:112px;}
+  #btHills{position:absolute; left:-10%; right:-10%; bottom:46%; height:120px; pointer-events:none;
+    background:radial-gradient(60% 100% at 20% 100%, #6fae4a 0 60%, transparent 61%),
+               radial-gradient(55% 100% at 55% 100%, #66a544 0 60%, transparent 61%),
+               radial-gradient(65% 100% at 88% 100%, #74b551 0 60%, transparent 61%);}
+  .bt-plate{position:absolute; width:180px; height:26px; border-radius:50%; background:rgba(40,80,25,.28);}
+  #btFoePlate{right:44px; top:190px;} #btHeroPlate{left:44px; bottom:96px;}
+  #btFoe{position:absolute; right:60px; top:104px;} #btHero{position:absolute; left:56px; bottom:110px;}
+  #btFoe .spr{width:104px; height:104px; background-repeat:no-repeat; transform:scaleX(-1);}
+  #btHero .spr{width:104px; height:104px; background-repeat:no-repeat;}
+  #btHero.charge{animation:chg .5s ease-out forwards;} @keyframes chg{from{transform:translate(0,0);} to{transform:translate(340px,-70px);}}
+  #btHero.back{animation:chgb .45s ease-in forwards;} @keyframes chgb{from{transform:translate(340px,-70px);} to{transform:translate(0,0);}}
+  #btFoe.hurt{animation:flin .3s 3;} @keyframes flin{0%{filter:none;}45%{filter:brightness(2.6) saturate(.2);}100%{filter:none;}}
+  #btFx{position:absolute; right:70px; top:120px; width:110px; height:110px; display:none;} #btFx.show{display:block;}
+  #btFx img{width:110px; height:110px;}
+  .bt-card{position:absolute; background:#f8f4e4; color:#22303a; border:4px solid #38506b; border-radius:8px; padding:7px 12px; min-width:250px;
+    box-shadow:inset 0 0 0 2px #fff, 0 4px 0 rgba(0,0,0,.3);}
+  #btFoeCard{left:24px; top:26px;} #btHeroCard{right:24px; bottom:130px;}
+  .bt-card .nm{font-size:1.05em;} .bt-card .amt{font-size:.8em; color:#5a6b78; text-align:right;}
+  .bt-hp{height:11px; background:#4a2f1e; border:2px solid #22303a; border-radius:5px; overflow:hidden; margin-top:3px;}
+  .bt-hp .fl{height:100%; background:linear-gradient(90deg,#8a1f1f,#e04b4b); transition:width .55s;}
+  .dmg-float{position:absolute; right:96px; top:96px; color:#fff; font-size:1.7em; text-shadow:2px 2px 0 #8a1f1f; animation:fu 1.1s ease-out forwards; z-index:5;}
+  @keyframes fu{from{opacity:1; transform:translateY(0);} to{opacity:0; transform:translateY(-46px);}}
+  #btMenu{position:absolute; left:10px; right:10px; bottom:10px; min-height:96px; background:#f8f4e4; color:#22303a;
+    border:5px solid #38506b; border-radius:8px; padding:10px 14px; box-shadow:inset 0 0 0 3px #fff, 0 5px 0 rgba(0,0,0,.35);}
+  #btMenu .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:6px;}
+  #btMenu input{width:110px; padding:5px; border:3px solid #38506b; border-radius:5px; font-family:inherit; font-size:1em;}
+  #btText{min-height:24px;}
+
+  .boss-card{background:#e8d9b0; border:3px solid #b8a578; border-radius:6px; padding:10px; margin-bottom:10px; display:flex; gap:10px;}
+  .boss-card .art .spr{width:66px; height:66px; background-repeat:no-repeat;}
+  .boss-card.combat .art .spr{transform:scaleX(-1);}
+  .boss-card .body{flex:1; min-width:0;}
+  .boss-card .name{font-size:1.15em;}
+  .boss-card .sub{font-size:.78em; color:#7a5c2e; margin-bottom:4px;}
+  .hp-back{background:var(--hp-back); border:2px solid #2b1d0e; border-radius:5px; height:15px; overflow:hidden; margin:5px 0;}
+  .hp-fill{background:linear-gradient(90deg,#8a1f1f,var(--hp-red)); height:100%; transition:width .4s;}
+  .hp-fill.build{background:linear-gradient(90deg,#6b4726,#a8762f);}
+  .row{display:flex; gap:6px; align-items:center; margin-top:6px; flex-wrap:wrap;}
+  input[type=number]{width:94px; padding:5px; border:3px solid var(--wood-dark); border-radius:5px; background:#fff; color:var(--ink); font-family:inherit; font-size:1em;}
+  .trophy{background:#e8d9b0; border:3px solid var(--gold); border-radius:6px; padding:10px; margin-bottom:10px; display:flex; gap:10px;}
+  .trophy .art .spr{width:52px; height:52px; background-repeat:no-repeat; opacity:.8;}
+  .trophy .name{color:#8a5a00; font-size:1.1em;}
+  .trophy .meta{font-size:.78em; color:#7a5c2e;}
+  .log-entry{font-size:.85em; border-bottom:2px dashed #c9b98d; padding:5px 0;}
+  .empty{color:#7a5c2e; font-style:italic;}
+  .vault-line{font-size:1.05em; text-align:center; margin-bottom:8px;}
+  .plot-note{font-size:.8em; color:#b9a7d6; text-align:center; margin-top:8px;}
+  .srv{font-size:.78em; color:#d8c39a; text-align:center; margin-top:6px;}
 </style>
 </head>
 <body>
 
-<header>
-  <div>
-    <h1>⚔ Command Center</h1>
-    <div class="sub">The Plains — walk into a building to enter</div>
-  </div>
-  <div class="actions">
-    <button class="secondary" id="logBtn">📜 Log</button>
-    <button class="secondary" id="simulateEditBtn">🖊 Simulate hand-edit</button>
-    <button class="secondary" id="checkSyncBtn">🔄 Check Sync</button>
-  </div>
-</header>
+<div id="sky"></div>
 
-<main>
-  <p class="hint">Arrow keys / WASD to walk. Bump a building to enter it. The Bridge (right edge) is blocked until Vinmohr falls.</p>
-  <div id="world" tabindex="0"></div>
-</main>
+<div class="screen active" id="screenTitle">
+  <img id="titleCastle" alt="" style="width:230px; height:auto; max-width:70vw; display:block; margin:0 auto 4px;">
+  <h1 class="logo">Command Center</h1>
+  <p class="tagline">Slay your debts. Rebuild the kingdom.</p>
+  <button class="btn big" id="startBtn">START</button>
+  <p class="tagline blink" style="margin-top:12px; font-size:.85em;" id="welcomeBack"></p>
+  <p class="srv" id="srvNote"></p>
+</div>
+
+<div class="screen" id="screenPlayers">
+  <h1 class="logo" style="font-size:2.3em;">Who's Playing?</h1>
+  <div class="card-row" id="playerCards"></div>
+</div>
+
+<div class="screen" id="screenCreator">
+  <h1 class="logo" style="font-size:2.1em;">Forge Your Hero</h1>
+  <div class="preview-box"><div class="av" id="creatorPreview"></div></div>
+  <div class="label">Class</div><div class="chips" id="classChips"></div>
+  <div class="label">Colors</div><div class="chips" id="colorChips"></div>
+  <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+    <button class="btn" id="enlistBtn">Enlist This Hero</button>
+    <button class="btn stone small" id="skipCreatorBtn">Skip</button>
+  </div>
+</div>
+
+<div id="gameScreen">
+  <div id="hud">
+    <div>
+      <div class="zone" id="zoneName">The Plains</div>
+      <div class="who"><span id="hudWho"></span><span id="saveDot" title="save state"></span></div>
+    </div>
+    <div class="right">
+      <button class="btn small stone" id="switchBtn">Switch</button>
+      <button class="btn small gold" id="bagBtn">🎒 Bag</button>
+      <button class="btn small" id="logBtn">📜 Log</button>
+      <button class="btn small stone" id="checkSyncBtn">🔄 Sync</button>
+      <button class="btn small stone" id="editBtn">🖌 Paint</button>
+      <button class="btn small stone" id="resetBtn">Reset</button>
+    </div>
+  </div>
+  <div id="viewportWrap">
+    <div id="worldScaler">
+      <div id="viewport">
+        <div id="mapLayer"></div>
+        <div id="prompt"></div>
+        <div id="battle">
+          <div id="btHills"></div>
+          <div id="btTrees"></div>
+          <div id="btGround"></div>
+          <div class="bt-plate" id="btFoePlate"></div>
+          <div class="bt-plate" id="btHeroPlate"></div>
+          <div id="btFoe"><div class="spr"></div></div>
+          <div id="btHero"><div class="spr"></div></div>
+          <div id="btFx"><img alt=""></div>
+          <div class="bt-card" id="btFoeCard"></div>
+          <div class="bt-card" id="btHeroCard"></div>
+          <div id="btMenu"><div id="btText"></div><div class="row" id="btRow"></div></div>
+        </div>
+        <div id="dialog">
+          <div class="speaker" id="dialogSpeaker"></div>
+          <div id="dialogText"></div>
+          <div id="dialogChoices"></div>
+          <div id="dialogNext">▼</div>
+        </div>
+        <div id="fade"></div>
+        <div id="flash"></div>
+      </div>
+    </div>
+  </div>
+  <div id="palette">
+    <div class="pal-row" id="palTabs"></div>
+    <div id="palGrid"></div>
+    <div class="pal-row" id="palLayers"></div>
+    <div class="pal-row">
+      <label class="pal-hint"><input type="checkbox" id="palSolid"> blocks walking</label>
+      <button class="btn small stone" id="palUndo">↩ Undo</button>
+      <button class="btn small stone" id="palErase">Erase paint</button>
+      <button class="btn small stone" id="palDone">Done</button>
+      <span class="pal-hint" id="palSel"></span>
+    </div>
+  </div>
+  <div id="dpad">
+    <div class="pad">
+      <span></span><button class="btn" data-dir="up">▲</button><span></span>
+      <button class="btn" data-dir="left">◀</button>
+      <button class="btn" data-dir="down">▼</button>
+      <button class="btn" data-dir="right">▶</button>
+    </div>
+    <button class="btn gold" data-dir="act">A</button>
+  </div>
+</div>
 
 <div id="toast"></div>
 
-<!-- Owner backfill modal -->
-<div class="modal-overlay hidden" id="ownerModal">
-  <div class="book">
-    <h2>Whose Debt Is This?</h2>
-    <p class="flavor">The scribes found unlabeled ledgers among the vault records.</p>
-    <div id="ownerModalBody"></div>
-  </div>
-</div>
+<div class="modal-overlay hidden" id="ownerModal"><div class="book">
+  <h2>Whose Debt Is This?</h2>
+  <p class="flavor">The scribes found unlabeled ledgers among the vault records.</p>
+  <div id="ownerModalBody"></div>
+</div></div>
 
-<!-- Ledger book modal -->
-<div class="modal-overlay hidden" id="ledgerModal">
-  <div class="book">
-    <h2>📖 The Ledger Book Awakens</h2>
-    <p class="flavor">"Someone has written in the sheets while the kingdom slept..."</p>
-    <div id="ledgerModalBody"></div>
-    <div style="text-align:center; margin-top:14px;">
-      <button id="approveAllBtn">Approve All &amp; Close the Book</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay hidden" id="ledgerModal"><div class="book">
+  <h2>📖 The Ledger Book Awakens</h2>
+  <p class="flavor">"Someone has written in the ledgers while the kingdom slept..."</p>
+  <div id="ledgerModalBody"></div>
+  <div style="text-align:center; margin-top:10px;"><button class="btn" id="approveAllBtn">Approve All &amp; Close the Book</button></div>
+</div></div>
 
-<!-- Boss encounter modal (Barracks / Bridge) -->
-<div class="modal-overlay hidden" id="bossModal">
-  <div class="book">
-    <span class="close-x" onclick="closeModal('bossModal')">✕</span>
-    <h2 id="bossModalTitle">Sieges</h2>
-    <div id="bossModalBody"></div>
+<div class="modal-overlay hidden" id="keepModal"><div class="book">
+  <span class="close-x" data-close="keepModal">✕</span>
+  <h2>The Keep of Ēkehya</h2>
+  <div class="tabs">
+    <button class="btn small" data-keeptab="projects">🔨 Projects</button>
+    <button class="btn small stone" data-keeptab="trophies">🏆 Trophy Room</button>
   </div>
-</div>
+  <div id="keepModalBody"></div>
+</div></div>
 
-<!-- Trophy room modal (Keep of Ekehya) -->
-<div class="modal-overlay hidden" id="trophyModal">
-  <div class="book">
-    <span class="close-x" onclick="closeModal('trophyModal')">✕</span>
-    <h2>🏆 Trophy Room — The Keep of Ēkehya</h2>
-    <div id="trophyModalBody"></div>
-  </div>
-</div>
+<div class="modal-overlay hidden" id="vaultModal"><div class="book">
+  <span class="close-x" data-close="vaultModal">✕</span>
+  <h2>The Vault</h2>
+  <p class="flavor">1 gold = $1. Nothing here is invented.</p>
+  <div id="vaultModalBody"></div>
+</div></div>
 
-<!-- Log modal -->
-<div class="modal-overlay hidden" id="logModal">
-  <div class="book">
-    <span class="close-x" onclick="closeModal('logModal')">✕</span>
-    <h2>Transaction Log</h2>
-    <div id="logModalBody"></div>
-  </div>
-</div>
+<div class="modal-overlay hidden" id="shopModal"><div class="panel-dark">
+  <span class="close-x" data-close="shopModal" style="color:var(--gold);">✕</span>
+  <h2 id="shopTitle">Shop</h2>
+  <p class="flavor" id="shopFlavor"></p>
+  <div class="mat-line" id="shopMats"></div>
+  <div id="shopBody"></div>
+</div></div>
 
-<script src="app.js"></script>
+<div class="modal-overlay hidden" id="bagModal"><div class="panel-dark">
+  <span class="close-x" data-close="bagModal" style="color:var(--gold);">✕</span>
+  <h2>Inventory</h2>
+  <div class="mat-line" id="bagMats"></div>
+  <div id="bagBody"></div>
+</div></div>
+
+<div class="modal-overlay hidden" id="logModal"><div class="book">
+  <span class="close-x" data-close="logModal">✕</span>
+  <h2>Transaction Log</h2>
+  <div id="logModalBody"></div>
+</div></div>
+
+<script>
+/* ============================================================================
+   COMMAND CENTER
+   Save lives in save-data.json, served by server.ps1. Edit that file by hand
+   and the Ledger Book will ask you to approve the change, exactly like the
+   Google Sheet used to.
+
+   >>> ASSET REGISTRY <<<  every sprite path is in ASSETS. The art repo is
+   being reorganised - when that lands, edit ONLY that block.
+   ========================================================================== */
+
+var GH_OWNER='sjmhenson-cyber', GH_REPO='fin-game-assets', GH_BRANCH='main';
+function gh(p){ return 'https://raw.githubusercontent.com/'+GH_OWNER+'/'+GH_REPO+'/'+GH_BRANCH+'/'+
+  p.split('/').map(encodeURIComponent).join('/'); }
+
+// Local library (served by server.ps1 from fin-game\assets) when we're online;
+// GitHub is the fallback when the page is opened as a bare file.
+// Art is baked into ./art with stable names so the game keeps working while the
+// main asset library is being reorganised. Re-run the bake step to refresh it.
+var ASSETS={
+  building:function(c,n){ return 'art/buildings/'+n.toLowerCase()+'_'+c.toLowerCase()+'.png'; },
+  unitIdle:function(c,k){ return 'art/units/'+k.toLowerCase()+'_idle_'+c.toLowerCase()+'.png'; },
+  unitRun:function(c,k){ return 'art/units/'+k.toLowerCase()+'_run_'+c.toLowerCase()+'.png'; },
+  unitAttack:function(c,k){ return 'art/units/'+k.toLowerCase()+'_attack_'+c.toLowerCase()+'.png'; },
+  bush:function(n){ return 'art/decor/bush'+n+'.png'; },
+  rock:function(n){ return 'art/decor/rock'+n+'.png'; },
+  tree:function(n){ return 'art/decor/tree'+n+'.png'; },
+  cloud:function(n){ return 'art/decor/cloud'+n+'.png'; },
+  paper:function(w){ return 'art/ui/paper_'+w+'.png'; },
+  ore:'art/decor/ore.png',
+  monster:function(kind,action){ return 'art/monsters/'+kind+'_'+action+'.png'; },
+  dog:function(action){ return 'art/pets/dog_'+action+'.png'; },
+  DOG:{ idle:6, sit:7, run:6, happy:4 },
+  // frame counts for sheets whose frames are not square
+  FRAMES:{ tree:8, bush:8 },
+  // Kings & Pigs sheets: frames are 34x28 (pig) / 38x28 (king pig)
+  MON:{
+    pig:     { idle:11, run:6, attack:5, hit:2, dead:4 },
+    kingpig: { idle:12, run:6, attack:5, hit:2, dead:4 }
+  },
+  fx:{ explosion:gh('Particle FX/Explosion_01.png'), fire:gh('Particle FX/Fire_01.png'),
+       dust:gh('Particle FX/Dust_01.png') },
+  food:function(n){ return gh(n+'_Individual_BigWander_TheBanquet.png'); }
+};
+var CLASSES=['Warrior','Archer','Lancer','Pawn','Monk'];
+var HERO_COLORS=['Blue','Red','Yellow'];
+var BOSS_COLORS=['Black','Purple'];
+
+/* ---------------- helpers ---------------- */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function money(n){ return (Math.round(Number(n)*100)/100).toFixed(2); }
+function round2(n){ return Math.round(Number(n)*100)/100; }
+function pctOf(c,m){ c=Number(c); m=Number(m);
+  if(!isFinite(c)||!isFinite(m)||m<=0) return 0; return Math.max(0,Math.min(100,Math.round(c/m*100))); }
+function hashStr(s){ var h=0; s=String(s); for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h>>>0; }
+
+/* ---------------- sprite animator ----------------
+   Every Tiny Swords sprite is a horizontal frame strip; frame count is
+   naturalWidth/naturalHeight (V4's trick). We step frames in the rAF loop. */
+var anims=[];
+var spriteMeta={};
+// zoom crops into the frame - Tiny Swords units sit in a lot of empty padding,
+// so at 1.0 the character renders tiny. ~1.9 fills the box properly.
+var UNIT_ZOOM=1.9;
+// `size` must be passed explicitly: an element on a hidden screen measures 0,
+// which silently produced a two-characters-in-one-box sprite. Never measure.
+// size: number (square box) or [w,h].  frames: explicit count - REQUIRED for
+// sheets whose frames aren't square (trees are 8 frames of 192x256, so the
+// width/height guess gives 6 and renders a row of tiny trees).
+function animate(el,url,fps,label,zoom,size,frames){
+  if(!el) return;
+  el._url=url; el._z=zoom||1; el._fps=fps||7;
+  if(size) el._size=size;
+  if(frames) el._frames=frames;
+  if(anims.indexOf(el)<0) anims.push(el);
+  if(!url){ el.style.backgroundImage='none'; el.textContent=label||''; return; }
+  var apply=function(m){
+    if(el._url!==url) return;
+    var sz=el._size||el.clientWidth||46;
+    var bw=(sz instanceof Array)?sz[0]:sz, bh=(sz instanceof Array)?sz[1]:sz;
+    // the element must BE the box we computed for, or a stylesheet rule can
+    // leave it wider than one frame and the next frame bleeds into view
+    el.style.width=bw+'px'; el.style.height=bh+'px'; el.style.overflow='hidden';
+    var n=el._frames||m.n;
+    var fw=m.W/n, fh=m.H;
+    var s=Math.min(bw/fw,bh/fh)*el._z;
+    el._n=n; el._i=el._i||0; el._t=0;
+    el._fwS=fw*s;
+    el._padX=(bw-fw*s)/2; el._padY=(bh-fh*s)/2;
+    el.style.backgroundImage="url('"+url+"')";
+    el.style.backgroundSize=(m.W*s)+'px '+(m.H*s)+'px';
+    el.style.backgroundRepeat='no-repeat';
+    el.style.backgroundPositionY=el._padY+'px';
+    el.style.backgroundPositionX=(el._padX-(el._i%n)*el._fwS)+'px';
+  };
+  if(spriteMeta[url]){ apply(spriteMeta[url]); return; }
+  var im=new Image();
+  im.onload=function(){
+    var W=im.naturalWidth,H=im.naturalHeight;
+    spriteMeta[url]={n:Math.max(1,Math.round(W/H)),W:W,H:H};
+    apply(spriteMeta[url]);
+  };
+  im.onerror=function(){ spriteMeta[url]={n:1,W:1,H:1}; el.style.backgroundImage='none'; el.textContent=label||'?'; };
+  im.src=url;
+}
+function tickAnims(dt){
+  for(var i=0;i<anims.length;i++){
+    var el=anims[i];
+    if(!el._n||el._n<2||!el.isConnected) continue;
+    el._t=(el._t||0)+dt;
+    var step=1000/(el._fps||7);
+    if(el._t>=step){
+      el._t-=step; el._i=((el._i||0)+1)%el._n;
+      el.style.backgroundPositionX=((el._padX||0)-el._i*(el._fwS||46))+'px';
+    }
+  }
+}
+
+/* ---------------- Tiny Swords 9-slice paper ----------------
+   The UI sheets are 320x320 with 64px tiles at x,y in {0,128,256} and GAPS
+   between them, so they can't be used as border-image directly. We rebuild
+   them contiguous (192x192) on a canvas at runtime, then hand CSS a data URL.
+   Measured from the real files, not guessed. */
+var NINE={ sheet:320, tile:64, at:[0,128,256] };
+function buildNineSlice(url,cb){
+  var im=new Image();
+  im.crossOrigin='anonymous';
+  im.onload=function(){
+    try{
+      var t=NINE.tile, c=document.createElement('canvas');
+      c.width=t*3; c.height=t*3;
+      var g=c.getContext('2d');
+      for(var r=0;r<3;r++) for(var q=0;q<3;q++)
+        g.drawImage(im, NINE.at[q], NINE.at[r], t, t, q*t, r*t, t, t);
+      cb(c.toDataURL('image/png'));
+    }catch(e){ cb(null); }        // tainted canvas -> keep the CSS fallback
+  };
+  im.onerror=function(){ cb(null); };
+  im.src=url;
+}
+function applyPaperSkin(){
+  // RegularPaper is the cream sheet - readable with dark ink. SpecialPaper is
+  // dark slate, so it only gets used where the text is light.
+  buildNineSlice(ASSETS.paper('regular'),function(data){
+    if(!data) return;
+    var st=document.createElement('style');
+    st.textContent=
+      '.book{ background:transparent !important; border:none !important; border-radius:0 !important;'+
+      ' box-shadow:none !important; border-image:url('+data+') 64 fill stretch !important;'+
+      ' border-style:solid !important; border-width:34px !important;'+
+      ' padding:6px 14px 14px !important; color:#3b2c15; }'+
+      '.book h2{ border-bottom-color:#b9a06a; color:#3b2c15; }'+
+      '#dialog{ background:transparent !important; border:none !important; box-shadow:none !important;'+
+      ' border-image:url('+data+') 64 fill stretch !important; border-style:solid !important;'+
+      ' border-width:30px !important; padding:2px 12px 12px !important; color:#2f2410 !important;'+
+      ' font-size:1.25em !important; text-shadow:none !important; }'+
+      '#dialog .speaker{ color:#8a3f10 !important; font-size:.8em; letter-spacing:.5px; }'+
+      '#dialogNext{ color:#8a3f10 !important; }'+
+      '#btMenu{ background:transparent !important; border:none !important; box-shadow:none !important;'+
+      ' border-image:url('+data+') 64 fill stretch !important; border-style:solid !important;'+
+      ' border-width:28px !important; padding:2px 10px 10px !important; color:#2f2410 !important; }'+
+      '.bt-card{ background:transparent !important; border:none !important; box-shadow:none !important;'+
+      ' border-image:url('+data+') 64 fill stretch !important; border-style:solid !important;'+
+      ' border-width:24px !important; padding:0 6px 4px !important; color:#2f2410 !important; }'+
+      '.bt-card .amt{ color:#6a5636 !important; }';
+    document.head.appendChild(st);
+  });
+}
+
+/* ---------------- items ---------------- */
+function fd(n){ return 'art/food/'+n+'.png'; }
+var ITEMS={
+  seed_carrot:{name:'Carrot Seeds',art:fd('carrot'),kind:'seed',crop:'carrot',buy:4,grow:3},
+  seed_corn:{name:'Corn Seeds',art:fd('corn'),kind:'seed',crop:'corn',buy:6,grow:5},
+  seed_pepper:{name:'Chilli Seeds',art:fd('pepper'),kind:'seed',crop:'pepper',buy:9,grow:8},
+  seed_eggplant:{name:'Eggplant Seeds',art:fd('eggplant'),kind:'seed',crop:'eggplant',buy:12,grow:12},
+  carrot:{name:'Carrot',art:fd('carrot'),kind:'crop',buy:14,sell:9},
+  corn:{name:'Corn',art:fd('corn'),kind:'crop',buy:20,sell:13},
+  pepper:{name:'Chilli Pepper',art:fd('pepper'),kind:'crop',buy:28,sell:19},
+  eggplant:{name:'Eggplant',art:fd('eggplant'),kind:'crop',buy:36,sell:25},
+  strawberry:{name:'Strawberry',art:fd('strawberry'),kind:'crop',buy:24,sell:16},
+  ore:{name:'Gold Ore',art:fd('ore'),kind:'loot',sell:22},
+  meat:{name:'Boar Meat',art:fd('meat'),kind:'loot',sell:16},
+  garlic:{name:'Garlic',art:fd('garlic'),kind:'reagent',buy:11},
+  grape:{name:'Nightshade Grape',art:fd('grape'),kind:'reagent',buy:15},
+  coconut:{name:'Ironshell Coconut',art:fd('coconut'),kind:'reagent',buy:26},
+  alien:{name:'Alien Fruit',art:fd('alien'),kind:'reagent',buy:40}
+};
+function itemName(id){ return (ITEMS[id]&&ITEMS[id].name)||id; }
+
+/* ---------------- state + server persistence ---------------- */
+var ONLINE = (location.protocol==='http:'||location.protocol==='https:');
+var LS_KEY='cc_state_v5';
+
+function seedDebts(){
+  return [
+    {id:'vinmohr',lexicon:'Vinmohr, Keter-class Anomaly',real:'Venmo Credit Card',type:'combat',
+     flavor:'ammo',owner:'Sarah',balance:42,startBalance:42,maxBalance:42,apr:24,paid:0,lastInterest:Date.now()},
+    {id:'ekehya-reno',lexicon:'The Ēkehya Renovation',real:'IKEA Financing',type:'construction',
+     flavor:null,owner:'Taliyah',balance:800,startBalance:800,maxBalance:800,apr:0,paid:0,lastInterest:Date.now()},
+    {id:'discover-host',lexicon:'The Discover Host',real:'Discover Card',type:'combat',
+     flavor:'army',owner:null,balance:1200,startBalance:1500,maxBalance:1500,apr:22,paid:300,lastInterest:Date.now()}
+  ];
+}
+function freshState(){
+  var d=seedDebts();
+  return {v:5,player:null,heroes:{},vaults:{Sarah:0,Taliyah:0},principalPaid:{Sarah:0,Taliyah:0},
+    materials:{Sarah:60,Taliyah:60},bag:{Sarah:{seed_carrot:2,ore:1},Taliyah:{seed_carrot:2,meat:1}},
+    // ONE dog, shared by both players. Trust is tracked per player, so the
+    // dog can be Sarah's friend, Taliyah's friend, or both.
+    pet:{ name:'Hunter', met:false, trust:{Sarah:0,Taliyah:0}, x:14, y:5, dir:'left' },
+    plots:[],customMaps:{},sheet:d,snapshot:JSON.parse(JSON.stringify(d)),trophies:[],
+    log:[{text:"The kingdom's ledgers are opened for the first time.",ts:Date.now()}]};
+}
+function coerce(s){
+  var f=freshState();
+  if(!s||typeof s!=='object'||!Object.keys(s).length) return f;
+  if(!Array.isArray(s.sheet)||!s.sheet.length){ s.sheet=f.sheet; s.snapshot=f.snapshot; }
+  if(!Array.isArray(s.snapshot)) s.snapshot=JSON.parse(JSON.stringify(s.sheet));
+  if(!Array.isArray(s.trophies)) s.trophies=[];
+  if(!Array.isArray(s.plots)) s.plots=[];
+  if(!s.customMaps||typeof s.customMaps!=='object') s.customMaps={};
+  if(!s.pet||typeof s.pet!=='object') s.pet=f.pet;
+  if(!s.pet.trust||typeof s.pet.trust!=='object') s.pet.trust={Sarah:0,Taliyah:0};
+  ['Sarah','Taliyah'].forEach(function(n){ if(typeof s.pet.trust[n]!=='number') s.pet.trust[n]=0; });
+  if(typeof s.pet.x!=='number') s.pet.x=14;
+  if(typeof s.pet.y!=='number') s.pet.y=5;
+  if(!s.pet.name) s.pet.name='Hunter';
+  if(!Array.isArray(s.log)) s.log=f.log;
+  ['heroes','vaults','principalPaid','materials','bag'].forEach(function(k){ if(!s[k]||typeof s[k]!=='object') s[k]=f[k]; });
+  ['Sarah','Taliyah'].forEach(function(n){
+    if(typeof s.vaults[n]!=='number') s.vaults[n]=0;
+    if(typeof s.principalPaid[n]!=='number') s.principalPaid[n]=0;
+    if(typeof s.materials[n]!=='number') s.materials[n]=0;
+    if(!s.bag[n]||typeof s.bag[n]!=='object') s.bag[n]={};
+  });
+  s.sheet.forEach(function(d){
+    if(typeof d.balance!=='number') d.balance=Number(d.balance)||0;
+    if(typeof d.maxBalance!=='number'||d.maxBalance<=0) d.maxBalance=Math.max(d.balance,1);
+    if(typeof d.startBalance!=='number') d.startBalance=d.maxBalance;
+    if(typeof d.paid!=='number') d.paid=0;
+    if(typeof d.apr!=='number') d.apr=Number(d.apr)||0;
+    if(!d.lastInterest) d.lastInterest=Date.now();
+    if(!d.type) d.type='combat';
+  });
+  s.v=5; return s;
+}
+var state=freshState();
+
+function dot(cls){ var d=document.getElementById('saveDot'); if(d) d.className=cls||''; }
+async function pull(){
+  if(!ONLINE){
+    try{ var raw=localStorage.getItem(LS_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; }
+  }
+  var r=await fetch('/api/state',{cache:'no-store'});
+  return await r.json();
+}
+var saveTimer=null, savePending=false, saveSuspended=false;
+function save(){
+  if(saveSuspended) return;              // screenshot mode must not touch the save
+  savePending=true; dot('saving');
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(doSave,350);
+}
+async function doSave(){
+  var body=JSON.stringify(state,null,2);
+  if(!ONLINE){
+    try{ localStorage.setItem(LS_KEY,body); dot(''); savePending=false; }catch(e){ dot('err'); }
+    return;
+  }
+  try{
+    var r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:body});
+    dot(r.ok?'':'err'); savePending=false;
+  }catch(e){ dot('err'); }
+}
+window.addEventListener('beforeunload',function(){
+  if(savePending&&ONLINE){ try{ navigator.sendBeacon('/api/state', new Blob([JSON.stringify(state,null,2)],{type:'application/json'})); }catch(e){} }
+});
+
+function addLog(t){ state.log.unshift({text:t,ts:Date.now()}); if(state.log.length>400) state.log.length=400; }
+function findDebt(id){ return state.sheet.filter(function(d){return d.id===id;})[0]; }
+function findSnap(id){ return state.snapshot.filter(function(d){return d.id===id;})[0]; }
+function vault(){ return state.vaults[state.player]||0; }
+function mats(){ return state.materials[state.player]||0; }
+function bag(){ if(!state.bag[state.player]) state.bag[state.player]={}; return state.bag[state.player]; }
+function bagCount(id){ return bag()[id]||0; }
+function bagAdd(id,n){ var b=bag(); b[id]=(b[id]||0)+n; if(b[id]<=0) delete b[id]; }
+function hero(){ return state.heroes[state.player]||{color:'Blue',cls:'Warrior'}; }
+
+// Debts are monsters, never knights. Bigger debts get the crowned pig.
+function monsterKind(d){
+  if(d.type!=='combat') return null;
+  return (d.maxBalance>=500) ? 'kingpig' : 'pig';
+}
+function forgeArt(d){
+  if(d.type!=='combat') return ASSETS.building('Blue','Tower');
+  return ASSETS.monster(monsterKind(d),'idle');
+}
+function monFrames(d,action){
+  var k=monsterKind(d); if(!k) return 1;
+  return (ASSETS.MON[k]&&ASSETS.MON[k][action])||1;
+}
+function forgeFlavor(d){ return d.flavor||((hashStr(d.id)>>>12)%2?'army':'ammo'); }
+
+function monthsElapsed(a,b){ var x=new Date(a),y=new Date(b);
+  var m=(y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth());
+  if(y.getDate()<x.getDate()) m--; return m>0?m:0; }
+function applyInterest(){
+  var now=Date.now(),grew=false;
+  state.sheet.forEach(function(d){
+    if(!(d.apr>0)||!(d.balance>0)) return;
+    var m=monthsElapsed(d.lastInterest,now); if(m<1) return;
+    var b0=d.balance;
+    d.balance=round2(d.balance*Math.pow(1+d.apr/1200,m));
+    if(d.balance>d.maxBalance) d.maxBalance=d.balance;
+    var adv=new Date(d.lastInterest); adv.setMonth(adv.getMonth()+m); d.lastInterest=adv.getTime();
+    var sn=findSnap(d.id); if(sn){ sn.balance=d.balance; sn.maxBalance=d.maxBalance; sn.lastInterest=d.lastInterest; }
+    addLog(d.lexicon+' grew by '+money(d.balance-b0)+' gold - interest, as in life.'); grew=true;
+  });
+  if(grew) save();
+  return grew;
+}
+
+/* ---------------- sky ---------------- */
+function buildSky(){
+  var sky=document.getElementById('sky'); sky.innerHTML='';
+  [{n:1,t:'1%',w:420,d:130,dl:-10,o:.95},{n:4,t:'8%',w:560,d:180,dl:-70,o:.9},
+   {n:2,t:'19%',w:330,d:105,dl:-35,o:.85},{n:6,t:'28%',w:620,d:205,dl:-125,o:.8},
+   {n:3,t:'40%',w:380,d:140,dl:-52,o:.78},{n:5,t:'50%',w:500,d:160,dl:-98,o:.72},
+   {n:7,t:'61%',w:350,d:118,dl:-18,o:.66},{n:8,t:'72%',w:580,d:215,dl:-150,o:.6},
+   {n:1,t:'82%',w:430,d:150,dl:-84,o:.55},{n:4,t:'91%',w:520,d:190,dl:-40,o:.5}
+  ].forEach(function(c){
+    var el=document.createElement('div'); el.className='cloud';
+    el.style.top=c.t; el.style.width=c.w+'px'; el.style.height=Math.round(c.w*.56)+'px';
+    el.style.animationDuration=c.d+'s'; el.style.animationDelay=c.dl+'s'; el.style.opacity=c.o;
+    el.style.backgroundImage="url('"+ASSETS.cloud(c.n)+"')";
+    sky.appendChild(el);
+  });
+}
+function skyMode(inGame){
+  var s=document.getElementById('sky');
+  var desktop=window.matchMedia('(min-width:820px)').matches;
+  s.classList.toggle('off', inGame&&!desktop);
+  s.classList.toggle('dim', !!inGame);
+}
+
+/* ---------------- maps ---------------- */
+var MAPS={
+  plains:{ name:'The Plains',
+    rows:[
+      '####################',
+      '#...,..::......,...#',
+      '#.,..::::::::..o...#',
+      '#....:......::.....#',
+      '#~~..:.......:..,..#',
+      '#~~..:.......:.....#',
+      '#..:::::::::::::::.#',
+      '#..:..:......:...,.#',
+      '#.,:..:..TT..:.....#',
+      '#..:o.:..TT..:.o...#',
+      '#..:::::::::::::::.#',
+      '#.,..:.......,.....#',
+      '#....:...o.....,...#',
+      '####################'
+    ],
+    buildings:[
+      {id:'castle',x:2,y:1,w:2,sprite:ASSETS.building('Blue','Castle'),label:'The Vault',size:130,door:{x:3,y:2}},
+      {id:'monastery',x:8,y:1,w:1,sprite:ASSETS.building('Purple','Monastery'),label:'Heroes',size:90,door:{x:8,y:2}},
+      {id:'archery',x:15,y:1,w:1,sprite:ASSETS.building('Yellow','Archery'),label:'The Guild',size:90,door:{x:15,y:2}},
+      {id:'barracks',x:2,y:7,w:1,sprite:ASSETS.building('Red','Barracks'),label:'The Arena',size:96,door:{x:2,y:8}},
+      {id:'keep',x:16,y:7,w:1,sprite:ASSETS.building('Yellow','Tower'),label:'Keep of Ēkehya',size:84,door:{x:16,y:8}},
+      {id:'greenhouse',x:7,y:11,w:1,sprite:ASSETS.building('Yellow','House2'),label:'The Greenhouse',size:86,door:{x:7,y:12},warp:'greenhouse'},
+      {id:'alchemist',x:13,y:11,w:1,sprite:ASSETS.building('Purple','House3'),label:'The Alchemist',size:86,door:{x:13,y:12},warp:'alchemist'},
+      {id:'tavern',x:10,y:7,w:1,sprite:ASSETS.building('Red','House1'),label:'The Tavern',size:80,door:{x:10,y:8}}
+    ],
+    decor:[{art:ASSETS.tree(2),x:4,y:4,w:84,h:112,frames:8},
+           {art:ASSETS.tree(3),x:16,y:4,w:84,h:112,frames:8},
+           {art:ASSETS.tree(1),x:12,y:9,w:84,h:112,frames:8},
+           {art:ASSETS.bush(2),x:6,y:9,w:52,h:52,frames:8},
+           {art:ASSETS.bush(4),x:17,y:11,w:52,h:52,frames:8},
+           {art:ASSETS.bush(1),x:3,y:12,w:52,h:52,frames:8},
+           {art:ASSETS.rock(4),x:11,y:3,w:40},{art:ASSETS.rock(2),x:15,y:8,w:40}],
+    farm:[{x:9,y:8},{x:10,y:8},{x:9,y:9},{x:10,y:9}],
+    npcs:[{id:'elder',x:6,y:6,color:'Yellow',cls:'Monk',tag:'Elder Wren',dir:'down',
+      say:["Welcome back to The Plains.","Every coin you spend here is a coin you truly spent. Nothing in this kingdom is invented.","The Arena is west. The shops lie south."]}]
+  },
+  greenhouse:{ name:'The Greenhouse', interior:true,
+    rows:['WWWWWWWWWWWW','WSSSSWWSSSSW','Wff........W','Wff..rr....W','W....rr....W','WCCCC..CCCCW','W..........W','WWWWWdWWWWWW'],
+    entry:{x:5,y:6},
+    exit:{x:5,y:7,to:'plains',at:{x:7,y:13}},
+    buildings:[],decor:[],farm:[],
+    npcs:[{id:'seedkeeper',x:5,y:4,color:'Yellow',cls:'Pawn',tag:'Marrow the Seedkeeper',dir:'down',shop:'greenhouse',
+      say:["Ah, a grower! Come in, come in.","Seeds are cheap and slow. Grown produce costs more but it's yours today.","Materials only, mind. I don't take gold - gold is for your debts, not my potatoes."]}]
+  },
+  alchemist:{ name:'The Alchemist', interior:true,
+    rows:['WWWWWWWWWWWW','WSSWWSSWWSSW','W..........W','W...rrrr...W','W...rrrr...W','WCCC....CCCW','W..........W','WWWWWdWWWWWW'],
+    entry:{x:5,y:6},
+    exit:{x:5,y:7,to:'plains',at:{x:13,y:13}},
+    buildings:[],decor:[],farm:[],
+    npcs:[{id:'alchemist',x:6,y:4,color:'Purple',cls:'Monk',tag:'Sable the Alchemist',dir:'down',shop:'alchemist',
+      say:["...you brought something.","Bring me what you tore from the world. Ore, meat, roots - I'll take it all.","And I'll sell you what the work demands. Materials only."]}]
+  }
+};
+// pristine copies so "revert to built-in" always has something to go back to
+var BASE_ROWS={}; for(var _m in MAPS) BASE_ROWS[_m]=MAPS[_m].rows.slice();
+
+var TILE=48, VIEW_W=672, VIEW_H=432;
+// Mobile-first: the viewport reshapes to the device so a phone gets a tall
+// window instead of a letterboxed landscape strip.
+function sizeViewport(){
+  var w=window.innerWidth, h=window.innerHeight;
+  var portrait = h>w;
+  if(portrait){ VIEW_W=Math.min(528, Math.max(336, Math.round(w/48)*48)); VIEW_H=528; }
+  else { VIEW_W=672; VIEW_H=432; }
+  var vp=document.getElementById('viewport');
+  if(vp){ vp.style.width=VIEW_W+'px'; vp.style.height=VIEW_H+'px'; }
+}
+var cur='plains';
+function map(){ return MAPS[cur]; }
+function cols(){ return map().rows[0].length; }
+function rows(){ return map().rows.length; }
+function tileAt(x,y){ var r=map().rows[y]; return r?(r.charAt(x)||'W'):'W'; }
+// land = anything you could stand on outdoors (water and off-map are not land)
+function isLand(x,y){
+  if(x<0||y<0||x>=cols()||y>=rows()) return false;
+  var t=tileAt(x,y);
+  return t!=='~';
+}
+var BLOCK={'#':1,'~':1,'o':1,'W':1,'C':1,'S':1};
+function bldgAt(x,y){
+  var b=map().buildings||[];
+  for(var i=0;i<b.length;i++){ var d=b[i]; if(y===d.y&&x>=d.x&&x<d.x+d.w) return d; }
+  return null;
+}
+function npcAt(x,y){ return (map().npcs||[]).filter(function(n){ return n.x===x&&n.y===y; })[0]; }
+function walkable(x,y){
+  if(x<0||y<0||x>=cols()||y>=rows()) return false;
+  var t=tileAt(x,y);
+  if(t==='d') return true;
+  if(BLOCK[t]) return false;
+  if(bldgAt(x,y)) return false;
+  if(npcAt(x,y)) return false;
+  if(typeof dogAt==='function'&&dogAt(x,y)) return false;
+  if((map().decor||[]).some(function(d){ return d.x===x&&d.y===y; })) return false;
+  return true;
+}
+var player={x:5,y:6,dir:'down',moving:false};
+
+/* ---------------- map painter ----------------
+   Every brush is an asset you already own, so anything you paint renders with
+   the same art the game uses. Painted maps are saved into save-data.json. */
+// "Basics" are gameplay brushes (they set collision). Every other tab is a real
+// tileset sliced on its native grid - painting one stores an art override.
+var BASICS=[
+  { ch:'.', name:'Grass',  swatch:"url('tiles/grass.png')" },
+  { ch:'T', name:'Tall',   swatch:"url('tiles/grass.png')", dim:true },
+  { ch:':', name:'Road',   swatch:"url('tiles/road.png')" },
+  { ch:'~', name:'Water',  swatch:"url('tiles/water.png')" },
+  { ch:'#', name:'Tree',   swatch:"url('art/decor/tree1.png')", sheet:8 },
+  { ch:'o', name:'Rock',   swatch:"url('art/decor/rock1.png')" },
+  { ch:'W', name:'Wall',   swatch:"url('tiles/wall.png')" },
+  { ch:'f', name:'Floor',  swatch:"url('tiles/floor.png')" },
+  { ch:'r', name:'Rug',    swatch:"url('tiles/floor.png')", rug:true },
+  { ch:'C', name:'Counter',swatch:"url('tiles/floor.png')", dim:true },
+  { ch:'S', name:'Shelf',  swatch:"url('tiles/wall.png')", dim:true }
+];
+var editMode=false, brush='.', painting=false;
+var TILESETS={}, TABS=['Basics'], curTab='Basics', artBrush=null, eraseMode=false;
+// layer visibility - hide the treeline to paint the ground underneath it
+var LAYERS=[
+  {k:'foliage',   name:'Trees & bushes'},
+  {k:'rocks',     name:'Rocks'},
+  {k:'buildings', name:'Buildings'},
+  {k:'signs',     name:'Signs'},
+  {k:'props',     name:'Doors & counters'},
+  {k:'crops',     name:'Crops'},
+  {k:'actors',    name:'People & pets'}
+];
+var layerOn={foliage:1,rocks:1,buildings:1,signs:1,props:1,crops:1,actors:1};
+function buildLayerBar(){
+  document.getElementById('palLayers').innerHTML=
+    '<span class="pal-hint">Layers:</span>'+LAYERS.map(function(l){
+      return '<button class="pal-tab'+(layerOn[l.k]?' on':'')+'" data-layer="'+l.k+'">'+
+             (layerOn[l.k]?'◉ ':'○ ')+esc(l.name)+'</button>';
+    }).join('');
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-layer]'); if(!b) return;
+  var k=b.getAttribute('data-layer');
+  layerOn[k]=layerOn[k]?0:1;
+  buildLayerBar();
+  loadMap(cur,{x:player.x,y:player.y});
+});
+
+async function loadTileManifest(){
+  try{
+    var r=await fetch('tiles/manifest.json',{cache:'no-store'});
+    var list=await r.json();
+    list.forEach(function(t){
+      if(!TILESETS[t.col]){ TILESETS[t.col]=[]; TABS.push(t.col); }
+      TILESETS[t.col].push(t);
+    });
+  }catch(e){ /* painter still works with Basics only */ }
+}
+function customFor(name){
+  var c=state.customMaps&&state.customMaps[name];
+  if(!c) return null;
+  return Array.isArray(c) ? {rows:c,art:{}} : c;      // migrate the old array form
+}
+function applyCustomRows(){
+  var c=customFor(cur);
+  if(c&&Array.isArray(c.rows)&&c.rows.length) MAPS[cur].rows=c.rows.slice();
+}
+function artAt(x,y){
+  var c=customFor(cur);
+  return (c&&c.art)?c.art[x+','+y]:null;
+}
+function buildPalette(){
+  document.getElementById('palTabs').innerHTML=TABS.map(function(t){
+    return '<button class="pal-tab'+(t===curTab?' on':'')+'" data-tab="'+esc(t)+'">'+esc(t)+
+           (TILESETS[t]?' ('+TILESETS[t].length+')':'')+'</button>';
+  }).join('');
+  var grid=document.getElementById('palGrid');
+  if(curTab==='Basics'){
+    grid.innerHTML=BASICS.map(function(b){
+      var st='background-image:'+b.swatch+';';
+      if(b.sheet) st+='background-size:auto 48px; background-position:left center;';
+      if(b.dim)   st+='filter:brightness(.82) saturate(1.3);';
+      if(b.rug)   st+='filter:sepia(.7) saturate(3) hue-rotate(-28deg) brightness(.8);';
+      return '<div class="pal'+(!artBrush&&b.ch===brush?' on':'')+'" data-brush="'+esc(b.ch)+
+             '" style="'+st+'" title="'+esc(b.name)+'"><span>'+esc(b.name)+'</span></div>';
+    }).join('');
+  } else {
+    grid.innerHTML=(TILESETS[curTab]||[]).map(function(t){
+      return '<div class="pal'+(artBrush&&artBrush.id===t.id?' on':'')+'" data-art="'+esc(t.id)+
+             '" style="background-image:url(\''+esc(t.file)+'\');" title="'+esc(t.id)+'"></div>';
+    }).join('');
+  }
+  document.getElementById('palSel').textContent = eraseMode ? 'Erasing painted tiles'
+    : artBrush ? ('Brush: '+artBrush.id) : ('Brush: '+(BASICS.filter(function(b){return b.ch===brush;})[0]||{name:'?'}).name);
+}
+function tileById(id){
+  for(var k in TILESETS){ var f=TILESETS[k].filter(function(t){return t.id===id;})[0]; if(f) return f; }
+  return null;
+}
+function setEdit(on){
+  editMode=on;
+  document.getElementById('palette').classList.toggle('show',on);
+  document.getElementById('viewport').classList.toggle('editing',on);
+  document.getElementById('dpad').classList.toggle('show',!on && !padActive &&
+    (('ontouchstart' in window)||navigator.maxTouchPoints>0));
+  if(on){ buildPalette(); buildLayerBar(); updateUndoBtn();
+          toast('Paint mode — turn off a layer to paint underneath it.'); }
+  fit();
+}
+function tileFromEvent(e){
+  var L=document.getElementById('mapLayer'), r=L.getBoundingClientRect();
+  var sc=r.width/(cols()*TILE);
+  var px=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+  var py=(e.touches?e.touches[0].clientY:e.clientY)-r.top;
+  return { x:Math.floor(px/sc/TILE), y:Math.floor(py/sc/TILE) };
+}
+function ensureCustom(){
+  if(!state.customMaps) state.customMaps={};
+  var c=customFor(cur);
+  if(!c) c={rows:MAPS[cur].rows.slice(),art:{}};
+  if(!c.art) c.art={};
+  state.customMaps[cur]=c;
+  return c;
+}
+// one undo entry per stroke (mousedown..mouseup), so a drag undoes in one go
+var undoStack=[], strokeSnap=null;
+function beginStroke(){
+  var c=ensureCustom();
+  strokeSnap={ rows:MAPS[cur].rows.slice(), art:JSON.parse(JSON.stringify(c.art||{})), map:cur };
+}
+function endStroke(){
+  if(!strokeSnap) return;
+  var c=ensureCustom();
+  var changed = strokeSnap.rows.join('\n')!==MAPS[cur].rows.join('\n')
+             || JSON.stringify(strokeSnap.art)!==JSON.stringify(c.art||{});
+  if(changed){
+    undoStack.push(strokeSnap); if(undoStack.length>60) undoStack.shift();
+    c.rows=MAPS[cur].rows.slice();
+    save();                       // every stroke persists to save-data.json
+  }
+  strokeSnap=null;
+  updateUndoBtn();
+}
+function updateUndoBtn(){
+  var b=document.getElementById('palUndo'); if(!b) return;
+  b.disabled = undoStack.filter(function(s){ return s.map===cur; }).length===0;
+  b.textContent = '↩ Undo'+(b.disabled?'':' ('+undoStack.filter(function(s){return s.map===cur;}).length+')');
+}
+function undoPaint(){
+  for(var i=undoStack.length-1;i>=0;i--){
+    if(undoStack[i].map!==cur) continue;
+    var snap=undoStack.splice(i,1)[0];
+    MAPS[cur].rows=snap.rows.slice();
+    var c=ensureCustom(); c.rows=snap.rows.slice(); c.art=snap.art;
+    save();
+    loadMap(cur, walkable(player.x,player.y)?{x:player.x,y:player.y}:null);
+    buildPalette(); updateUndoBtn();
+    toast('Undone.');
+    return;
+  }
+  toast('Nothing to undo on this map.');
+}
+
+function paintAt(x,y){
+  if(x<0||y<0||x>=cols()||y>=rows()) return;
+  var c=ensureCustom(), key=x+','+y, changed=false;
+  if(eraseMode){
+    if(c.art[key]){ delete c.art[key]; changed=true; }
+  } else if(artBrush){
+    if(c.art[key]!==artBrush.id){ c.art[key]=artBrush.id; changed=true; }
+    // painted art also decides collision, via the checkbox
+    var want=document.getElementById('palSolid').checked?'W':'.';
+    if(MAPS[cur].rows[y].charAt(x)!==want){
+      MAPS[cur].rows[y]=MAPS[cur].rows[y].substring(0,x)+want+MAPS[cur].rows[y].substring(x+1);
+      c.rows=MAPS[cur].rows.slice(); changed=true;
+    }
+  } else {
+    if(MAPS[cur].rows[y].charAt(x)!==brush){
+      MAPS[cur].rows[y]=MAPS[cur].rows[y].substring(0,x)+brush+MAPS[cur].rows[y].substring(x+1);
+      c.rows=MAPS[cur].rows.slice(); changed=true;
+    }
+    if(c.art[key]){ delete c.art[key]; changed=true; }   // basics clear any override
+  }
+  if(!changed) return;
+  var keep={x:player.x,y:player.y};
+  loadMap(cur, walkable(keep.x,keep.y)?keep:null);
+}
+document.getElementById('editBtn').addEventListener('click',function(){ setEdit(!editMode); });
+document.getElementById('palTabs').addEventListener('click',function(e){
+  var t=e.target.closest('[data-tab]'); if(!t) return;
+  curTab=t.getAttribute('data-tab'); buildPalette();
+  document.getElementById('palGrid').scrollTop=0;
+});
+document.getElementById('palGrid').addEventListener('click',function(e){
+  var b=e.target.closest('[data-brush]'), a=e.target.closest('[data-art]');
+  if(b){ brush=b.getAttribute('data-brush'); artBrush=null; eraseMode=false; buildPalette(); }
+  else if(a){ artBrush=tileById(a.getAttribute('data-art')); eraseMode=false; buildPalette(); }
+});
+document.getElementById('palErase').addEventListener('click',function(){
+  eraseMode=!eraseMode; if(eraseMode) artBrush=null; buildPalette();
+});
+document.getElementById('palDone').addEventListener('click',function(){ setEdit(false); });
+document.getElementById('palUndo').addEventListener('click',undoPaint);
+
+/* ---------------- A* ---------------- */
+function findPath(sx,sy,tx,ty){
+  if(!walkable(tx,ty)) return null;
+  var k=function(x,y){return x+','+y;};
+  var open=[{x:sx,y:sy,g:0,f:Math.abs(tx-sx)+Math.abs(ty-sy),p:null}];
+  var seen={}; seen[k(sx,sy)]=0; var guard=0;
+  while(open.length&&guard++<6000){
+    open.sort(function(a,b){return a.f-b.f;});
+    var n=open.shift();
+    if(n.x===tx&&n.y===ty){ var out=[],c=n; while(c.p){ out.unshift({x:c.x,y:c.y}); c=c.p; } return out; }
+    [[0,-1],[0,1],[-1,0],[1,0]].forEach(function(d){
+      var nx=n.x+d[0],ny=n.y+d[1];
+      if(!walkable(nx,ny)) return;
+      var g=n.g+1,kk=k(nx,ny);
+      if(seen[kk]!==undefined&&seen[kk]<=g) return;
+      seen[kk]=g;
+      open.push({x:nx,y:ny,g:g,f:g+Math.abs(tx-nx)+Math.abs(ty-ny),p:n});
+    });
+  }
+  return null;
+}
+var walkQueue=[], queuedAction=null;
+
+/* ---------------- render ---------------- */
+function loadMap(name,at){
+  cur=name;
+  applyCustomRows();
+  if(at){ player.x=at.x; player.y=at.y; }
+  else if(map().entry){ player.x=map().entry.x; player.y=map().entry.y; }
+  // never strand the player: fall back to entry, then to any walkable tile
+  if(!walkable(player.x,player.y)){
+    var e=map().entry, ok=false;
+    if(e&&walkable(e.x,e.y)){ player.x=e.x; player.y=e.y; ok=true; }
+    for(var yy=0;yy<rows()&&!ok;yy++) for(var xx=0;xx<cols()&&!ok;xx++)
+      if(walkable(xx,yy)){ player.x=xx; player.y=yy; ok=true; }
+  }
+  walkQueue=[]; queuedAction=null;
+  anims=anims.filter(function(e){ return e.id==='titleCastle'||e.id==='creatorPreview'||e.closest('.modal-overlay')||e.closest('#battle'); });
+  var L=document.getElementById('mapLayer');
+  L.innerHTML='';
+  L.style.width=cols()*TILE+'px'; L.style.height=rows()*TILE+'px';
+
+  var f=document.createDocumentFragment();
+  for(var y=0;y<rows();y++) for(var x=0;x<cols();x++){
+    var t=tileAt(x,y),d=document.createElement('div'),c='tile ',inside=!!map().interior;
+    if(t===':') c+='t-path'; else if(t==='~') c+='t-water';
+    else if(t==='W') c+='t-wall'; else if(t==='r') c+='t-rug';
+    else if(t==='f'||t==='C'||t==='S'||t==='d') c+='t-fl';
+    else if(inside) c+='t-fl';                    // indoors '.' is floorboard, not lawn
+    else {
+      // outdoor land: autotile so the Tiny Swords edge treatment shows where
+      // land meets water. col/row 0 = top/left edge, 3 = bottom/right edge.
+      c+='t-land';
+      var L_=isLand(x-1,y), R_=isLand(x+1,y), U_=isLand(x,y-1), D_=isLand(x,y+1);
+      if(L_&&R_&&U_&&D_){
+        // fully inland: the one verified seamless centre tile
+        d.style.backgroundImage="url('tiles/grass.png')";
+      } else {
+        // touching water/off-map: use the matching foam-edged tile
+        var col = !L_ ? 0 : !R_ ? 2 : 1;
+        var row = !U_ ? 0 : !D_ ? 3 : 1;
+        d.style.backgroundImage="url('tiles/g_"+col+row+".png')";
+      }
+      if(t==='T') d.style.filter='brightness(.86) saturate(1.3)';
+    }
+    if((x+y)%2===0&&(t===':'||t==='f'||(inside&&t==='.'))) c+=' alt';
+    d.className=c; d.style.left=x*TILE+'px'; d.style.top=y*TILE+'px';
+    // a hand-painted tile overrides whatever the terrain char would have drawn
+    var ov=artAt(x,y);
+    if(ov){
+      var tf=tileById(ov);
+      if(tf){ d.className='tile'; d.style.filter='none';
+              d.style.backgroundImage="url('"+tf.file+"')"; }
+    }
+    f.appendChild(d);
+  }
+  L.appendChild(f);
+
+  for(var y2=0;y2<rows();y2++) for(var x2=0;x2<cols();x2++){
+    var tt=tileAt(x2,y2);
+    if(tt==='#'){
+      if(!layerOn.foliage) continue;
+      // trees and bushes are 8-frame sheets - they sway on their own
+      var isTree=((x2*7+y2*13)%3)!==0;
+      var sp=document.createElement('div'); sp.className='obj';
+      sp.style.zIndex=y2*10+3;
+      if(isTree){
+        sp.style.width='84px'; sp.style.height='112px';
+        sp.style.left=(x2*TILE-18)+'px'; sp.style.top=(y2*TILE-62)+'px';
+        animate(sp,ASSETS.tree(1+((x2+y2*3)%4)),5,'',1,[84,112],ASSETS.FRAMES.tree);
+      } else {
+        sp.style.width='56px'; sp.style.height='56px';
+        sp.style.left=(x2*TILE-4)+'px'; sp.style.top=(y2*TILE-12)+'px';
+        animate(sp,ASSETS.bush(1+((x2*3+y2*7)%4)),5,'',1,[56,56],ASSETS.FRAMES.bush);
+      }
+      L.appendChild(sp);
+    } else if(tt==='o'){
+      if(!layerOn.rocks) continue;
+      var rk=document.createElement('div'); rk.className='obj';
+      rk.style.width='40px'; rk.style.height='40px';
+      rk.style.left=(x2*TILE+4)+'px'; rk.style.top=(y2*TILE+6)+'px'; rk.style.zIndex=y2*10+3;
+      rk.style.backgroundSize='contain'; rk.style.backgroundRepeat='no-repeat';
+      rk.style.backgroundImage="url('"+ASSETS.rock(1+((x2+y2)%4))+"')";
+      L.appendChild(rk);
+    } else if(tt==='C'||tt==='S'){
+      if(!layerOn.props) continue;
+      var e=document.createElement('div'); e.className=(tt==='C'?'counter':'shelf');
+      e.style.left=(x2*TILE+2)+'px'; e.style.top=(y2*TILE+(tt==='C'?14:4))+'px';
+      e.style.width=(TILE-4)+'px'; e.style.height=(tt==='C'?TILE-18:TILE-8)+'px';
+      e.style.zIndex=y2*10+4; L.appendChild(e);
+    }
+  }
+  if(map().exit){
+    var ex=map().exit,dv=document.createElement('div'); dv.className='door';
+    dv.style.left=(ex.x*TILE+9)+'px'; dv.style.top=(ex.y*TILE+8)+'px';
+    dv.style.width=(TILE-18)+'px'; dv.style.height=(TILE-8)+'px'; dv.style.zIndex=ex.y*10+2;
+    L.appendChild(dv);
+  }
+  (map().decor||[]).forEach(function(d){
+    var isRock=/rock/i.test(d.art||'');
+    if(isRock?!layerOn.rocks:!layerOn.foliage) return;
+    var e=document.createElement('div'); e.className='obj';
+    var h=d.h||d.w;
+    e.style.width=d.w+'px'; e.style.height=h+'px';
+    e.style.left=(d.x*TILE+(TILE-d.w)/2)+'px'; e.style.top=(d.y*TILE+TILE-h*.92)+'px';
+    e.style.zIndex=d.y*10+3;
+    if(d.frames) animate(e,d.art,5,'',1,[d.w,h],d.frames);
+    else { e.style.backgroundSize='contain'; e.style.backgroundRepeat='no-repeat';
+           e.style.backgroundImage="url('"+d.art+"')"; }
+    L.appendChild(e);
+  });
+  (map().buildings||[]).forEach(function(b){
+    if(!layerOn.buildings) return;
+    var w=document.createElement('div'); w.className='obj'; w.id='bldg-'+b.id;
+    var cx=b.x*TILE+(b.w*TILE)/2;
+    w.style.left=(cx-b.size/2)+'px'; w.style.top=(b.y*TILE+TILE-b.size*.9)+'px';
+    w.style.width=b.size+'px'; w.style.height=b.size+'px'; w.style.zIndex=b.y*10+4;
+    w.style.backgroundSize='contain'; w.style.backgroundRepeat='no-repeat';
+    w.style.backgroundImage="url('"+b.sprite+"')";
+    L.appendChild(w);
+    if(b.door&&layerOn.props){
+      var dm=document.createElement('div'); dm.className='door';
+      dm.style.left=(b.door.x*TILE+11)+'px'; dm.style.top=(b.door.y*TILE+2)+'px';
+      dm.style.width=(TILE-22)+'px'; dm.style.height='15px'; dm.style.zIndex=b.door.y*10+1;
+      L.appendChild(dm);
+    }
+    if(!layerOn.signs) return;
+    // sign board: its own top-level element so the door mat can't cover it
+    var lb=document.createElement('div');
+    lb.className='sign'; lb.textContent=b.label;
+    lb.style.left=(cx)+'px';
+    lb.style.top=(b.y*TILE+TILE-b.size*0.9-16)+'px';
+    L.appendChild(lb);
+  });
+  (map().farm||[]).forEach(function(p){
+    var d=document.createElement('div'); d.className='tile t-soil';
+    d.style.left=p.x*TILE+'px'; d.style.top=p.y*TILE+'px'; d.style.zIndex=1;
+    L.appendChild(d);
+  });
+  renderPlots();
+  (map().npcs||[]).forEach(function(n){
+    if(!layerOn.actors) return;
+    var e=document.createElement('div'); e.className='actor'; e.id='npc-'+n.id;
+    e.style.left=(n.x*TILE+1)+'px'; e.style.top=(n.y*TILE+1)+'px'; e.style.zIndex=n.y*10+5;
+    e.innerHTML='<div class="tag">'+esc(n.tag)+'</div><div class="spr"></div>';
+    L.appendChild(e);
+    animate(e.querySelector('.spr'),ASSETS.unitIdle(n.color,n.cls),6,n.tag.charAt(0),UNIT_ZOOM,46);
+  });
+  renderDog(L);
+  var p=document.createElement('div'); p.id='player'; p.className='actor';
+  p.innerHTML='<div class="spr"></div>';
+  L.appendChild(p);
+  setPlayerSprite(false);
+  placePlayer(); camera(true); updateHud(); updatePrompt();
+}
+function setPlayerSprite(moving){
+  var h=hero(), el=document.getElementById('player');
+  if(!el) return;
+  var spr=el.querySelector('.spr');
+  var url = moving ? (ASSETS.unitRun(h.color,h.cls)||ASSETS.unitIdle(h.color,h.cls)) : ASSETS.unitIdle(h.color,h.cls);
+  if(spr._url!==url) animate(spr,url,moving?11:6,(state.player||'Y').charAt(0),UNIT_ZOOM,46);
+}
+function renderPlots(){
+  var L=document.getElementById('mapLayer');
+  L.querySelectorAll('[data-plot]').forEach(function(n){ n.remove(); });
+  if(cur!=='plains'||!layerOn.crops) return;
+  state.plots.forEach(function(pl,i){
+    var ready=Date.now()>=pl.ready, s=ready?34:20;
+    var e=document.createElement('div'); e.setAttribute('data-plot',i); e.className='obj';
+    e.style.width=s+'px'; e.style.height=s+'px'; e.style.opacity=ready?1:.6;
+    e.style.left=(pl.x*TILE+(TILE-s)/2)+'px'; e.style.top=(pl.y*TILE+(TILE-s)/2)+'px';
+    e.style.zIndex=pl.y*10+4; e.style.backgroundSize='contain'; e.style.backgroundRepeat='no-repeat';
+    e.style.backgroundImage="url('"+((ITEMS[pl.crop]&&ITEMS[pl.crop].art)||ASSETS.food('Carrot'))+"')";
+    L.appendChild(e);
+  });
+}
+function placePlayer(){
+  var p=document.getElementById('player'); if(!p) return;
+  p.style.left=(player.x*TILE+1)+'px'; p.style.top=(player.y*TILE+1)+'px';
+  p.style.zIndex=player.y*10+6;
+  p.classList.toggle('flip',player.dir==='left');
+  p.style.transition='left '+STEP+'ms linear, top '+STEP+'ms linear';
+}
+function camera(instant){
+  var L=document.getElementById('mapLayer');
+  var mw=cols()*TILE, mh=rows()*TILE;
+  var ox=VIEW_W/2-(player.x*TILE+TILE/2), oy=VIEW_H/2-(player.y*TILE+TILE/2);
+  ox=mw<VIEW_W?(VIEW_W-mw)/2:Math.min(0,Math.max(VIEW_W-mw,ox));
+  oy=mh<VIEW_H?(VIEW_H-mh)/2:Math.min(0,Math.max(VIEW_H-mh,oy));
+  L.style.transition=instant?'none':('transform '+STEP+'ms linear');
+  L.style.transform='translate('+Math.round(ox)+'px,'+Math.round(oy)+'px)';
+}
+function updateHud(){
+  document.getElementById('zoneName').textContent=map().name;
+  document.getElementById('hudWho').textContent=
+    (state.player||'-')+' · '+money(vault())+'g · '+mats()+' mat · '+state.sheet.length+' debts · '+state.trophies.length+' slain';
+}
+
+/* ---------------- targets & prompt ---------------- */
+function facingTile(){ var d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[player.dir]; return {x:player.x+d[0],y:player.y+d[1]}; }
+function targetAt(x,y){
+  if(dogAt(x,y)) return {kind:'dog'};
+  var n=npcAt(x,y); if(n) return {kind:'npc',npc:n};
+  var b=(map().buildings||[]).filter(function(d){ return d.door&&d.door.x===x&&d.door.y===y; })[0];
+  if(b) return {kind:'door',building:b};
+  var bb=bldgAt(x,y); if(bb) return {kind:'wall',building:bb};
+  if(map().exit&&map().exit.x===x&&map().exit.y===y) return {kind:'exit'};
+  var pl=state.plots.filter(function(p){ return p.x===x&&p.y===y&&cur==='plains'; })[0];
+  if(pl) return {kind:'plot',plot:pl};
+  if(cur==='plains'&&(map().farm||[]).some(function(fm){ return fm.x===x&&fm.y===y; })) return {kind:'soil',x:x,y:y};
+  return null;
+}
+function currentTarget(){
+  // standing on a doormat or exit wins - otherwise you'd be "facing" the wall
+  // above it and never able to go in
+  var here=targetAt(player.x,player.y);
+  if(here&&(here.kind==='door'||here.kind==='exit')) return here;
+  var f=facingTile();
+  return targetAt(f.x,f.y)||here;
+}
+// which way from this tile is the given building's door?
+function doorHint(b){
+  if(!b.door) return '';
+  var dx=b.door.x-player.x, dy=b.door.y-player.y;
+  if(dx===0&&dy===0) return '';
+  var parts=[];
+  if(dy>0) parts.push(dy+' down'); else if(dy<0) parts.push((-dy)+' up');
+  if(dx>0) parts.push(dx+' right'); else if(dx<0) parts.push((-dx)+' left');
+  return parts.join(' and ');
+}
+function updatePrompt(){
+  var el=document.getElementById('prompt'), t=currentTarget();
+  if(!t||dialogOpen||battleOn){ el.classList.remove('show'); return; }
+  var m='';
+  if(t.kind==='dog') m='▸ '+(petFollowing()?pet().name:(pet().met?pet().name+' — offer food':'a white dog'));
+  else if(t.kind==='npc') m='▸ '+t.npc.tag;
+  else if(t.kind==='door') m='▸ '+t.building.label;
+  else if(t.kind==='wall'){ var dh=doorHint(t.building); m='▸ '+t.building.label+(dh?' — door '+dh:''); }
+  else if(t.kind==='exit') m='▸ Leave';
+  else if(t.kind==='plot') m=Date.now()>=t.plot.ready?('▸ Harvest '+itemName(t.plot.crop)):('▸ '+itemName(t.plot.crop)+' still growing');
+  else if(t.kind==='soil') m='▸ Empty soil';
+  else { el.classList.remove('show'); return; }
+  el.textContent=m+'  (A)'; el.classList.add('show');
+}
+
+/* ---------------- dialogue ---------------- */
+var dialogOpen=false, dLines=[], dIdx=0, dTyping=false, dTimer=null, dDone=null, dSpeaker='';
+function say(lines,speaker,onDone){
+  dLines=Array.isArray(lines)?lines.slice():[lines];
+  dIdx=0; dSpeaker=speaker||''; dDone=onDone||null; dialogOpen=true;
+  document.getElementById('dialog').classList.add('show');
+  document.getElementById('dialogSpeaker').textContent=dSpeaker;
+  document.getElementById('dialogChoices').innerHTML='';
+  updatePrompt(); typeLine();
+}
+function typeLine(){
+  var el=document.getElementById('dialogText'), nx=document.getElementById('dialogNext');
+  nx.classList.remove('show');
+  var txt=dLines[dIdx]||''; el.textContent=''; dTyping=true;
+  var i=0;
+  clearInterval(dTimer);
+  dTimer=setInterval(function(){
+    el.textContent=txt.slice(0,++i);
+    if(i>=txt.length){ clearInterval(dTimer); dTyping=false; nx.classList.add('show'); }
+  },18);
+}
+function advanceDialog(){
+  if(dTyping){ clearInterval(dTimer); document.getElementById('dialogText').textContent=dLines[dIdx];
+    dTyping=false; document.getElementById('dialogNext').classList.add('show'); return; }
+  dIdx++;
+  if(dIdx<dLines.length){ typeLine(); return; }
+  closeDialog();
+  if(dDone){ var f=dDone; dDone=null; f(); }
+}
+function closeDialog(){
+  dialogOpen=false; clearInterval(dTimer);
+  document.getElementById('dialog').classList.remove('show');
+  updatePrompt();
+}
+document.getElementById('dialog').addEventListener('click',function(e){
+  if(e.target.closest('#dialogChoices')) return;
+  advanceDialog();
+});
+
+/* ---------------- transitions ---------------- */
+function fadeTo(fn){
+  var f=document.getElementById('fade');
+  f.classList.add('on');
+  setTimeout(function(){ fn(); setTimeout(function(){ f.classList.remove('on'); },40); },300);
+}
+
+/* ---------------- movement ---------------- */
+var STEP=210, keys={}, lastStep=0, lastFrame=0;   // slower, deliberate grid steps
+function blocked(){ return editMode||dialogOpen||battleOn||anyModalOpen()||!document.getElementById('gameScreen').classList.contains('active'); }
+function stepTo(nx,ny){
+  if(!walkable(nx,ny)) return false;
+  player.x=nx; player.y=ny;
+  placePlayer(); camera(); updatePrompt();
+  var t=targetAt(nx,ny);
+  if(t&&t.kind==='exit'){ var ex=map().exit; fadeTo(function(){ loadMap(ex.to,ex.at); }); }
+  return true;
+}
+function tryDir(dir){
+  var d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];
+  player.dir=dir;
+  if(!stepTo(player.x+d[0],player.y+d[1])){ placePlayer(); updatePrompt(); }
+}
+// ---- gamepad: if one is connected it takes over and the touch pad hides ----
+var padActive=false, padPrevA=false;
+function pollPad(){
+  if(!navigator.getGamepads) return;
+  var pads=navigator.getGamepads(), p=null;
+  for(var i=0;i<pads.length;i++) if(pads[i]&&pads[i].connected){ p=pads[i]; break; }
+  var was=padActive; padActive=!!p;
+  if(was!==padActive) updateControlMode();
+  if(!p) return;
+  var ax=p.axes[0]||0, ay=p.axes[1]||0, DZ=0.45;
+  var b=p.buttons;
+  var up=(b[12]&&b[12].pressed)||ay<-DZ, down=(b[13]&&b[13].pressed)||ay>DZ;
+  var lf=(b[14]&&b[14].pressed)||ax<-DZ, rt=(b[15]&&b[15].pressed)||ax>DZ;
+  keys.up=!!up; keys.down=!!down; keys.left=!!lf; keys.right=!!rt;
+  var a=(b[0]&&b[0].pressed)||(b[1]&&b[1].pressed);
+  if(a&&!padPrevA){ if(dialogOpen) advanceDialog(); else interact(); }
+  padPrevA=!!a;
+}
+function updateControlMode(){
+  var touch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+  document.getElementById('dpad').classList.toggle('show', !padActive && touch);
+  fit();
+}
+window.addEventListener('gamepadconnected',function(){ padActive=true; updateControlMode(); toast('Controller connected.'); });
+window.addEventListener('gamepaddisconnected',function(){ padActive=false; updateControlMode(); });
+
+function frame(ts){
+  requestAnimationFrame(frame);
+  var dt=Math.min(80,ts-(lastFrame||ts)); lastFrame=ts;
+  tickAnims(dt);
+  pollPad();
+  if(blocked()){ if(player.moving){ player.moving=false; setPlayerSprite(false); } return; }
+  if(ts-lastStep<STEP) return;
+  var dir=null;
+  if(keys.up)dir='up'; else if(keys.down)dir='down'; else if(keys.left)dir='left'; else if(keys.right)dir='right';
+  if(dir){
+    walkQueue=[]; queuedAction=null; lastStep=ts;
+    if(!player.moving){ player.moving=true; setPlayerSprite(true); }
+    tryDir(dir); return;
+  }
+  if(walkQueue.length){
+    var n=walkQueue.shift(); lastStep=ts;
+    if(!player.moving){ player.moving=true; setPlayerSprite(true); }
+    var dx=n.x-player.x, dy=n.y-player.y;
+    player.dir = dx<0?'left':dx>0?'right':dy<0?'up':'down';
+    if(!stepTo(n.x,n.y)) walkQueue=[];
+    if(!walkQueue.length&&queuedAction){
+      var q=queuedAction; queuedAction=null;
+      var ax=q.x-player.x, ay=q.y-player.y;
+      player.dir = ax<0?'left':ax>0?'right':ay<0?'up':'down';
+      placePlayer(); updatePrompt(); interact();
+    }
+    return;
+  }
+  if(player.moving){ player.moving=false; setPlayerSprite(false); }
+}
+requestAnimationFrame(frame);
+
+var KEYDIR={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',
+  w:'up',s:'down',a:'left',d:'right',W:'up',S:'down',A:'left',D:'right'};
+window.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    if(dialogOpen){ closeDialog(); return; }
+    if(battleOn){ endBattle(); return; }
+    ['keepModal','vaultModal','logModal','shopModal','bagModal'].forEach(closeModal); return;
+  }
+  if(!document.getElementById('gameScreen').classList.contains('active')) return;
+  if(e.key==='Enter'||e.key===' '){
+    e.preventDefault();
+    if(dialogOpen){ advanceDialog(); return; }
+    if(battleOn||anyModalOpen()) return;
+    interact(); return;
+  }
+  if(dialogOpen||battleOn||anyModalOpen()) return;
+  var d=KEYDIR[e.key]; if(d){ e.preventDefault(); keys[d]=true; }
+});
+window.addEventListener('keyup',function(e){ var d=KEYDIR[e.key]; if(d) keys[d]=false; });
+window.addEventListener('blur',function(){ keys={}; });
+
+(function(){
+  var L=document.getElementById('mapLayer');
+  function start(e){ if(!editMode) return; e.preventDefault(); painting=true;
+    beginStroke(); var t=tileFromEvent(e); paintAt(t.x,t.y); }
+  function move(e){ if(!editMode||!painting) return; e.preventDefault();
+    var t=tileFromEvent(e); paintAt(t.x,t.y); }
+  function end(){ if(painting) endStroke(); painting=false; }
+  L.addEventListener('mousedown',start); L.addEventListener('mousemove',move);
+  window.addEventListener('mouseup',end);
+  L.addEventListener('touchstart',start,{passive:false});
+  L.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('touchend',end);
+})();
+
+document.getElementById('mapLayer').addEventListener('click',function(e){
+  if(editMode) return;                     // painting, not walking
+  if(blocked()) return;
+  var L=this, r=L.getBoundingClientRect(), sc=r.width/(cols()*TILE);
+  var tx=Math.floor((e.clientX-r.left)/sc/TILE), ty=Math.floor((e.clientY-r.top)/sc/TILE);
+  if(tx===player.x&&ty===player.y){ interact(); return; }
+  var t=targetAt(tx,ty);
+  if(t&&(t.kind==='npc'||t.kind==='door'||t.kind==='wall')){
+    var spots=[[tx,ty+1],[tx,ty-1],[tx-1,ty],[tx+1,ty]].filter(function(s){ return walkable(s[0],s[1]); });
+    if(!spots.length){ toast("Can't reach that."); return; }
+    var best=null,bp=null;
+    spots.forEach(function(s){ var p=findPath(player.x,player.y,s[0],s[1]); if(p&&(!bp||p.length<bp.length)){ bp=p; best=s; } });
+    if(!bp){ toast('No way through.'); return; }
+    walkQueue=bp; queuedAction={x:tx,y:ty}; marker(best[0],best[1]); return;
+  }
+  var p=findPath(player.x,player.y,tx,ty);
+  if(!p){ toast('No path there.'); return; }
+  walkQueue=p; queuedAction=null; marker(tx,ty);
+});
+function marker(x,y){
+  var L=document.getElementById('mapLayer');
+  L.querySelectorAll('.marker').forEach(function(m){ m.remove(); });
+  var m=document.createElement('div'); m.className='marker';
+  m.style.left=x*TILE+'px'; m.style.top=y*TILE+'px'; m.style.zIndex=999;
+  L.appendChild(m); setTimeout(function(){ m.remove(); },900);
+}
+var dp=document.getElementById('dpad');
+dp.addEventListener('mousedown',function(e){ var b=e.target.closest('[data-dir]'); if(!b) return;
+  var k=b.getAttribute('data-dir'); if(k==='act'){ dialogOpen?advanceDialog():interact(); return; } keys[k]=true; });
+dp.addEventListener('touchstart',function(e){ var b=e.target.closest('[data-dir]'); if(!b) return; e.preventDefault();
+  var k=b.getAttribute('data-dir'); if(k==='act'){ dialogOpen?advanceDialog():interact(); return; } keys[k]=true; },{passive:false});
+['mouseup','mouseleave','touchend','touchcancel'].forEach(function(ev){ dp.addEventListener(ev,function(){ keys={}; }); });
+updateControlMode();
+
+/* ---------------- interact ---------------- */
+function faceNpcToPlayer(n){
+  var el=document.getElementById('npc-'+n.id); if(!el) return;
+  el.classList.toggle('flip', player.x<n.x);
+}
+function interact(){
+  if(blocked()) return;
+  var t=currentTarget();
+  if(!t){ return; }
+  if(t.kind==='dog') return talkToDog();
+  if(t.kind==='npc'){
+    var n=t.npc; faceNpcToPlayer(n);
+    return say(n.say||['...'], n.tag, function(){ if(n.shop) openShop(n.shop,n.tag); });
+  }
+  if(t.kind==='door'){
+    var b=t.building;
+    if(b.warp) return fadeTo(function(){ loadMap(b.warp,null); });
+    return enterBuilding(b.id);
+  }
+  if(t.kind==='exit'){ var ex=map().exit; return fadeTo(function(){ loadMap(ex.to,ex.at); }); }
+  if(t.kind==='wall'){
+    var hint=doorHint(t.building);
+    return say([t.building.label+"'s door is "+(hint?hint+' from here.':'just below.')],'');
+  }
+  if(t.kind==='plot') return harvest(t.plot);
+  if(t.kind==='soil') return plant(t.x,t.y);
+}
+function enterBuilding(id){
+  if(id==='barracks'){
+    var foes=state.sheet.filter(function(d){ return d.type==='combat'; });
+    if(!foes.length) return say(['The Arena is silent. Nothing left to fight.'],'The Arena');
+    return say(['The gate grinds open.','Something is waiting in the sand...'],'The Arena',function(){ startBattle(foes[0].id); });
+  }
+  if(id==='keep') return openKeep('projects');
+  if(id==='castle') return openVault();
+  var m={monastery:['The armory is still being built.'],archery:['The Guild hall is empty for now.'],
+         tavern:['The Tavern is dark. Stamina is not built yet.']};
+  say(m[id]||['Nothing here yet.'],'');
+}
+function toast(msg){
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toast._h); toast._h=setTimeout(function(){ t.classList.remove('show'); },2400);
+}
+function anyModalOpen(){
+  return ['ownerModal','ledgerModal','keepModal','vaultModal','logModal','shopModal','bagModal']
+    .some(function(id){ return !document.getElementById(id).classList.contains('hidden'); });
+}
+function closeModal(id){ var e=document.getElementById(id); if(e) e.classList.add('hidden'); }
+document.addEventListener('click',function(e){
+  var x=e.target.closest('[data-close]'); if(x){ closeModal(x.getAttribute('data-close')); return; }
+  if(e.target.classList&&e.target.classList.contains('modal-overlay')){
+    var id=e.target.id;
+    if(['keepModal','vaultModal','logModal','shopModal','bagModal'].indexOf(id)>=0) closeModal(id);
+  }
+});
+
+/* ---------------- Hunter the dog ----------------
+   One dog for the whole kingdom. Trust is per player: feed him and he warms to
+   you. Befriended by one player he tags along; befriended by BOTH he unlocks
+   the shared attack. He never deals gold damage - the reality lock means only
+   real payments can hurt a debt - so his help is materials and morale. */
+var TRUST_FRIEND=3;
+// a dog should read as clearly smaller than a knight (knight box is 46 @1.9).
+// zoom stays <=1 so a scaled frame can never spill past its box.
+var DOG_BOX=[32,32], DOG_ZOOM=1;
+function pet(){ return state.pet; }
+function petTrust(who){ return (pet().trust[who||state.player])||0; }
+function petIsFriend(who){ return petTrust(who)>=TRUST_FRIEND; }
+function petBothFriends(){ return petIsFriend('Sarah')&&petIsFriend('Taliyah'); }
+function petFollowing(){ return petIsFriend(state.player); }
+
+function foodInBag(){
+  return Object.keys(bag()).filter(function(id){
+    var it=ITEMS[id]; return it && (it.kind==='crop'||it.kind==='loot') && bagCount(id)>0;
+  });
+}
+function renderDog(L){
+  if(cur!=='plains'||!layerOn.actors) return;
+  var p=pet();
+  var el=document.createElement('div');
+  el.className='actor'; el.id='dog';
+  el.style.left=(p.x*TILE+(TILE-DOG_BOX[0])/2)+'px';
+  el.style.top=(p.y*TILE+TILE-DOG_BOX[1]-2)+'px';
+  el.style.zIndex=p.y*10+6;
+  el.classList.toggle('flip',p.dir==='left');
+  var tag = petFollowing() ? p.name : (p.met?p.name+' (wary)':'a white dog');
+  el.innerHTML='<div class="tag">'+esc(tag)+'</div><div class="spr"></div>';
+  L.appendChild(el);
+  setDogAnim(p.moving?'run':(petFollowing()?'idle':(p.met?'sit':'idle')));
+}
+// swap the dog's sprite only when the pose actually changes
+function setDogAnim(act){
+  var el=document.getElementById('dog'); if(!el) return;
+  var spr=el.querySelector('.spr');
+  var url=ASSETS.dog(act);
+  if(spr._url===url) return;
+  animate(spr,url,act==='run'?10:6,'',DOG_ZOOM,DOG_BOX,ASSETS.DOG[act]);
+}
+function dogAt(x,y){ return cur==='plains' && pet().x===x && pet().y===y; }
+
+// wander when wild; trot after you once you're friends
+function moveDog(){
+  if(cur!=='plains'||blocked()) return;
+  var p=pet();
+  var ox=p.x, oy=p.y;
+  if(petFollowing()){
+    var dx=player.x-p.x, dy=player.y-p.y;
+    if(Math.abs(dx)+Math.abs(dy)<=1) return;            // already beside you
+    var step = Math.abs(dx)>Math.abs(dy) ? {x:p.x+(dx>0?1:-1),y:p.y} : {x:p.x,y:p.y+(dy>0?1:-1)};
+    if(!walkable(step.x,step.y)||(step.x===player.x&&step.y===player.y)){
+      step = Math.abs(dx)>Math.abs(dy) ? {x:p.x,y:p.y+(dy>0?1:dy<0?-1:0)} : {x:p.x+(dx>0?1:dx<0?-1:0),y:p.y};
+    }
+    if(walkable(step.x,step.y)&&!(step.x===player.x&&step.y===player.y)){
+      if(step.x!==p.x) p.dir=step.x<p.x?'left':'right';
+      p.x=step.x; p.y=step.y;
+    }
+  } else {
+    var dirs=[[0,-1],[0,1],[-1,0],[1,0]];
+    var d=dirs[Math.floor(Math.random()*4)];
+    var nx=p.x+d[0], ny=p.y+d[1];
+    if(walkable(nx,ny)&&!(nx===player.x&&ny===player.y)){
+      if(d[0]) p.dir=d[0]<0?'left':'right';
+      p.x=nx; p.y=ny;
+    }
+  }
+  p.moving = (p.x!==ox||p.y!==oy);
+  var el=document.getElementById('dog');
+  if(el){
+    el.style.transition='left '+DOG_STEP+'ms linear, top '+DOG_STEP+'ms linear';
+    el.style.left=(p.x*TILE+(TILE-DOG_BOX[0])/2)+'px';
+    el.style.top=(p.y*TILE+TILE-DOG_BOX[1]-2)+'px';
+    el.style.zIndex=p.y*10+6; el.classList.toggle('flip',p.dir==='left');
+  }
+  setDogAnim(p.moving?'run':(petFollowing()?'idle':(p.met?'sit':'idle')));
+  // if he stays put, drop back out of the run cycle shortly after
+  clearTimeout(moveDog._rest);
+  if(p.moving) moveDog._rest=setTimeout(function(){
+    p.moving=false;
+    setDogAnim(petFollowing()?'idle':(p.met?'sit':'idle'));
+  }, DOG_STEP+120);
+}
+var DOG_STEP=420;
+setInterval(moveDog, DOG_STEP);
+
+function talkToDog(){
+  var p=pet(), me=state.player;
+  if(petIsFriend(me)){
+    var extra = petBothFriends()
+      ? [p.name+' knows you both now. In a fight he will run alongside either of you.']
+      : [(me==='Sarah'?'Taliyah':'Sarah')+' hasn\'t won him over yet. If she does, he\'ll fight for you both.'];
+    return say([p.name+' bounds over and leans against your leg.'].concat(extra), p.name);
+  }
+  var food=foodInBag();
+  if(!p.met){
+    p.met=true; save();
+    return say(['A small white dog watches you from a safe distance.',
+      'He wants to come closer, but he doesn\'t know you yet.',
+      food.length?'He keeps glancing at your bag. Maybe he\'s hungry.'
+                 :'He looks hungry. Bring him something to eat - a crop, or some meat.'],'');
+  }
+  if(!food.length){
+    return say([p.name+' sniffs the air and keeps his distance.',
+      'You have nothing he wants to eat. Try a harvested crop, or meat.'],'');
+  }
+  // feed him: one item, one point of trust
+  var id=food[0], it=ITEMS[id];
+  bagAdd(id,-1);
+  p.trust[me]=petTrust(me)+1;
+  addLog(me+' fed '+it.name+' to '+p.name+' (trust '+p.trust[me]+'/'+TRUST_FRIEND+').');
+  save();
+  if(petIsFriend(me)){
+    var lines=[p.name+' wolfs down the '+it.name+' and finally lets you scratch his ears.',
+      p.name+' is '+me+'\'s friend now. He\'ll follow you around the Plains.'];
+    if(petBothFriends()) lines.push('He answers to both of you now - the shared attack is unlocked.');
+    else lines.push('If '+(me==='Sarah'?'Taliyah':'Sarah')+' feeds him too, he\'ll fight for you both.');
+    var el=document.getElementById('dog');
+    if(el) animate(el.querySelector('.spr'),ASSETS.dog('happy'),9,'',DOG_ZOOM,DOG_BOX,ASSETS.DOG.happy);
+    loadMap(cur,{x:player.x,y:player.y});
+    return say(lines,p.name);
+  }
+  return say([p.name+' edges forward and takes the '+it.name+' from your hand.',
+    'He trusts you a little more. ('+p.trust[me]+' of '+TRUST_FRIEND+')'],'');
+}
+
+/* ---------------- farming ---------------- */
+function plant(x,y){
+  var seeds=Object.keys(ITEMS).filter(function(k){ return ITEMS[k].kind==='seed'&&bagCount(k)>0; });
+  if(!seeds.length) return say(['You have no seeds.','Marrow at The Greenhouse sells them.'],'');
+  var id=seeds[0], it=ITEMS[id];
+  bagAdd(id,-1);
+  state.plots.push({x:x,y:y,crop:it.crop,ready:Date.now()+it.grow*60000});
+  addLog(state.player+' planted '+it.name+'.'); save(); renderPlots(); updatePrompt();
+  say([it.name+' planted.','It should be ready in about '+it.grow+' minutes.'],'');
+}
+function harvest(pl){
+  if(Date.now()<pl.ready){
+    var left=Math.ceil((pl.ready-Date.now())/60000);
+    return say(['Not ready yet - about '+left+' minute'+(left===1?'':'s')+' to go.'],'');
+  }
+  bagAdd(pl.crop,1);
+  state.plots=state.plots.filter(function(p){ return p!==pl; });
+  addLog(state.player+' harvested '+itemName(pl.crop)+'.');
+  save(); renderPlots(); updateHud(); updatePrompt();
+  say([state.player+' harvested 1 '+itemName(pl.crop)+'!'],'');
+}
+setInterval(function(){ if(cur==='plains'&&!blocked()) renderPlots(); },20000);
+
+/* ---------------- shops ---------------- */
+var SHOPS={
+  greenhouse:{title:'The Greenhouse',flavor:'Seeds are slow and cheap. Produce is quick and dear.',
+    buy:['seed_carrot','seed_corn','seed_pepper','seed_eggplant','carrot','corn','pepper','eggplant'],sellKinds:['crop']},
+  alchemist:{title:'The Alchemist',flavor:'Bring me what you tore from the world.',
+    buy:['garlic','grape','coconut','alien'],sellKinds:['loot','crop']}
+};
+var shopOpen=null;
+function openShop(w,who){
+  shopOpen=w; var s=SHOPS[w];
+  document.getElementById('shopTitle').textContent=s.title;
+  document.getElementById('shopFlavor').textContent=(who?who+': ':'')+'"'+s.flavor+'"';
+  renderShop(); document.getElementById('shopModal').classList.remove('hidden');
+}
+function renderShop(){
+  var s=SHOPS[shopOpen];
+  document.getElementById('shopMats').textContent='Materials: '+mats();
+  var buy=s.buy.map(function(id){
+    var it=ITEMS[id],can=mats()>=it.buy;
+    return '<div class="slot'+(can?'':' disabled')+'"><img src="'+esc(it.art)+'" alt=""><div class="nm">'+esc(it.name)+
+      '</div><div class="pr">'+it.buy+' mat</div>'+(it.kind==='seed'?'<div class="have">grows '+it.grow+'m</div>':'')+
+      '<div class="have">have '+bagCount(id)+'</div><button class="btn small gold" data-buy="'+esc(id)+'"'+(can?'':' disabled')+'>Buy</button></div>';
+  }).join('');
+  var sell=Object.keys(bag()).filter(function(id){
+    return ITEMS[id]&&ITEMS[id].sell&&s.sellKinds.indexOf(ITEMS[id].kind)>=0&&bagCount(id)>0; });
+  var sh=sell.length?sell.map(function(id){ var it=ITEMS[id];
+    return '<div class="slot"><img src="'+esc(it.art)+'" alt=""><div class="nm">'+esc(it.name)+
+      '</div><div class="pr">+'+it.sell+' mat</div><div class="have">have '+bagCount(id)+
+      '</div><button class="btn small" data-sell="'+esc(id)+'">Sell 1</button></div>';
+  }).join(''):'<p class="flavor">Nothing here that I want.</p>';
+  document.getElementById('shopBody').innerHTML=
+    '<div class="sect">For sale</div><div class="grid">'+buy+'</div>'+
+    '<div class="sect">I\'ll buy from you</div><div class="grid">'+sh+'</div>';
+}
+document.getElementById('shopBody').addEventListener('click',function(e){
+  var b=e.target.closest('[data-buy]'), s=e.target.closest('[data-sell]');
+  if(b){ var id=b.getAttribute('data-buy'),it=ITEMS[id];
+    if(mats()<it.buy) return toast('Not enough Materials.');
+    state.materials[state.player]=mats()-it.buy; bagAdd(id,1);
+    addLog(state.player+' bought '+it.name+' for '+it.buy+' Materials.');
+    save(); renderShop(); updateHud(); toast('Bought '+it.name+'.');
+  } else if(s){ var sid=s.getAttribute('data-sell'),si=ITEMS[sid];
+    if(bagCount(sid)<1) return;
+    bagAdd(sid,-1); state.materials[state.player]=mats()+si.sell;
+    addLog(state.player+' sold '+si.name+' for '+si.sell+' Materials.');
+    save(); renderShop(); updateHud(); toast('Sold '+si.name+'.');
+  }
+});
+document.getElementById('bagBtn').addEventListener('click',function(){
+  document.getElementById('bagMats').textContent='Materials: '+mats();
+  var ids=Object.keys(bag()).filter(function(i){ return bagCount(i)>0; });
+  document.getElementById('bagBody').innerHTML= ids.length
+    ? '<div class="grid">'+ids.map(function(id){ var it=ITEMS[id]||{name:id,art:''};
+        return '<div class="slot"><img src="'+esc(it.art)+'" alt=""><div class="nm">'+esc(it.name)+
+        '</div><div class="pr">x'+bagCount(id)+'</div><div class="have">'+esc(it.kind||'')+'</div></div>'; }).join('')+'</div>'
+      +'<p class="plot-note">'+state.plots.length+' plot(s) planted.</p>'
+    : '<p class="flavor">Your bag is empty.</p>';
+  document.getElementById('bagModal').classList.remove('hidden');
+});
+
+/* ---------------- battle (Pokemon-style) ---------------- */
+// Hunter's help can never be gold damage - only a real payment moves a debt's
+// HP. So he scavenges Materials instead. Both players friends = better odds.
+function petAssist(){
+  if(!petFollowing()) return null;
+  var chance = petBothFriends() ? 0.30 : 0.15;
+  if(Math.random()>chance) return null;
+  var loot = petBothFriends()
+    ? ['ore','meat','carrot','corn'][Math.floor(Math.random()*4)]
+    : (Math.random()<0.5?'ore':'meat');
+  bagAdd(loot,1); save();
+  return pet().name+(petBothFriends()?' charges in alongside you':' darts in')+
+         ' and drags back '+itemName(loot)+'!';
+}
+
+var battleOn=false, btFoe=null, scenaryBuilt=false;
+// a treeline behind the fight, drawn from the same animated tree sheets
+function buildBattleScenery(){
+  if(scenaryBuilt) return;
+  scenaryBuilt=true;
+  var row=document.getElementById('btTrees');
+  row.innerHTML='';
+  var n=Math.ceil(VIEW_W/76)+2;
+  for(var i=0;i<n;i++){
+    var t=document.createElement('div');
+    t.style.marginLeft=(i===0?-14:-16)+'px';
+    row.appendChild(t);
+    animate(t,ASSETS.tree(1+(i%4)),4,'',1,[84,112],ASSETS.FRAMES.tree);
+  }
+}
+function startBattle(id){
+  var d=findDebt(id); if(!d) return;
+  btFoe=id;
+  var fl=document.getElementById('flash');
+  fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
+  setTimeout(function(){
+    battleOn=true;
+    document.getElementById('battle').classList.add('show');
+    buildBattleScenery();
+    var h=hero();
+    animate(document.getElementById('btHero').querySelector('.spr'),ASSETS.unitIdle(h.color,h.cls),7,'H',UNIT_ZOOM,104);
+    animate(document.getElementById('btFoe').querySelector('.spr'),forgeArt(d),9,'?',1,[132,110],monFrames(d,'idle'));
+    renderBattle();
+    fl.classList.remove('go');
+    updatePrompt();
+  },1000);
+}
+function renderBattle(msg){
+  var d=findDebt(btFoe);
+  if(!d){ endBattle(); return; }
+  document.getElementById('btFoeCard').innerHTML=
+    '<div class="nm">'+esc(d.lexicon)+'</div><div class="bt-hp"><div class="fl" style="width:'+pctOf(d.balance,d.maxBalance)+'%"></div></div>'+
+    '<div class="amt">'+money(d.balance)+' / '+money(d.maxBalance)+'</div>';
+  document.getElementById('btHeroCard').innerHTML=
+    '<div class="nm">'+esc(state.player)+'</div><div class="amt">Vault '+money(vault())+'g</div>'+
+    '<div class="amt">'+d.apr+'% APR · '+esc(forgeFlavor(d))+'</div>';
+  document.getElementById('btText').textContent = msg || ('What will '+state.player+' do?');
+  document.getElementById('btRow').innerHTML=
+    '<input type="number" id="btAmt" placeholder="Gold" min="1" step="0.01">'+
+    '<button class="btn small gold" id="btStrike">Hire Army — Strike</button>'+
+    '<button class="btn small stone" id="btRun">Retreat</button>';
+  document.getElementById('btStrike').onclick=doStrike;
+  document.getElementById('btRun').onclick=function(){ renderBattle('You withdraw for now.'); setTimeout(endBattle,700); };
+}
+function endBattle(){
+  battleOn=false; btFoe=null;
+  document.getElementById('battle').classList.remove('show');
+  updatePrompt();
+}
+function doStrike(){
+  var d=findDebt(btFoe); if(!d) return;
+  var a=Number(document.getElementById('btAmt').value)||0;
+  if(!(a>0)) return renderBattle('Name an amount above 0.');
+  a=round2(a);
+  if(a>vault()) return renderBattle('Not enough gold in '+state.player+"'s vault.");
+  if(a>d.balance) return renderBattle('That is more than it owes ('+money(d.balance)+'g).');
+
+  state.vaults[state.player]=round2(vault()-a);
+  d.balance=round2(d.balance-a); d.paid=round2(d.paid+a);
+  state.principalPaid[state.player]=round2(state.principalPaid[state.player]+a);
+  var sn=findSnap(d.id); if(sn) sn.balance=d.balance;
+  addLog(state.player+' committed '+money(a)+' gold against '+d.lexicon+'.');
+  save();
+
+  var h=hero(), hd=document.getElementById('btHero'), fd=document.getElementById('btFoe');
+  var spr=hd.querySelector('.spr');
+  var run=ASSETS.unitRun(h.color,h.cls), atk=ASSETS.unitAttack(h.color,h.cls);
+  document.getElementById('btText').textContent=state.player+' hires the army!';
+  document.getElementById('btRow').innerHTML='';
+  if(run) animate(spr,run,12,'H',UNIT_ZOOM,104);
+  hd.classList.remove('back'); hd.classList.add('charge');
+  setTimeout(function(){
+    animate(spr,atk,12,'H',UNIT_ZOOM,104);
+    var foeSpr=fd.querySelector('.spr');
+    var mk=monsterKind(d);
+    if(mk) animate(foeSpr,ASSETS.monster(mk,'hit'),10,'?',1,[132,110],monFrames(d,'hit'));
+    fd.classList.add('hurt');
+    var fx=document.getElementById('btFx');
+    fx.querySelector('img').src=ASSETS.fx.explosion; fx.classList.add('show');
+    var st=document.getElementById('battle');
+    var f=document.createElement('div'); f.className='dmg-float'; f.textContent='-'+money(a);
+    st.appendChild(f); setTimeout(function(){ f.remove(); },1100);
+    // hp bar drains during the hit
+    var bar=document.querySelector('#btFoeCard .fl');
+    if(bar) bar.style.width=pctOf(d.balance,d.maxBalance)+'%';
+    setTimeout(function(){
+      fx.classList.remove('show'); fd.classList.remove('hurt');
+      hd.classList.remove('charge'); hd.classList.add('back');
+      animate(spr,ASSETS.unitIdle(h.color,h.cls),7,'H',UNIT_ZOOM,104);
+      setTimeout(function(){
+        hd.classList.remove('back');
+        if(d.balance<=0){
+          slay(d); save(); updateHud();
+          var mk2=monsterKind(d);
+          if(mk2) animate(fd.querySelector('.spr'),ASSETS.monster(mk2,'dead'),8,'?',1,[132,110],monFrames(d,'dead'));
+          setTimeout(function(){
+            fd.style.transition='opacity .9s'; fd.style.opacity='0';
+          },700);
+          renderBattle(d.lexicon+' is slain!');
+          document.getElementById('btRow').innerHTML='<button class="btn small gold" id="btDone">A trophy for the Keep</button>';
+          document.getElementById('btDone').onclick=function(){
+            fd.style.transition=''; fd.style.opacity='1';
+            endBattle(); loadMap(cur,null);
+            say([d.lexicon+' has fallen.','Its trophy now stands in the Keep of Ēkehya.'],'');
+          };
+        } else {
+          renderBattle(petAssist()||'It reels, but it still stands.');
+          updateHud();
+        }
+      },460);
+    },1050);
+  },520);
+}
+
+/* ---------------- owner backfill ---------------- */
+function renderOwnerModal(){
+  var un=state.sheet.filter(function(d){ return !d.owner; });
+  var ov=document.getElementById('ownerModal');
+  if(!un.length){ ov.classList.add('hidden'); return false; }
+  ov.classList.remove('hidden');
+  document.getElementById('ownerModalBody').innerHTML=un.map(function(d){
+    return '<div class="entry"><div><strong>'+esc(d.lexicon)+'</strong></div>'+
+      '<div class="who">recorded in the ledgers as '+esc(d.real)+'</div><div class="row">'+
+      ['Sarah','Taliyah','Shared'].map(function(o){
+        return '<button class="btn small" data-own="'+esc(d.id)+'" data-owner="'+o+'">'+o+'</button>'; }).join('')+
+      '</div></div>';
+  }).join('');
+  return true;
+}
+document.getElementById('ownerModalBody').addEventListener('click',function(e){
+  var b=e.target.closest('[data-own]'); if(!b) return;
+  var d=findDebt(b.getAttribute('data-own')); if(!d) return;
+  var o=b.getAttribute('data-owner');
+  d.owner=o; var sn=findSnap(d.id); if(sn) sn.owner=o;
+  addLog(d.lexicon+' was claimed by '+(o==='Shared'?'the Shared Treasury':o)+'.');
+  save(); boot();
+});
+
+/* ---------------- ledger book ---------------- */
+function computeDiff(){
+  var out=[];
+  state.sheet.forEach(function(sd){
+    var sn=findSnap(sd.id);
+    if(!sn){ out.push({kind:'added',id:sd.id,lexicon:sd.lexicon,owner:sd.owner,type:sd.type,oldValue:0,newValue:sd.balance}); return; }
+    if(round2(sd.balance)!==round2(sn.balance))
+      out.push({kind:'changed',id:sd.id,lexicon:sd.lexicon,owner:sd.owner,type:sd.type,oldValue:sn.balance,newValue:sd.balance});
+  });
+  state.snapshot.forEach(function(sn){
+    if(!findDebt(sn.id)) out.push({kind:'removed',id:sn.id,lexicon:sn.lexicon,owner:sn.owner,type:sn.type,oldValue:sn.balance,newValue:0});
+  });
+  return out;
+}
+function narrate(c){
+  if(c.kind==='added') return 'A new foe has been written into the ledgers: '+c.lexicon+', mustering '+money(c.newValue)+' strong.';
+  if(c.kind==='removed') return c.lexicon+' has vanished from the ledgers entirely - struck from the record by hand.';
+  var down=c.newValue<c.oldValue;
+  if(c.type==='combat') return down
+    ? c.lexicon+"'s ranks have thinned - the toll fell from "+money(c.oldValue)+' to '+money(c.newValue)+' gold.'
+    : c.lexicon+' has reinforced its ranks - the toll grew from '+money(c.oldValue)+' to '+money(c.newValue)+' gold.';
+  if(c.type==='construction') return down
+    ? 'The foundations of '+c.lexicon+' were quietly repaired - the work remaining fell from '+money(c.oldValue)+' to '+money(c.newValue)+' gold.'
+    : c.lexicon+' demanded unforeseen materials - the work remaining rose from '+money(c.oldValue)+' to '+money(c.newValue)+' gold.';
+  return c.lexicon+"'s record was altered - "+money(c.oldValue)+' became '+money(c.newValue)+' gold.';
+}
+var pending=[];
+function renderLedgerModal(){
+  pending=computeDiff();
+  var ov=document.getElementById('ledgerModal');
+  if(!pending.length){ ov.classList.add('hidden'); return false; }
+  ov.classList.remove('hidden');
+  document.getElementById('ledgerModalBody').innerHTML=pending.map(function(c,i){
+    var who=c.owner==='Shared'?'the Shared Treasury':(c.owner||'an unclaimed ledger');
+    return '<div class="entry" id="entry-'+i+'"><div class="who">Concerns: '+esc(who)+'</div>'+
+      '<div>'+esc(narrate(c))+'</div><button class="btn small" data-approve="'+i+'">Approve this change</button></div>';
+  }).join('');
+  return true;
+}
+document.getElementById('ledgerModalBody').addEventListener('click',function(e){
+  var b=e.target.closest('[data-approve]'); if(b) approve(Number(b.getAttribute('data-approve')));
+});
+function approve(i){
+  var c=pending[i]; if(!c||c._ok) return;
+  c._ok=true;
+  if(c.kind==='removed') state.snapshot=state.snapshot.filter(function(x){ return x.id!==c.id; });
+  else{
+    var d=findDebt(c.id);
+    if(c.kind==='added'&&d) state.snapshot.push(JSON.parse(JSON.stringify(d)));
+    else { var sn=findSnap(c.id); if(sn&&d){ sn.balance=d.balance; if(d.maxBalance>sn.maxBalance) sn.maxBalance=d.maxBalance; } }
+  }
+  addLog(narrate(c)+' (reconciled by '+(state.player||'the scribes')+')');
+  var n=document.getElementById('entry-'+i);
+  if(n){ n.classList.add('approved'); var bt=n.querySelector('button'); if(bt) bt.disabled=true; }
+  save();
+  if(pending.every(function(x){ return x._ok; })){
+    zeroed(); closeModal('ledgerModal'); save(); loadMap(cur,null);
+    toast('The ledgers are reconciled.');
+  }
+}
+document.getElementById('approveAllBtn').addEventListener('click',function(){ pending.forEach(function(c,i){ approve(i); }); });
+function zeroed(){ state.sheet.slice().forEach(function(d){ if(d.balance<=0) slay(d,'cleared in the ledgers'); }); }
+
+/* ---------------- pull from disk (real hand-edit detection) ---------------- */
+async function syncFromDisk(silent){
+  try{
+    var disk=await pull();
+    if(disk&&Object.keys(disk).length){
+      var d=coerce(disk);
+      // take the ledgers from disk, keep our snapshot so edits show up as changes
+      state.sheet=d.sheet;
+      state.vaults=d.vaults; state.materials=d.materials; state.bag=d.bag;
+      state.plots=d.plots; state.trophies=d.trophies; state.principalPaid=d.principalPaid;
+      if(d.log&&d.log.length>state.log.length) state.log=d.log;
+    }
+  }catch(e){ if(!silent) toast('Could not reach the server.'); return false; }
+  var grew=applyInterest();
+  if(computeDiff().length){ renderLedgerModal(); return true; }
+  zeroed(); save(); loadMap(cur,null);
+  if(!silent) toast(grew?'Interest applied. Ledgers otherwise in order.':'The ledgers are in order.');
+  return false;
+}
+document.getElementById('checkSyncBtn').addEventListener('click',function(){ syncFromDisk(false); });
+window.addEventListener('focus',function(){
+  if(ONLINE&&state.player&&document.getElementById('gameScreen').classList.contains('active')&&!blocked()) syncFromDisk(true);
+});
+
+/* ---------------- boot ---------------- */
+async function boot(){
+  // show the screen first, then render into it - sprites need a visible box
+  if(!state.player){ showScreen('screenPlayers'); return renderPlayerCards(); }
+  if(!state.heroes[state.player]) return openCreator();
+  applyInterest(); zeroed();
+  showScreen('gameScreen');
+  if(renderOwnerModal()) return;
+  renderLedgerModal();
+}
+function showScreen(id){
+  if(id!=='gameScreen') ['keepModal','vaultModal','logModal','shopModal','bagModal'].forEach(closeModal);
+  ['screenTitle','screenPlayers','screenCreator','gameScreen'].forEach(function(s){
+    document.getElementById(s).classList.toggle('active',s===id); });
+  skyMode(id==='gameScreen');
+  if(id==='gameScreen'){ sizeViewport(); loadMap(cur, cur==='plains'?{x:5,y:6}:null); fit(); }
+}
+function fit(){
+  var w=document.getElementById('viewportWrap'), s=document.getElementById('worldScaler');
+  if(!w||!s) return;
+  // fill the phone screen: scale up as well as down
+  var k=Math.min((w.clientWidth-6)/VIEW_W,(w.clientHeight-6)/VIEW_H);
+  if(!(k>0)) k=1;
+  s.style.transform='scale('+k+')';
+}
+function relayout(){
+  sizeViewport(); fit();
+  if(document.getElementById('gameScreen').classList.contains('active')) camera(true);
+  skyMode(document.getElementById('gameScreen').classList.contains('active'));
+}
+window.addEventListener('resize',relayout);
+window.addEventListener('orientationchange',function(){ setTimeout(relayout,250); });
+
+/* ---------------- title / players / creator ---------------- */
+buildSky();
+applyPaperSkin();
+document.getElementById('titleCastle').src=ASSETS.building('Blue','Castle');
+document.getElementById('srvNote').textContent = ONLINE
+  ? 'Connected — your save lives in save-data.json'
+  : 'Offline mode (opened as a file) — saving to this browser only. Run server.ps1 for the shared save file.';
+document.getElementById('startBtn').addEventListener('click',function(){ boot(); });
+
+function renderPlayerCards(){
+  var el=document.getElementById('playerCards');
+  el.innerHTML=['Sarah','Taliyah'].map(function(n){
+    return '<div class="pick-card" data-pick="'+esc(n)+'"><div class="av" id="pc-'+n+'"></div>'+
+      '<div class="who">'+esc(n)+'</div><div class="vault">Vault '+money(state.vaults[n]||0)+'g · '+(state.materials[n]||0)+' mat</div></div>';
+  }).join('');
+  ['Sarah','Taliyah'].forEach(function(n){
+    var h=state.heroes[n]||{color:n==='Sarah'?'Blue':'Red',cls:'Warrior'};
+    animate(document.getElementById('pc-'+n),ASSETS.unitIdle(h.color,h.cls),6,n.charAt(0),UNIT_ZOOM,96);
+  });
+}
+document.getElementById('playerCards').addEventListener('click',function(e){
+  var c=e.target.closest('[data-pick]'); if(!c) return;
+  state.player=c.getAttribute('data-pick'); save(); boot();
+});
+var creator={cls:'Warrior',color:'Blue'};
+function openCreator(){
+  document.getElementById('classChips').innerHTML=CLASSES.map(function(c){
+    return '<button class="chip'+(c===creator.cls?' on':'')+'" data-cls="'+c+'">'+c+'</button>'; }).join('');
+  document.getElementById('colorChips').innerHTML=HERO_COLORS.map(function(c){
+    return '<button class="chip'+(c===creator.color?' on':'')+'" data-color="'+c+'">'+c+'</button>'; }).join('');
+  animate(document.getElementById('creatorPreview'),ASSETS.unitIdle(creator.color,creator.cls),7,'?',UNIT_ZOOM,120);
+  showScreen('screenCreator');
+}
+document.getElementById('screenCreator').addEventListener('click',function(e){
+  var c=e.target.closest('[data-cls]'), o=e.target.closest('[data-color]');
+  if(c){ creator.cls=c.getAttribute('data-cls'); openCreator(); }
+  else if(o){ creator.color=o.getAttribute('data-color'); openCreator(); }
+});
+document.getElementById('enlistBtn').addEventListener('click',function(){
+  state.heroes[state.player]={color:creator.color,cls:creator.cls};
+  addLog(state.player+' enlisted a '+creator.color+' '+creator.cls+'.'); save(); boot();
+});
+document.getElementById('skipCreatorBtn').addEventListener('click',function(){
+  state.heroes[state.player]={color:'Blue',cls:'Warrior'}; save(); boot();
+});
+document.getElementById('switchBtn').addEventListener('click',function(){ showScreen('screenPlayers'); renderPlayerCards(); });
+
+/* ---------------- vault / keep ---------------- */
+function openVault(){
+  document.getElementById('vaultModalBody').innerHTML=
+    '<div class="vault-line">Sarah <strong>'+money(state.vaults.Sarah)+'g</strong> · Taliyah <strong>'+money(state.vaults.Taliyah)+'g</strong></div>'+
+    '<div class="entry"><div class="who">Deposit a real paycheck for '+esc(state.player)+'</div>'+
+    '<div class="row"><input type="number" id="depAmt" placeholder="Gold" min="1" step="0.01">'+
+    '<button class="btn small" id="depBtn">Deposit</button></div></div>'+
+    '<div class="who" style="text-align:center;">Principal paid — Sarah '+money(state.principalPaid.Sarah)+
+    'g · Taliyah '+money(state.principalPaid.Taliyah)+'g</div>';
+  document.getElementById('vaultModal').classList.remove('hidden');
+  document.getElementById('depBtn').onclick=function(){
+    var a=Number(document.getElementById('depAmt').value)||0;
+    if(!(a>0)) return toast('Enter an amount above 0.');
+    a=round2(a); state.vaults[state.player]=round2(vault()+a);
+    addLog(state.player+' deposited '+money(a)+' gold into the Vault.');
+    save(); openVault(); updateHud(); toast(money(a)+' gold banked.');
+  };
+}
+function debtCard(d){
+  var c=d.type==='combat';
+  return '<div class="boss-card '+(c?'combat':'build')+'"><div class="art"><div class="spr" data-art="'+esc(forgeArt(d))+'"></div></div>'+
+    '<div class="body"><div class="name">'+esc(d.lexicon)+'</div>'+
+    '<div class="sub">'+esc(d.real)+' · '+esc(d.owner||'unclaimed')+(c?' · '+d.apr+'% APR':'')+'</div>'+
+    '<div class="hp-back"><div class="hp-fill'+(c?'':' build')+'" style="width:'+pctOf(d.balance,d.maxBalance)+'%"></div></div>'+
+    '<div class="sub">'+(c?'HP':'Work left')+': '+money(d.balance)+' / '+money(d.maxBalance)+' · paid '+money(d.paid)+'g</div>'+
+    '<div class="row"><input type="number" id="feed-'+esc(d.id)+'" placeholder="Gold" min="1" step="0.01">'+
+    '<button class="btn small" data-pay="'+esc(d.id)+'">'+(c?'Strike':'Fund the Works')+'</button></div></div></div>';
+}
+function hydrateArt(root){
+  root.querySelectorAll('[data-art]').forEach(function(el){
+    animate(el,el.getAttribute('data-art'),6,'?',UNIT_ZOOM,Number(el.getAttribute('data-size'))||66);
+  });
+}
+var keepTab='projects';
+function openKeep(tab){
+  keepTab=tab||keepTab;
+  document.getElementById('keepModal').querySelectorAll('[data-keeptab]').forEach(function(b){
+    b.classList.toggle('stone',b.getAttribute('data-keeptab')!==keepTab); });
+  var body=document.getElementById('keepModalBody');
+  if(keepTab==='projects'){
+    var pj=state.sheet.filter(function(d){ return d.type!=='combat'; });
+    body.innerHTML='<p class="flavor">Secured works — funded with real payments, built to last.</p>'+
+      '<div class="vault-line">'+esc(state.player)+"'s vault: <strong>"+money(vault())+'g</strong></div>'+
+      (pj.length?pj.map(debtCard).join(''):'<p class="empty">No works underway.</p>');
+  } else {
+    body.innerHTML='<p class="flavor">Where slain debts are remembered.</p>'+
+      (state.trophies.length?state.trophies.slice().reverse().map(function(t){
+        return '<div class="trophy"><div class="art"><div class="spr" data-art="'+esc(t.art||'')+'" data-size="52"></div></div><div>'+
+          '<div class="name">🏆 '+esc(t.lexicon)+'</div><div class="meta">'+esc(t.real)+' · slain '+esc(t.date)+'</div>'+
+          '<div class="meta">'+money(t.paidHere)+'g paid here · '+esc(t.owner||'unclaimed')+
+          (t.note?' · '+esc(t.note):'')+'</div></div></div>'; }).join('')
+        :'<p class="empty">No trophies yet — the Keep awaits its first victory.</p>');
+  }
+  hydrateArt(body);
+  document.getElementById('keepModal').classList.remove('hidden');
+}
+document.getElementById('keepModal').addEventListener('click',function(e){
+  var t=e.target.closest('[data-keeptab]'); if(t) openKeep(t.getAttribute('data-keeptab'));
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-pay]'); if(b) payFromPanel(b.getAttribute('data-pay'));
+});
+function payFromPanel(id){
+  var d=findDebt(id); if(!d) return;
+  var inp=document.getElementById('feed-'+id);
+  var a=Number(inp&&inp.value)||0;
+  if(!(a>0)) return toast('Enter an amount above 0.');
+  a=round2(a);
+  if(a>vault()) return toast('Not enough gold in '+state.player+"'s vault.");
+  if(a>d.balance) return toast('That is more than '+d.lexicon+' owes ('+money(d.balance)+'g).');
+  state.vaults[state.player]=round2(vault()-a);
+  d.balance=round2(d.balance-a); d.paid=round2(d.paid+a);
+  state.principalPaid[state.player]=round2(state.principalPaid[state.player]+a);
+  var sn=findSnap(d.id); if(sn) sn.balance=d.balance;
+  addLog(state.player+' committed '+money(a)+' gold against '+d.lexicon+'.');
+  var done=d.balance<=0;
+  if(done) slay(d);
+  save(); updateHud();
+  if(done){ openKeep('trophies'); toast(d.lexicon+' is complete!'); }
+  else openKeep(keepTab);
+}
+function slay(d,note){
+  state.trophies.push({lexicon:d.lexicon,real:d.real,art:forgeArt(d),owner:d.owner,paidHere:d.paid,
+    startBalance:d.startBalance,date:new Date().toLocaleDateString(),note:note||''});
+  state.sheet=state.sheet.filter(function(x){ return x.id!==d.id; });
+  state.snapshot=state.snapshot.filter(function(x){ return x.id!==d.id; });
+  addLog('🏆 '+d.lexicon+' has fallen. A trophy is mounted in the Keep of Ēkehya.');
+}
+
+/* ---------------- log / reset ---------------- */
+document.getElementById('logBtn').addEventListener('click',function(){
+  document.getElementById('logModalBody').innerHTML=state.log.slice(0,50).map(function(l){
+    return '<div class="log-entry">'+esc(new Date(l.ts).toLocaleString())+' — '+esc(l.text)+'</div>'; }).join('')
+    ||'<p class="empty">Nothing recorded yet.</p>';
+  document.getElementById('logModal').classList.remove('hidden');
+});
+document.getElementById('resetBtn').addEventListener('click',function(){
+  var b=this;
+  if(b.dataset.armed!=='1'){ b.dataset.armed='1'; b.textContent='Sure?';
+    setTimeout(function(){ b.dataset.armed='0'; b.textContent='Reset'; },3000); return; }
+  state=freshState(); save();
+  b.dataset.armed='0'; b.textContent='Reset';
+  toast('The kingdom has been reset.'); showScreen('screenTitle');
+});
+
+/* ---------------- screenshot harness ----------------
+   ?shot=<name> jumps straight to a screen so a headless browser can capture
+   it. Read-only: it never writes to save-data.json. */
+function runShot(which){
+  saveSuspended=true;
+  if(!state.player) state.player='Sarah';
+  if(!state.heroes[state.player]) state.heroes[state.player]={color:'Blue',cls:'Warrior'};
+  if(!(state.vaults[state.player]>0)) state.vaults[state.player]=250;
+  var go={
+    title:   function(){ showScreen('screenTitle'); },
+    players: function(){ showScreen('screenPlayers'); renderPlayerCards(); },
+    creator: function(){ creator={color:'Red',cls:'Archer'}; openCreator(); },
+    overworld:function(){ showScreen('gameScreen'); },
+    dialogue:function(){ showScreen('gameScreen');
+      setTimeout(function(){ player.x=5; player.y=7; player.dir='up'; placePlayer(); camera(true);
+        var n=(map().npcs||[])[0]; if(n) say(n.say,n.tag);
+        setTimeout(function(){ advanceDialog(); },600); },300); },
+    shop:    function(){ showScreen('gameScreen');
+      setTimeout(function(){ loadMap('greenhouse',null); openShop('greenhouse','Marrow the Seedkeeper'); },300); },
+    interior:function(){ showScreen('gameScreen');
+      setTimeout(function(){ loadMap('greenhouse',null); },300); },
+    battle:  function(){ showScreen('gameScreen');
+      setTimeout(function(){ var f=state.sheet.filter(function(d){return d.type==='combat';})[0];
+        if(f) startBattle(f.id); },300); },
+    paint:   function(){ showScreen('gameScreen'); setTimeout(function(){ setEdit(true); },300); },
+    ledger:  function(){ showScreen('gameScreen');
+      setTimeout(function(){ var d=state.sheet[0];
+        if(d){ d.balance=round2(d.balance-12); renderLedgerModal(); } },300); },
+    keep:    function(){ showScreen('gameScreen');
+      setTimeout(function(){ state.trophies=[{lexicon:'Vinmohr, Keter-class Anomaly',real:'Venmo Credit Card',
+        art:ASSETS.unitIdle('Black','Warrior'),owner:'Sarah',paidHere:42,date:new Date().toLocaleDateString(),note:''}];
+        openKeep('trophies'); },300); },
+    bag:     function(){ showScreen('gameScreen');
+      setTimeout(function(){ document.getElementById('bagBtn').click(); },300); }
+  };
+  (go[which]||go.title)();
+}
+
+/* ---------------- go ---------------- */
+(async function init(){
+  await loadTileManifest();               // fills the painter's collection tabs
+  try{
+    var disk=await pull();
+    state=coerce(disk);
+  }catch(e){ state=freshState(); }
+  if(state.player) document.getElementById('welcomeBack').textContent='Welcome back, '+state.player+'.';
+  var shot=new URLSearchParams(location.search).get('shot');
+  if(shot){ runShot(shot); return; }
+  showScreen('screenTitle');
+})();
+</script>
 </body>
 </html>

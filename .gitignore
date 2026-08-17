@@ -1,13 +1,14 @@
-# Google Drive writes one of these into every synced folder
-desktop.ini
+# Live save file - contains real debt balances, vault amounts and payment
+# history. Never commit this.
+command-center-app/save-data.json
+command-center-app/save-data.json.tmp
 
-# macOS archive/extraction junk
-__MACOSX/
+# Windows / Google Drive folder metadata
+desktop.ini
+**/desktop.ini
+Thumbs.db
+
+# macOS archive residue
 .DS_Store
 ._*
-
-# Editor / OS
-Thumbs.db
-*.swp
-.vscode/
-.idea/
+__MACOSX/
