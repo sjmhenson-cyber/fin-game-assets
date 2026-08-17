@@ -10,6 +10,7 @@ filename. Original license files and previews are preserved in `assets/_packs/`.
 | `craftpix` | Retro pixel effects, loot icons, animated magic book, path & road tileset | CraftPix.net | <https://craftpix.net/file-licenses/> |
 | `tinyswords` | Tiny Swords (Free Pack) | — | pack terms |
 | `cainos` | Pixel Art Top Down - Basic | Cainos | see `assets/_packs/pixel-art-top-down-basic-cainos/`, <https://docs.cainos.net/pixel-art-top-down-basic> |
+| `fantasy` | The Fan-tasy Tileset (Free) | — | see `assets/_packs/fantasy-tileset/` |
 
 ## Notes
 
@@ -22,5 +23,15 @@ filename. Original license files and previews are preserved in `assets/_packs/`.
   original download page's terms before shipping commercially.**
 - `assets/_packs/` also holds the original `.zip` archives and CraftPix
   coupon/preview files. Nothing in `_packs/` is game art.
+- **The Fan-tasy Tileset** shipped with no license or author file (only a
+  trial guide and documentation PDF, both signed just "my asset pack").
+  Tagged `fantasy` after the pack name for the same reason as Tiny Swords —
+  **confirm the original download page's terms before shipping
+  commercially.** Its `environment/tilesets/fantasy-16px/tiled/` folder is
+  kept byte-for-byte as shipped (`Art/` + `Tiled/` side by side, no renamed
+  files) because every `.tsx` tileset references its `.png` via a relative
+  `../../Art/...` path, and the pack's own docs warn its naming/spacing is
+  deliberately built for merging paid expansions — renaming anything here
+  breaks both.
 
 If you add a pack, add a row here and keep its license file in `_packs/`.
