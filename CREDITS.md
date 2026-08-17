@@ -11,6 +11,7 @@ filename. Original license files and previews are preserved in `assets/_packs/`.
 | `tinyswords` | Tiny Swords (Free Pack) | — | pack terms |
 | `cainos` | Pixel Art Top Down - Basic | Cainos | see `assets/_packs/pixel-art-top-down-basic-cainos/`, <https://docs.cainos.net/pixel-art-top-down-basic> |
 | `fantasy` | The Fan-tasy Tileset (Free) | — | see `assets/_packs/fantasy-tileset/` |
+| `kingsandpigs` | Kings and Pigs | — | see `assets/_packs/kings-and-pigs/` |
 
 ## Notes
 
@@ -33,5 +34,11 @@ filename. Original license files and previews are preserved in `assets/_packs/`.
   `../../Art/...` path, and the pack's own docs warn its naming/spacing is
   deliberately built for merging paid expansions — renaming anything here
   breaks both.
+- **Kings and Pigs** shipped with no license, readme, or author file at all.
+  Tagged `kingsandpigs` after the pack name for the same reason as Tiny
+  Swords and The Fan-tasy Tileset — **confirm the original download page's
+  terms before shipping commercially.** Its terrain/decoration tilesets are
+  32×32px (`environment/tilesets/kings-and-pigs-32px/`), half the size of
+  the Tiny Swords reference.
 
 If you add a pack, add a row here and keep its license file in `_packs/`.
