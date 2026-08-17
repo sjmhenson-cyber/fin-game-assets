@@ -7,8 +7,9 @@ filename. Original license files and previews are preserved in `assets/_packs/`.
 |---|---|---|---|
 | `bigwander` | The Banquet (16×16 food) | BigWander | see `assets/_packs/bigwander-banquet/` |
 | `ghostpixxells` | Pixel Food | Ghostpixxells | pack terms |
-| `craftpix` | Retro pixel effects, loot icons, animated magic book | CraftPix.net | <https://craftpix.net/file-licenses/> |
+| `craftpix` | Retro pixel effects, loot icons, animated magic book, path & road tileset | CraftPix.net | <https://craftpix.net/file-licenses/> |
 | `tinyswords` | Tiny Swords (Free Pack) | — | pack terms |
+| `cainos` | Pixel Art Top Down - Basic | Cainos | see `assets/_packs/pixel-art-top-down-basic-cainos/`, <https://docs.cainos.net/pixel-art-top-down-basic> |
 
 ## Notes
 
